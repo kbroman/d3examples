@@ -1,0 +1,28 @@
+
+svg {
+  margin-top:  10px;
+  margin-left: 50px;
+}
+
+.line {
+  stroke-width: 1;
+  fill: none;
+}
+
+text {
+ font-family: sans-serif;
+ font-size: 11pt;
+}
+
+.d3-tip {
+  fill: darkslateblue;
+  stroke: none;
+  font-weight: bold;
+}
+
+.d3-tip text {
+  fill: white;
+  font-size: 12px;
+  stroke: none;
+  font-family: sans-serif;
+}
