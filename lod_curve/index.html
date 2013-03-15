@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+<script charset="utf-8" type="text/javascript" src="../d3/d3.js"></script>
+<script type="text/javascript" src="../d3-tip/d3.tip.js"></script>
+<title>Slightly interactive LOD curve</title>
+
+  <style type="text/css">
+  .d3-tip {
+    fill: darkslateblue;
+    stroke: none;
+    font-weight: bold;
+  }
+
+  .d3-tip text {
+    fill: white;
+    font-size: 12px;
+    stroke: none;
+    font-family: sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+     fill: none;
+     stroke: black;
+     shape-rendering: crispEdges;
+   }
+   .axis text {
+     font-family: sans-serif;
+     font-size: 11px;
+   }
+
+   p {
+     font-family: sans-serif;
+   }
+
+  </style>
+
+</head>
+<body>
+
+<h3 style="font-family:sans-serif">Slightly interactive LOD curve</h3>
+
+<p>Hover over the markers (the pink dots).
+
+<div id="lodchart" style="position:relative;top:10px;"></div>
+
+<script type="text/javascript">
+
+var w=800, h=400;
+var pad = {bottom:50, left:50, top:3, right:3, internal:5}
+var n_xTicks = 6, n_yTicks = 7;
+var which_chr = "4";
+
+var onedigit = d3.format(".1f");
+
+
+d3.text("lod.csv", function(datasetText) {
+  var parsedCSV = d3.csv.parseRows(datasetText);
+
+  var onechr = [];
+  for(var i=0; i<parsedCSV.length; i++) {
+    if(parsedCSV[i][1] === which_chr) {
+      onechr.push(parsedCSV[i]);
+    }
+  }
+
+  var svg = d3.select("#lodchart")
+              .append("svg")
+                .attr("width", w)
+                .attr("height", h);
+
+
+   // tool tips: https://github.com/Caged/d3-tip
+   var tip = d3.svg.tip()
+          .orient("right")
+          .padding(3)
+          .text(function(d) {
+                        var title = "LOD = " + onedigit(d[3]) + "  pos = "+ onedigit(d[2]);
+                        var pattern = /^c.+\.loc-*[0-9]+$/;
+                        if(!d[0].match(pattern)) { // is Marker?
+                            title += "  (" + d[0] + ")";
+                        }
+                        return title; })
+          .attr("class", "d3-tip");
+
+  var xMin = d3.min(onechr, function(d) { return Number(d[2]); });
+  var xMax = d3.max(onechr, function(d) { return Number(d[2]); });
+
+  yMin = 0;
+  yMax = d3.max(onechr, function(d) { return Number(d[3]); });
+
+  xScale=d3.scale.linear().domain([xMin, xMax])
+                          .range([pad.left+pad.internal, w-pad.right-pad.internal]);
+  yScale=d3.scale.linear().domain([yMin, yMax])
+                          .range([h-pad.bottom-pad.internal, pad.top+pad.internal]);
+
+  svg.append("rect")
+       .attr("x", pad.left).attr("y",pad.top)
+       .attr("width", w-(pad.left+pad.right))
+       .attr("height",h-(pad.top+pad.bottom))
+       .attr("fill", "rgb(230,230,230)");
+
+  var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(n_xTicks).tickSize(0,0,0);
+  var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(n_yTicks).tickSize(0,0,0);
+
+  var xTicks = xScale.ticks(n_xTicks);
+  svg.selectAll("#verline")
+      .data(xTicks)
+      .enter()
+      .append("line")
+      .attr("x1", function(d) { return xScale(d); })
+      .attr("x2", function(d) { return xScale(d); })
+      .attr("id", "verline")
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("y1", pad.top)
+      .attr("y2", h-pad.bottom);
+
+  var yTicks = yScale.ticks(n_yTicks);
+  svg.selectAll("#horline")
+      .data(yTicks)
+      .enter()
+      .append("line")
+      .attr("y1", function(d) { return yScale(d); })
+      .attr("y2", function(d) { return yScale(d); })
+      .attr("id", "horline")
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("x1", pad.left)
+      .attr("x2", w-pad.right);
+
+  svg.append("g")
+       .attr("class", "axis")
+       .attr("transform", "translate(0," + (h - pad.bottom) + ")")
+       .call(xAxis);
+
+  svg.append("g")
+       .attr("class", "axis")
+       .attr("transform", "translate(" + pad.left + ",0)")
+       .call(yAxis);
+
+  svg.append("text")
+     .attr("x", w/2)
+     .attr("y", h-pad.bottom/3)
+     .style("font-family", "sans-serif")
+     .text("Position (cM)");
+
+  svg.append("text")
+     .attr("x", pad.left/3)
+     .attr("y", h/2)
+     .attr("transform", "rotate(270 " + pad.left/3 + " " + h/2 + ")")
+     .style("font-family", "sans-serif")
+     .text("LOD score");
+
+  svg.append("rect")
+       .attr("x", pad.left).attr("y",pad.top)
+       .attr("width", w-(pad.left+pad.right))
+       .attr("height",h-(pad.top+pad.bottom))
+       .attr("fill", "none")
+       .attr("stroke", "black");
+
+  var line = d3.svg.line()
+                 .x(function(d) { return xScale(d[2]); })
+                 .y(function(d) { return yScale(d[3]); })
+                 .interpolate("linear");
+
+  svg.append("svg:path")
+       .attr("fill", "none")
+       .attr("stroke","slateblue")
+       .attr("stroke-width", 3)
+       .attr("d", line(onechr))
+
+
+  var markers = [];
+  for(i=0; i<onechr.length; i++) {
+     var pattern = /^c.+\.loc-*[0-9]+$/;
+     if(!onechr[i][0].match(pattern)) { // is Marker?
+       markers.push(onechr[i]);
+     }
+  }
+
+  var circles = svg.selectAll("circle")
+                      .data(markers)
+                      .enter()
+                       .append("circle")
+                         .attr("cx", function(d) { return xScale(d[2]); })
+                         .attr("cy", function(d) { return yScale(d[3]); })
+                         .attr("r", 1.5)
+                         .attr("fill", "hotpink");
+  var largercircles = svg.selectAll("#lgcircle")
+                      .data(markers)
+                      .enter()
+                       .append("circle")
+                         .attr("id", "lgcircle")
+                         .attr("cx", function(d) { return xScale(d[2]); })
+                         .attr("cy", function(d) { return yScale(d[3]); })
+                         .attr("r", 7)
+                         .attr("opacity", 0)
+                         .attr("fill", "violet")
+                      .on("mouseover", tip.attr("id", "d3tip"))
+                      .on('mouseout', function() { d3.selectAll("#d3tip").remove(); });
+
+
+});
+
+</script>
+</div>
+
+<div><small style="font-family:sans-serif">Makes use of <a href="http://d3js.org/">D3</a> and <a href="https://github.com/Caged/d3-tip">d3-tip</a>.</small></div>
+
+</body></html>
