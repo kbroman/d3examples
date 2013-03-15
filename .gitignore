@@ -1,0 +1,8 @@
+.RData
+.Rhistory
+Rout.txt
+*.json
+*.csv
+d3/
+d3-tip/
+jquery/
