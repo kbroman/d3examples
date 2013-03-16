@@ -1,5 +1,3 @@
-`cistrans_coffee`
-
 Interactive cis-trans eQTL plot
 ----------------------------------------------------------------------
 
