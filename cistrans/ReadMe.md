@@ -1,6 +1,9 @@
-cistrans_coffee
+`cistrans_coffee`
 
 Interactive cis-trans eQTL plot
+----------------------------------------------------------------------
+
+See it in action [here](http://www.biostat.wisc.edu/~kbroman/D3/cistrans)
 
 In top figure, x-axis corresponds to marker location, y-axis is
 genomic position of probes on a gene expression microarray Each
