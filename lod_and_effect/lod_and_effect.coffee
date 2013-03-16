@@ -61,10 +61,10 @@ draw = (data) ->
   purple = "#8C4374"
 
   # create SVGs
-  topsvg = d3.select("body").append("svg")
+  topsvg = d3.select("div#figure").append("svg")
           .attr("width", w)
           .attr("height", h)
-  botsvg = d3.select("body").append("svg")
+  botsvg = d3.select("div#figure").append("svg")
           .attr("width", w)
           .attr("height", h)
   svgs = [topsvg, botsvg, botsvg, botsvg]
