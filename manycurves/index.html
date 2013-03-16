@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel=stylesheet type="text/css" href="manycurves.css">
+
+<script charset="utf-8" type="text/javascript" src="../d3/d3.js"></script>
+
+<title>Phenotypes measured over time</title>
+</head>
+
+<body>
+<h2>Phenotypes measured over time</h2>
+
+<p id="loading">[Loading...]</p>
+
+<div id="curvesfig"></div>
+
+<div id="legend" style="width:700px;margin-left:25px;opacity:0;">
+
+<p>The top panel is an image plot of phenotype, measured over time,
+for many individuals.  The rows correspond to individuals.
+Blue pixels are low values and white pixels are
+
+<p>Hover over a row to see the detailed time course below.
+
+<p>Click on a row and the curve below will be retained as you move
+away.  Click again (if you can get your pointer onto it) and it will
+be removed.
+</div>
+
+<script type="text/javascript" src="manycurves.js"></script>
+</body>
+</html>
