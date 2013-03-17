@@ -201,7 +201,7 @@ draw = (data) ->
         .attr("x2", (d) -> xScaleCurve(d*60))
         .attr("y1", h[1])
         .attr("y2", 0)
-        .attr("stroke", darkGray)
+        .attr("stroke", "white")
   botAxes.selectAll("empty")
         .data(xTicks)
         .enter()
@@ -298,7 +298,7 @@ draw = (data) ->
     thecurve.append("text")
           .datum(ind)
           .text("line #{ind*1+1}") # *1 to turn it into a number
-          .attr("x", xScaleCurve(7*60)+pad.inner)
+          .attr("x", xScaleCurve(7*60+10))
           .attr("y", (yScaleCurve(0)+yScaleCurve(-20))/2)
           .attr("text-anchor", "start")
           .attr("fill", darkBlue)
