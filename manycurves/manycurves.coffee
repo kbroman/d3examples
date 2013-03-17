@@ -66,7 +66,7 @@ draw = (data) ->
   pixelsPer = 3
   w = nTimes * pixelsPer
   h = [nInd * pixelsPer, 200]
-  pad = {left:60, top:15, right:5, bottom: 40, inner: 5}
+  pad = {left:60, top:15, right:25, bottom: 40, inner: 0}
 
   # total size
   totalw = w + pad.left + pad.right
@@ -79,9 +79,9 @@ draw = (data) ->
           .attr("width", totalw)
 
   # groups for the two panels, translated to have origin = (0,0)
-  image = svg.append("g")
+  image = svg.append("g").attr("id", "imagepanel")
              .attr("transform", "translate(#{pad.left},#{pad.top})")
-  curve = svg.append("g")
+  curve = svg.append("g").attr("id", "curvepanel")
              .attr("transform", "translate(#{pad.left},#{pad.top*2+pad.bottom+h[0]})")
                   
   # background rectangle for upper panel
@@ -107,10 +107,23 @@ draw = (data) ->
   yScaleImg = d3.scale.ordinal()
                 .domain(d3.range(nInd))
                 .rangePoints([0, pixelsPer*(nInd-1)+1], 0)
-  zScaleImg = d3.scale.linear() # controls opacity
-                .domain([minPhe, maxPhe])
-                .range([0.01, 0.99])
-                .clamp(true)
+  dif = maxPhe + 45 # center color at -45
+  difdown = -45 - minPhe
+  dif = difdown if dif < difdown
+
+  n_colors = 128
+  colorseq = [0..n_colors]
+  for i of colorseq
+    colorseq[i] /= n_colors
+  redblue = []
+  for i in colorseq
+    redblue.push(d3.interpolateRgb("#2166ac", "#f7f7f7")(i))
+  for i in colorseq[1..]
+    redblue.push(d3.interpolateRgb("#f7f7f7", "#b2182b")(i))
+
+  zScaleImg = d3.scale.quantile() # controls opacity
+                .domain([-45 - dif, -45 + dif])
+                .range(redblue)
 
   # scales for lower panel
   xScaleCurve = d3.scale.linear()
@@ -253,10 +266,9 @@ draw = (data) ->
                  .attr("y", (d) -> yScaleImg(indexInd[d.row]))
                  .attr("height", pixelsPer)
                  .attr("width", pixelsPer)
-                 .attr("opacity", (d) -> 1-zScaleImg(d.value))
-                 .attr("fill", darkBlue)
-                 .attr("stroke", "none")
-                 .attr("stroke-width", 0)
+                 .attr("fill", (d) -> zScaleImg(d.value))
+                 .attr("stroke", (d) -> zScaleImg(d.value))
+                 .attr("stroke-width", 0.5)
                  .on("mouseover", (d) -> drawCurve(d.row))
                  .on("click", (d) -> clickCurve(d.row))
 
@@ -331,6 +343,25 @@ draw = (data) ->
   randomInd = Math.floor(Math.random()*nInd)
   drawCurve(randomInd)
   curInd = randomInd
+
+  # Add color scale below
+  yVals = [0...h[1]]
+  for i of yVals
+    yVals[i] = minPhe + (maxPhe - minPhe) * i / h[1]
+  xPos = w + 10
+  curve.append("g").attr("id", "colorscale")
+       .selectAll("empty")
+       .data(yVals)
+       .enter()
+       .append("rect")
+       .attr("x", xPos)
+       .attr("width", pad.right-10)
+       .attr("y", (d) -> yScaleCurve(d))
+       .attr("height", 1)
+       .attr("fill", (d) -> zScaleImg(d))
+       .attr("stroke", (d) -> zScaleImg(d))
+       .attr("stroke-width", 0.5)
+
 
 # load json file and call draw function
 d3.json("curves.json", draw)
