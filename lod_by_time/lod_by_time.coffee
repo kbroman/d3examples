@@ -381,7 +381,7 @@ draw = (data) ->
        .x((t) -> effXscale(t))
        .y((t,i) -> effYscale(eff[pmari][i]))
 
-  # effect curve function
+  # confidence bands function
   seArea = (pmari) ->
     d3.svg.area()
           .x((t) -> effXscale(t))
@@ -397,7 +397,7 @@ draw = (data) ->
              .attr("fill", "none")
              .attr("stroke-width", "2")
 
-  # plot SE area
+  # plot confidence bands
   sePlot = (pmari) ->
     panels[3].append("path").attr("id", "seArea")
              .datum(data.times) # every other time, to speed it up
