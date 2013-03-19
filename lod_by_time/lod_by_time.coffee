@@ -158,7 +158,6 @@ draw = (data) ->
   maxEff = -minEff if -minEff > maxEff
   minEff = -maxEff if -maxEff < minEff
 
-
   # scales
   effYscale = d3.scale.linear()
                 .domain([minEff, maxEff])
@@ -233,7 +232,6 @@ draw = (data) ->
            .attr("y", h[3]+pad.bottom)
            .attr("fill", titlecolor)
            .attr("text-anchor", "middle")
-
 
   # chromosome IDs on X axis
   for i in [0..1]
@@ -327,7 +325,6 @@ draw = (data) ->
              .attr("dominant-baseline", "middle")
              .attr("transform", "rotate(270, #{-pad.left*mult[i]}, #{h[i]/2})")
              .attr("fill", titlecolor)
-
 
   # Label genotypes in phenotype panel
   panels[2].selectAll("empty")
