@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel=stylesheet type="text/css" href="lod_by_time.css">
+<script charset="utf-8" type="text/javascript" src="../d3/d3.js"></script>
+
+<title>Single-QTL scans for phenotype over time</title>
+</head>
+
+<body>
+<h2>Single-QTL scans for phenotype over time</h2>
+
+<p id="loading" style="font-size:20px;">[Loading...]</p>
+
+<div id="lod_by_time_fig"></div>
+
+<div id="legend" style="width:700px;margin-left:25px;opacity:0;">
+<p>Here we consider a phenotype measured over time, and perform QTL
+analysis with each time point individually, to seek genetic loci that
+affect the response.  The data concern a set of 162 recombinant inbred
+lines.
+
+<p>The top-left plot is a &ldquo;heat map&rdquo; of the LOD scores
+for each time point at each genomic position.  LOD scores are also
+colored to indicate the sign of the QTL effect, with red indicating
+that BB lines have larger phenotype values and blue indicating that AA lines
+have larger phenotype values.  We consider only those (position, time)
+pairs with LOD > 1.
+
+<p>When you hover over a point in the top-left plot, the LOD curves for the
+corresponding time are shown below, and the phenotype averages and
+estimated QTL effect (across time) for the corresponding genomic
+position are shown to the right.
+
+<p>Click on a point to show pointwise confidence bands on the QTL
+effect (&pm; 2 SE).  (We require a mouse click, as otherwise the graph
+was painfully slow to refresh.)
+
+</div>
+
+<script type="text/javascript" src="lod_by_time.js"></script>
+</body>
+</html>
