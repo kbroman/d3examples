@@ -21,5 +21,5 @@ estimated QTL effect (across time) for the corresponding genomic
 position are shown to the right.
 
 Click on a point to show pointwise confidence bands on the QTL
-effect (&pm; 2 SE).  (We require a mouse click, as otherwise the graph
+effect (&plusmn; 2 SE).  (We require a mouse click, as otherwise the graph
 was painfully slow to refresh.)
