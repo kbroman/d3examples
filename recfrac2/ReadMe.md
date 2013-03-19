@@ -1,7 +1,7 @@
 Pairwise marker recombination fractions and LOD scores
 ----------------------------------------------------------------------
 
-See it in action [here](http://www.biostat.wisc.edu/~kbroman/d3/recfrac2).
+See it in action [here](http://www.biostat.wisc.edu/~kbroman/D3/recfrac2).
 
 The plot has estimated recombination fractions above the diagonal and
 LOD scores for a test of linkage below the diagonal.  

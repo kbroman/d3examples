@@ -1,7 +1,7 @@
 Single-QTL scans for phenotype over time
 ----------------------------------------------------------------------
 
-See it in action [here](http://www.biostat.wisc.edu/~kbroman/d3/lod_by_time).
+See it in action [here](http://www.biostat.wisc.edu/~kbroman/D3/lod_by_time).
 
 Here we consider a phenotype measured over time, and perform QTL
 analysis with each time point individually, to seek genetic loci that

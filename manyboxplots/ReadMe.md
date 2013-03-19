@@ -1,7 +1,7 @@
 Many boxplots, with links to corresponding histograms
 ----------------------------------------------------------------------
 
-See it in action [here](http://www.biostat.wisc.edu/~kbroman/d3/manyboxplots).
+See it in action [here](http://www.biostat.wisc.edu/~kbroman/D3/manyboxplots).
 
 Top panel is like 500 box plots:
 lines are drawn at the 1, 5, 10, 25, 50, 75, 90, 95, 99 percentiles
