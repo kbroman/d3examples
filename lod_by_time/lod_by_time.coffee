@@ -464,6 +464,91 @@ draw = (data) ->
                    panels[1].select("path#lodCurve#{chr}").remove()
                  panels[1].select("text#lodTitle").remove())
 
+  # add color scales
+  wScale = 25
+  colorScales = []
+  colorScales[0] = panels[1].append("g").attr("id", "blueColorScale")
+                            .attr("transform", "translate(#{w[1]+pad.right}, 0)")
+  colorScales[1] = panels[1].append("g").attr("id", "redColorScale")
+                            .attr("transform", "translate(#{w[1]+pad.right*2+wScale}, 0)")
+  for i in [0..1]
+    colorScales[i].append("rect")
+                  .attr("x", 0)
+                  .attr("y", 0)
+                  .attr("width", wScale)
+                  .attr("height", h[1])
+                  .attr("fill", lightGray)
+                  .attr("stroke", "black")
+                  .attr("stroke-width", 2)
+  colorScales[0].append("text")
+                .text("Color scales")
+                .attr("x", wScale + pad.right/2)
+                .attr("y", -pad.top*0.5)
+                .attr("fill", titlecolor)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+
+  # y-axis labels and ticks
+  colorScales[1].selectAll("empty")
+                .data(ticks[1])
+                .enter()
+                .append("text")
+                .text((d) -> nodig(d))
+                .attr("x", wScale+pad.left*0.1)
+                .attr("y", (d) -> scale[1](d))
+                .attr("fill", labelcolor)
+                .attr("text-anchor", "start")
+                .attr("dominant-baseline", "middle")
+  for i in [0..1]
+    colorScales[i].selectAll("empty")
+                 .data(ticks[1])
+                 .enter()
+                 .append("line")
+                 .attr("y1", (d) -> scale[1](d))
+                 .attr("y2", (d) -> scale[1](d))
+                 .attr("x1", 0)
+                 .attr("x2", wScale)
+                 .attr("fill", "none")
+                 .attr("stroke", "white")
+                 .attr("stroke-width", 1)
+  colorScales[0].selectAll("empty")
+                .data(ticks[1])
+                .enter()
+                .append("line")
+                .attr("y1", (d) -> scale[1](d))
+                .attr("y2", (d) -> scale[1](d))
+                .attr("x1", wScale)
+                .attr("x2", wScale+pad.right)
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+
+  scaleVals = []
+  nPix = 128
+  hPix = h[1]/nPix
+  maxVal = maxLod/(h[1]-pad.inner*2)*h[1]
+  for i in [0...nPix]
+    scaleVals.push(i*hPix/h[1]*maxVal)
+
+  for i in [0..1]
+    colorScales[i].append("g").attr("id", "blueScaleRect")
+                  .selectAll("empty")
+                  .data(scaleVals)
+                  .enter()
+                  .append("rect")
+                  .attr("x", 0)
+                  .attr("width", wScale)
+                  .attr("y", (d) -> lodYscale(d))
+                  .attr("height", hPix)
+                  .attr("fill", (d) ->
+                      return darkBlue if i==0
+                      darkRed)
+                  .attr("stroke",  "none")
+                  .attr("stroke-width", 0)
+                  .attr("opacity", (d) ->
+                    return imgZscale(d) if d >= 1
+                    return 1 if d >= maxLod
+                    0)
 
 
 # load json file and call draw function
