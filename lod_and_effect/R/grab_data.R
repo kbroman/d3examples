@@ -1,8 +1,8 @@
 # Get LOD curves and effect plot info for 10 wk insulin
 # and convert to JSON file for interactive graph
 
-attach("~/Projects/Attie/GoldStandard/FinalData/aligned_geno_with_pmap.RData")
-attach("~/Projects/Attie/GoldStandard/FinalData/lipomics_final_rev2.RData")
+attach("aligned_geno_with_pmap.RData")
+attach("lipomics_final_rev2.RData")
 
 phenotype <- "log10 Insulin (ng/ml) 10 wk"
 
