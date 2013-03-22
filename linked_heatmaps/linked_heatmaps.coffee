@@ -64,7 +64,7 @@ draw = (data) ->
 
   # dimensions
   w = 300 # width of heat maps
-  pad = {left:60, top:25, right:25, bottom: 35, inner: 0}
+  pad = {left:60, top:40, right:25, bottom: 35, inner: 0}
   h = w # height of heat maps
   h2 = (h - pad.top - pad.bottom)/2 # height of line plot
 
@@ -84,6 +84,13 @@ draw = (data) ->
   yScaleImg = []
   zScaleImg = []
   for i in [0...data.nll.length]
+    d3.select("div#heatmap_fig")
+      .append("hr")
+      .style("border", 0)
+      .style("width", "100%")
+      .style("color", "black")
+      .style("background-color", "black")
+      .style("height", "2px")
     d3.select("div#heatmap_fig")
       .append("h3")
       .text("Chromosome #{i+1}")
@@ -127,14 +134,24 @@ draw = (data) ->
                   .range([darkBlue, "white"])
                   .clamp(true)
 
+    # title text
     for j in [0..1]
       panels[i][j].append("text").attr("id", "loglik#{i}#{j}")
                .text("")
                .attr("x", w/2)
-               .attr("y", -pad.top*0.5)
+               .attr("y", -pad.top*0.25)
                .attr("text-anchor", "middle")
                .attr("dominant-baseline", "middle")
+               .attr("fill", labelcolor)
+      panels[i][j].append("text")
+               .text(["Nicola", "Karl"][j])
+               .attr("x", w/2)
+               .attr("y", -pad.top*0.75)
+               .attr("text-anchor", "middle")
+               .attr("dominant-baseline", "middle")
+               .attr("fill", maincolor)
 
+    # left image panel
     panels[i][0].append("g").attr("id", "n_imgrect_#{i}")
              .selectAll("empty")
              .data(llList[i])
@@ -175,6 +192,7 @@ draw = (data) ->
                        d3.select("rect#mouseover1").remove())
                       
 
+    # right image panel
     panels[i][1].append("g").attr("id", "n_imgrect_#{i}")
              .selectAll("empty")
              .data(llList[i])
