@@ -34,7 +34,7 @@ svg = d3.select("body").selectAll("#rf").append("svg")
     .attr("transform", "translate(#{margin.left},#{margin.top})")
 
 
-d3.json("../recfrac/rf.json", (rfdata) ->
+d3.json("rf.json", (rfdata) ->
   markers = rfdata.markers
   nmar = markers.length
   chr = rfdata.chr
