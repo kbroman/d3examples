@@ -153,6 +153,15 @@ draw = (data) ->
                .attr("dominant-baseline", "middle")
                .attr("fill", [darkBlue, darkRed][j])
 
+    for j in [2..3]
+      panels[i][j].append("text").attr("id", "mptitle#{i}#{j}")
+               .text("")
+               .attr("x", w/2)
+               .attr("y", -pad.top*0.3)
+               .attr("text-anchor", "middle")
+               .attr("dominant-baseline", "middle")
+               .attr("fill", labelcolor)
+
     # scales for loglik vs p/m curves
     xScalemp[i] = []
     xScalemp[i][0] = d3.scale.linear()
@@ -222,6 +231,8 @@ draw = (data) ->
                        title1 = "loglik = #{onedig(d.kll)}"
                        d3.select("text#loglik#{d.chr}0").text(title0)
                        d3.select("text#loglik#{d.chr}1").text(title1)
+                       d3.select("text#mptitle#{d.chr}2").text("m = #{data.m[d.col]}")
+                       d3.select("text#mptitle#{d.chr}3").text("p = #{data.p[d.row]}")
                        panels[d.chr][0].append("rect").attr("id","mouseover0")
                                 .attr("x", xScaleImg[d.chr](data.m[d.col]))
                                 .attr("y", yScaleImg[d.chr](data.p[d.row]))
@@ -244,6 +255,8 @@ draw = (data) ->
              .on "mouseout", (d) ->
                        d3.select("text#loglik#{d.chr}0").text("")
                        d3.select("text#loglik#{d.chr}1").text("")
+                       d3.select("text#mptitle#{d.chr}2").text("")
+                       d3.select("text#mptitle#{d.chr}3").text("")
                        d3.select("rect#mouseover0").remove()
                        d3.select("rect#mouseover1").remove()
                        d3.selectAll("g.mpcurve").remove()
@@ -264,6 +277,8 @@ draw = (data) ->
                        title1 = "loglik = #{onedig(d.kll)}"
                        d3.select("text#loglik#{d.chr}0").text(title0)
                        d3.select("text#loglik#{d.chr}1").text(title1)
+                       d3.select("text#mptitle#{d.chr}2").text("m = #{data.m[d.col]}")
+                       d3.select("text#mptitle#{d.chr}3").text("p = #{data.p[d.row]}")
                        panels[d.chr][0].append("rect").attr("id","mouseover0")
                                 .attr("x", xScaleImg[d.chr](data.m[d.col]))
                                 .attr("y", yScaleImg[d.chr](data.p[d.row]))
@@ -287,6 +302,8 @@ draw = (data) ->
              .on "mouseout", (d) ->
                        d3.select("text#loglik#{d.chr}0").text("")
                        d3.select("text#loglik#{d.chr}1").text("")
+                       d3.select("text#mptitle#{d.chr}2").text("")
+                       d3.select("text#mptitle#{d.chr}3").text("")
                        d3.select("rect#mouseover0").remove()
                        d3.select("rect#mouseover1").remove()
                        d3.selectAll("g.mpcurve").remove()
