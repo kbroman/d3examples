@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel=stylesheet type="text/css" href="linked_heatmaps.css">
+
+<script charset="utf-8" type="text/javascript" src="../d3/d3.js"></script>
+
+<title>Linked heatmaps with log likelihoods</title>
+</head>
+
+<body>
+<h2>Linked heatmaps with log likelihoods</h2>
+
+<p id="loading">[Loading...]</p>
+
+<div id="legend" style="width:700px;margin-left:25px;opacity:0;">
+
+<p>For each chromosome, there is a pair of heatmaps depicting two
+different log likelihood calculations that ideally should be the same.
+
+<p>Hover over a point to see plots of the cross-sections.
+
+<p>Code on <a href="https://github.com/kbroman/d3examples/tree/master/linked_heatmaps">github</a>
+
+</div>
+
+
+<div id="heatmap_fig"></div>
+
+
+<script type="text/javascript" src="linked_heatmaps.js"></script>
+</body>
+</html>
