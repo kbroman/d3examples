@@ -83,6 +83,8 @@ draw = (data) ->
   xScaleImg = []
   yScaleImg = []
   zScaleImg = []
+  xScalemp = []
+  yScalemp = []
   for i in [0...data.nll.length]
     d3.select("div#heatmap_fig")
       .append("hr")
@@ -149,7 +151,60 @@ draw = (data) ->
                .attr("y", -pad.top*0.75)
                .attr("text-anchor", "middle")
                .attr("dominant-baseline", "middle")
-               .attr("fill", maincolor)
+               .attr("fill", [darkBlue, darkRed][j])
+
+    # scales for loglik vs p/m curves
+    xScalemp[i] = []
+    xScalemp[i][0] = d3.scale.linear()
+                       .domain([0, data.p[np-1]])
+                       .range([pad.inner, w-pad.inner])
+    xScalemp[i][1] = d3.scale.linear()
+                       .domain([0, data.m[nm-1]])
+                       .range([pad.inner, w-pad.inner])
+    yScalemp[i] = d3.scale.linear()
+                    .domain([minLL[i], maxLL[i]])
+                    .range([h2-pad.inner, pad.inner])
+
+    # curve of loglik vs p
+    pCurve = (mindex, chr, dat) ->
+      d3.svg.line()
+        .x((d) -> xScalemp[chr][0](d))
+        .y((d, i) -> yScalemp[chr](dat[chr][mindex][i]))
+
+    mCurve = (pindex, chr, dat) ->
+      d3.svg.line()
+        .x((d) -> xScalemp[chr][1](d))
+        .y((d, i) -> yScalemp[chr](dat[chr][i][pindex]))
+
+
+    drawCurves = (mindex, pindex, chr) ->
+      pcurves = panels[chr][2].append("g").attr("class", "mpcurve")
+      pcurves.append("path")
+             .datum(data.p)
+             .attr("d", pCurve(mindex, chr, data.nll))
+             .attr("stroke", darkBlue)
+             .attr("fill", "none")
+             .attr("stroke-width", "2")
+      pcurves.append("path")
+             .datum(data.p)
+             .attr("d", pCurve(mindex, chr, data.kll))
+             .attr("stroke", darkRed)
+             .attr("fill", "none")
+             .attr("stroke-width", "2")
+
+      mcurves = panels[chr][3].append("g").attr("class", "mpcurve")
+      mcurves.append("path")
+             .datum(data.m[0...data.nll[chr].length])
+             .attr("d", mCurve(pindex, chr, data.nll))
+             .attr("stroke", darkBlue)
+             .attr("fill", "none")
+             .attr("stroke-width", "2")
+      mcurves.append("path")
+             .datum(data.m[0...data.nll[chr].length])
+             .attr("d", mCurve(pindex, chr, data.kll))
+             .attr("stroke", darkRed)
+             .attr("fill", "none")
+             .attr("stroke-width", "2")
 
     # left image panel
     panels[i][0].append("g").attr("id", "n_imgrect_#{i}")
@@ -162,7 +217,7 @@ draw = (data) ->
              .attr("width", xScaleImg[i].rangeBand())
              .attr("height", yScaleImg[i].rangeBand())
              .attr("fill", (d) -> zScaleImg[i](d.nll))
-             .on("mouseover", (d) ->
+             .on "mouseover", (d) ->
                        title0 = "loglik = #{onedig(d.nll)}"
                        title1 = "loglik = #{onedig(d.kll)}"
                        d3.select("text#loglik#{d.chr}0").text(title0)
@@ -184,13 +239,14 @@ draw = (data) ->
                                 .style("pointer-events", "none")
                                 .attr("fill", "none")
                                 .attr("stroke", "green")
-                                .attr("stroke-width", 2))
-             .on("mouseout", (d) ->
+                                .attr("stroke-width", 2)
+                       drawCurves(d.col, d.row, d.chr)
+             .on "mouseout", (d) ->
                        d3.select("text#loglik#{d.chr}0").text("")
                        d3.select("text#loglik#{d.chr}1").text("")
                        d3.select("rect#mouseover0").remove()
-                       d3.select("rect#mouseover1").remove())
-                      
+                       d3.select("rect#mouseover1").remove()
+                       d3.selectAll("g.mpcurve").remove()
 
     # right image panel
     panels[i][1].append("g").attr("id", "n_imgrect_#{i}")
@@ -203,7 +259,7 @@ draw = (data) ->
              .attr("width", xScaleImg[i].rangeBand())
              .attr("height", yScaleImg[i].rangeBand())
              .attr("fill", (d) -> zScaleImg[i](d.kll))
-             .on("mouseover", (d) ->
+             .on "mouseover", (d) ->
                        title0 = "loglik = #{onedig(d.nll)}"
                        title1 = "loglik = #{onedig(d.kll)}"
                        d3.select("text#loglik#{d.chr}0").text(title0)
@@ -225,13 +281,15 @@ draw = (data) ->
                                 .style("pointer-events", "none")
                                 .attr("fill", "none")
                                 .attr("stroke", "green")
-                                .attr("stroke-width", 2))
+                                .attr("stroke-width", 2)
+                       drawCurves(d.col, d.row, d.chr)
                        
-             .on("mouseout", (d) ->
+             .on "mouseout", (d) ->
                        d3.select("text#loglik#{d.chr}0").text("")
                        d3.select("text#loglik#{d.chr}1").text("")
                        d3.select("rect#mouseover0").remove()
-                       d3.select("rect#mouseover1").remove())
+                       d3.select("rect#mouseover1").remove()
+                       d3.selectAll("g.mpcurve").remove()
 
     # rectangles at max
     panels[i][0].append("rect")
@@ -290,7 +348,76 @@ draw = (data) ->
             .attr("text-anchor", "end")
             .attr("dominant-baseline", "middle")
 
+    ticks = [ [0, 0.03, 0.06, 0.09], [0, 3, 6, 9, 12]]
 
+    for j in [2..3]
+      lab[j] = panels[i][j].append("g")
+      lab[j].append("text")
+            .text(["p", "m"][j-2])
+            .attr("x", w/2)
+            .attr("y", h2+pad.bottom*0.7)
+            .attr("fill", titlecolor)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+      lab[j].append("text")
+            .text("loglik")
+            .attr("x", -pad.left*0.7)
+            .attr("y", h2/2)
+            .attr("fill", titlecolor)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("transform", "rotate(270, #{-pad.left*0.7}, #{h2/2})")
+      lab[j].selectAll("empty")
+            .data(ticks[j-2])
+            .enter()
+            .append("text")
+            .text((d) ->
+                     return twodig(d) if j == 2
+                     nodig(d))
+            .attr("x", (d) -> xScalemp[i][j-2](d))
+            .attr("y", h2+pad.bottom*0.3)
+            .attr("fill", labelcolor)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+      lab[j].selectAll("empty")
+            .data(ticks[j-2])
+            .enter()
+            .append("line")
+            .attr("x1", (d) -> xScalemp[i][j-2](d))
+            .attr("x2", (d) -> xScalemp[i][j-2](d))
+            .attr("y1", 0)
+            .attr("y2", h2)
+            .attr("stroke", lightGray)
+            .attr("stroke-width", "2")
+      lab[j].selectAll("empty")
+            .data(yScalemp[i].ticks(3))
+            .enter()
+            .append("text")
+            .text((d) -> d)
+            .attr("x", -pad.left*0.05)
+            .attr("y", (d) -> yScalemp[i](d))
+            .attr("fill", labelcolor)
+            .attr("text-anchor", "end")
+            .attr("dominant-baseline", "middle")
+      lab[j].selectAll("empty")
+            .data(yScalemp[i].ticks(3))
+            .enter()
+            .append("line")
+            .attr("x1", 0)
+            .attr("x2", w)
+            .attr("y1", (d) -> yScalemp[i](d))
+            .attr("y2", (d) -> yScalemp[i](d))
+            .attr("stroke", lightGray)
+            .attr("stroke-width", "2")
+
+    # add outer background rectangle again
+    for j in [0...4]
+      panels[i][j].append("rect")
+              .attr("height", ih[j])
+              .attr("width", iw[j])
+              .attr("fill", "none")
+              .attr("stroke", "black")
+              .attr("stroke-width", 1)
 
             
 
