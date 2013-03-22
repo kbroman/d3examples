@@ -2,7 +2,7 @@
 #   - quantiles for boxplot-like figure
 #   - counts for histograms
 
-load("~/Projects/Attie/GoldStandard/Expression/MLRatios/F2.mlratio.hypo.RData")
+load("F2.mlratio.hypo.RData")
 # hypo.mlratio is dimension 40572 (transcripts) x 494 (mice)
 
 # calculate quantiles
