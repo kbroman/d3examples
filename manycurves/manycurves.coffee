@@ -52,7 +52,7 @@ draw = (data) ->
 
   # order individuals by average phenotype
   orderedInd = d3.range(nInd).sort (a,b) ->
-    return -1 if avePhe[a] < avePhe[b]
+    return -1 if avePhe[a] > avePhe[b]
     return +1 if avePhe[b] < avePhe[a]
     return 0
 
@@ -276,6 +276,16 @@ draw = (data) ->
       d3.svg.line()
         .x((d) -> xScaleCurve(d))
         .y((d,di) -> yScaleCurve(data.curves[ind][di]))
+
+  # background curves for all individuals
+  bgdcurves = curve.append("g").attr("id", "bgdphecurve")
+  for i of data.curves
+    bgdcurves.append("path")
+             .datum(data.times)
+             .attr("d", phecurve(i))
+             .attr("stroke", d3.rgb(170, 170, 170))
+             .attr("fill", "none")
+             .attr("stroke-width", 0.5)
 
   # function to draw curve for an individual
   drawCurve = (ind) ->
