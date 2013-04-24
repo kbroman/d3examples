@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Interactive cis-trans eQTL plot</title>
+    <link rel=stylesheet type="text/css" href="cistrans_rev.css">
+    <script charset="utf-8" type="text/javascript" src="../d3/d3.js"></script>
+    <script type="text/javascript" src="../jquery/jquery.js"></script>
+    <script type="text/javascript" src="../d3-tip/d3.tip.js"></script>
+</head>
+
+<body>
+<h3>Interactive cis-trans eQTL plot</h3>
+
+<p id="loading">[Loading...]</p>
+
+
+<div id="geneinput" style="opacity:0;">
+<form name="geneinput">
+<input type="submit" id="submit" value="Gene symbol:" />
+<input id="genesymbol" type="text" />
+<a id="currentgenesymbol" style="opacity:0;"></a>
+[This search box doesn't do anything yet.]
+</form>
+
+
+<script type="text/javascript">
+$("#geneinput").submit(function () {
+  submitGene();
+  return false;
+});
+
+function submitGene(event) {
+  console.log("Click!")
+  var value = document.getElementById("genesymbol").value;
+  console.log(value);
+  d3.selectAll("a#currentgenesymbol")
+    .text(value);
+}
+</script>
+</div>
+
+<div id="cistrans"></div>
+
+<div id="legend" style="width:700px;margin-left:25px;opacity:0;">
+<p>In top-left figure, x-axis corresponds to marker location, y-axis is
+genomic position of probes on a gene expression microarray. Each
+plotted point is an inferred eQTL with LOD > 10; opacity corresponds
+to LOD score, though all LOD > 25 are made fully opaque.
+
+<p>Hover over a point to see probe ID and LOD score; also highlighted
+are any other eQTL for that probe.  Click on the point to see LOD
+curves below.
+
+<p>If a clicked probe is in known gene, title in lower plot is a link
+to the Mouse Genome Informatics (MGI) site at the Jackson Lab.
+
+<p>Hover over markers in LOD curve plot to view marker names; click on
+a marker to see the phenotype-vs-genotype plot to right.  In
+geno-vs-pheno plot, hover over average to view value, and hover over
+points to view individual IDs.
+
+<p>The code is available at <a
+href="https://github.com/kbroman/d3examples/tree/master/cistrans">github</a>,
+but it is pretty awful; I just barely know what I'm doing.
+</div>
+
+
+<script type="text/javascript" src="cistrans_rev.js"></script>
+</body>
+</html>
