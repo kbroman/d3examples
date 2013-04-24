@@ -15,14 +15,13 @@ text {
 }
 
 .d3-tip {
-  fill: darkslateblue;
+  background: darkslateblue;
+  color: #fff;
   stroke: none;
   font-weight: bold;
+  font-size: 12px;
+  font-family: sans-serif;
+  padding: 3px;
 }
 
-.d3-tip text {
-  fill: white;
-  font-size: 12px;
-  stroke: none;
-  font-family: sans-serif;
-}
+

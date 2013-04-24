@@ -298,12 +298,13 @@ draw = (data) ->
 
   # Using https://github.com/Caged/d3-tip
   #   [slightly modified in https://github.com/kbroman/d3-tip]
-  tip = d3.svg.tip()
-          .orient("right")
-          .padding(3)
-          .text((z) -> z)
+  tip = d3.tip()
           .attr("class", "d3-tip")
-          .attr("id", "d3tip")
+          .html((z) -> z)
+          .direction("e")
+          .offset([0,10])
+
+  lowsvg.call(tip)
 
   indRect
     .on "mouseover", (d) ->
@@ -315,11 +316,11 @@ draw = (data) ->
               d3.select("#histtitle")
                  .datum(d)
                  .text((d) -> d)
-              tip.call(this,d)
+              tip.show(d)
 
     .on "mouseout", (d) ->
               d3.select(this).attr("opacity", "0")
-              d3.selectAll("#d3tip").remove()
+              tip.hide(d)
 
     .on "click", (d) ->
               console.log(d)
