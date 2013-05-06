@@ -217,15 +217,6 @@ d3.json("data.json", (data) ->
        .attr("text-anchor", "end")
        .attr("dominant-baseline", "middle")
 
-  # white box above to smother overlap
-  svg.append("rect")
-     .attr("x", 0)
-     .attr("y", 0)
-     .attr("width", w)
-     .attr("height", pad.top)
-     .attr("stroke", "none")
-     .attr("fill", "white")
-
   # box around the outside
   svg.append("rect")
      .attr("x", pad.left)
@@ -356,24 +347,6 @@ d3.json("data.json", (data) ->
               else
                 grp4BkgdHist.select("path##{data.ind[d]}").remove()
 
-  # white box above to smother overlap
-  lowsvg.append("rect")
-     .attr("x", 0)
-     .attr("y", 0)
-     .attr("width", w)
-     .attr("height", pad.top)
-     .attr("stroke", "none")
-     .attr("fill", "white")
-
-  # white box to left smother overlap
-  lowsvg.append("rect")
-     .attr("x", 0)
-     .attr("y", 0)
-     .attr("width", pad.left)
-     .attr("height", h)
-     .attr("stroke", "none")
-     .attr("fill", "white")
-
   # box around the outside
   lowsvg.append("rect")
      .attr("x", pad.left)
@@ -383,7 +356,6 @@ d3.json("data.json", (data) ->
      .attr("stroke", "black")
      .attr("stroke-width", 2)
      .attr("fill", "none")
-
 
   svg.append("text")
      .text("Outcome")
