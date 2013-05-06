@@ -284,7 +284,6 @@ d3.json "data.json", (data) ->
         .y((d) -> lowyScale(d))
 
   randomInd = indindex[Math.floor(Math.random()*data.ind.length)]
-  d3.select("rect#rect#{data.ind[randomInd]}").attr("opacity", "1")
 
   hist = lowsvg.append("path")
     .datum(data.counts[randomInd])
