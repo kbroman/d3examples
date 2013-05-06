@@ -7,7 +7,7 @@ function(dat, qu = c(0.001, 0.01, 0.1, 0.25), orderByMedian=TRUE,
          breaks=251)
 {
   if(is.null(colnames(dat)))
-    colnames(dat) <- paste0("Ind", 1:ncol(dat))
+    colnames(dat) <- paste0(1:ncol(dat))
 
   if(orderByMedian)
     dat <- dat[,order(apply(dat, 2, median, na.rm=TRUE))]
