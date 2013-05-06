@@ -15,8 +15,21 @@ d3.json("data.json", (data) ->
   w = 1000
   h = 450
   pad = {left:60, top:20, right:60, bottom: 40}
-  topylim = [-1, 41]
-  botylim = [-1, 41]
+
+  # y-axis limits for top figure
+  topylim = [data.quant[0][0], data.quant[0][1]]
+  for i of data.quant
+    for x in data.quant[i]
+      topylim[0] = x if x < topylim[0]
+      topylim[1] = x if x > topylim[1]
+  topylim[0] = Math.floor(topylim[0])
+  topylim[1] = Math.ceil(topylim[1])
+  
+  # y-axis limits for bottom figure
+  botylim = [0, data.counts[0][1]]
+  for i of data.counts
+    for x in data.counts[i]
+      botylim[1] = x if x > botylim[1]
 
   console.log("data.ind.length: #{data.ind.length}")
   console.log("data.breaks.length: #{data.breaks.length}")
@@ -235,13 +248,8 @@ d3.json("data.json", (data) ->
              .domain([lo, hi])
              .range([pad.left, w-pad.right])
 
-  maxCount = 0
-  for i of data.counts
-    for j of data.counts[i]
-      maxCount = data.counts[i][j] if data.counts[i][j] > maxCount
-
   lowyScale = d3.scale.linear()
-             .domain([0, maxCount+0.5])
+             .domain([0, botylim[1]+1])
              .range([h-pad.bottom, pad.top])
 
   # gray background
