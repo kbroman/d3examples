@@ -180,7 +180,7 @@ d3.json("data.json", (data) ->
        .attr("x", xScale(d+0.5))
        .attr("y", yScale(data.quant[nQuant-1][d]))
        .attr("width", 2)
-       .attr("id", data.ind[d])
+       .attr("id", "rect#{data.ind[d]}")
        .attr("height", yScale(data.quant[0][d]) - yScale(data.quant[nQuant-1][d]))
        .attr("opacity", 0)
        .attr("stroke", "none")
@@ -194,7 +194,7 @@ d3.json("data.json", (data) ->
                  .append("rect")
                  .attr("x", (d) -> xScale(d+0.5))
                  .attr("y", (d) -> yScale(data.quant[nQuant-1][d]))
-                 .attr("id", (d) -> data.ind[d])
+                 .attr("id", (d) -> "rect#{data.ind[d]}")
                  .attr("width", 2)
                  .attr("height", (d) ->
                     yScale(data.quant[0][d]) - yScale(data.quant[nQuant-1][d]))
@@ -299,7 +299,7 @@ d3.json("data.json", (data) ->
        .attr("stroke-width", "2")
 
 
-  histColors = ["blue", "red", "green", "orange", "black"]
+  histColors = ["blue", "red", "green", "MediumVioletRed", "black"]
 
   lowsvg.append("text")
         .datum(randomInd)
@@ -329,23 +329,23 @@ d3.json("data.json", (data) ->
               console.log(d)
               console.log(data.ind[d])
               clickStatus[d] = 1 - clickStatus[d]
-              svg.select("rect##{data.ind[d]}").attr("opacity", clickStatus[d])
+              svg.select("rect#rect#{data.ind[d]}").attr("opacity", clickStatus[d])
               if clickStatus[d]
                 curcolor = histColors.shift()
                 histColors.push(curcolor)
 
                 d3.select(this).attr("opacity", "0")
-                svg.select("rect##{data.ind[d]}").attr("fill", curcolor)
+                svg.select("rect#rect#{data.ind[d]}").attr("fill", curcolor)
 
                 grp4BkgdHist.append("path")
                       .datum(data.counts[d])
                       .attr("d", histline)
-                      .attr("id", data.ind[d])
+                      .attr("id", "path#{data.ind[d]}")
                       .attr("fill", "none")
                       .attr("stroke", curcolor)
                       .attr("stroke-width", "2")
               else
-                grp4BkgdHist.select("path##{data.ind[d]}").remove()
+                grp4BkgdHist.select("path#path#{data.ind[d]}").remove()
 
   # box around the outside
   lowsvg.append("rect")
