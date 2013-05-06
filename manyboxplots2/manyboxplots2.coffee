@@ -7,8 +7,6 @@
 #   is show below; click for it to persist; click again to make it go away.
 #
 
-# function that does all of the work
-# load json file and call draw function
 d3.json("data.json", (data) ->
 
   # dimensions of SVG
