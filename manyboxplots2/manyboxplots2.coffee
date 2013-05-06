@@ -24,7 +24,7 @@ d3.json("data.json", (data) ->
       topylim[1] = x if x > topylim[1]
   topylim[0] = Math.floor(topylim[0])
   topylim[1] = Math.ceil(topylim[1])
-  
+
   # y-axis limits for bottom figure
   botylim = [0, data.counts[0][1]]
   for i of data.counts
@@ -391,7 +391,7 @@ d3.json("data.json", (data) ->
       text += ", "
     text += "#{q*100}"
   text += " percentiles for each of #{data.ind.length} distributions.\n"
-  
+
   d3.select("div#legend").append("p")
     .text(text)
 
