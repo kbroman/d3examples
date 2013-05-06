@@ -127,8 +127,8 @@ d3.json "data.json", (data) ->
      .attr("class", "axis")
      .attr("y1", pad.top)
      .attr("y2", h-pad.bottom)
-     .attr("x1", (d) -> xScale(d))
-     .attr("x2", (d) -> xScale(d))
+     .attr("x1", (d) -> xScale(d-1))
+     .attr("x2", (d) -> xScale(d-1))
      .attr("stroke", "white")
      .attr("pointer-events", "none")
 
@@ -140,7 +140,7 @@ d3.json "data.json", (data) ->
      .attr("class", "axis")
      .text((d) -> d)
      .attr("y", h-pad.bottom*0.75)
-     .attr("x", (d) -> xScale(d))
+     .attr("x", (d) -> xScale(d-1))
      .attr("dominant-baseline", "middle")
      .attr("text-anchor", "middle")
 
@@ -178,6 +178,22 @@ d3.json "data.json", (data) ->
                  .attr("width", recWidth)
                  .attr("height", (d) ->
                     yScale(data.quant[0][d]) - yScale(data.quant[nQuant-1][d]))
+                 .attr("fill", "purple")
+                 .attr("stroke", "none")
+                 .attr("opacity", "0")
+                 .attr("pointer-events", "none")
+
+  # vertical rectangles representing each array
+  longRectGrp = svg.append("g").attr("id", "longRect")
+
+  longRect = indRectGrp.selectAll("empty")
+                 .data(indindex)
+                 .enter()
+                 .append("rect")
+                 .attr("x", (d) -> xScale(d) - recWidth/2)
+                 .attr("y", pad.top)
+                 .attr("width", recWidth)
+                 .attr("height", h - pad.top - pad.bottom)
                  .attr("fill", "purple")
                  .attr("stroke", "none")
                  .attr("opacity", "0")
@@ -268,7 +284,6 @@ d3.json "data.json", (data) ->
         .y((d) -> lowyScale(d))
 
   randomInd = indindex[Math.floor(Math.random()*data.ind.length)]
-  randomInd = 0
   d3.select("rect#rect#{data.ind[randomInd]}").attr("opacity", "1")
 
   hist = lowsvg.append("path")
@@ -296,9 +311,9 @@ d3.json "data.json", (data) ->
   for d in indindex
     clickStatus.push(0)
 
-  indRect
+  longRect
     .on "mouseover", (d) ->
-              d3.select(this)
+              d3.select("rect#rect#{data.ind[d]}")
                  .attr("opacity", "1")
               d3.select("#histline")
                  .datum(data.counts[d])
@@ -309,17 +324,17 @@ d3.json "data.json", (data) ->
 
     .on "mouseout", (d) ->
               if !clickStatus[d]
-                d3.select(this).attr("opacity", "0")
+                d3.select("rect#rect#{data.ind[d]}").attr("opacity", "0")
 
     .on "click", (d) ->
               console.log("Click: #{data.ind[d]} (#{d})")
               clickStatus[d] = 1 - clickStatus[d]
-              d3.select(this).attr("opacity", clickStatus[d])
+              d3.select("rect#rect#{data.ind[d]}").attr("opacity", clickStatus[d])
               if clickStatus[d]
                 curcolor = histColors.shift()
                 histColors.push(curcolor)
 
-                d3.select(this).attr("fill", curcolor)
+                d3.select("rect#rect#{data.ind[d]}").attr("fill", curcolor)
 
                 grp4BkgdHist.append("path")
                       .datum(data.counts[d])
@@ -375,7 +390,10 @@ d3.json "data.json", (data) ->
     text += "#{q*100}"
   text += " percentiles for each of #{data.ind.length} distributions.\n"
 
-  d3.select("div#legend").append("p")
+  d3.select("div#legend")
+    .style("margin-left", "70px")
+    .style("width", "500px")
+    .append("p")
     .text(text)
 
   d3.select("div#legend").append("p")
