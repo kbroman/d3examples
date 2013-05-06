@@ -31,14 +31,6 @@ d3.json("data.json", (data) ->
     for x in data.counts[i]
       botylim[1] = x if x > botylim[1]
 
-  console.log("data.ind.length: #{data.ind.length}")
-  console.log("data.breaks.length: #{data.breaks.length}")
-  console.log("data.qu.length: #{data.qu.length}")
-  console.log("data.quant.length: #{data.quant.length}")
-  console.log("data.quant[0].length: #{data.quant[0].length}")
-  console.log("data.counts.length: #{data.counts.length}")
-  console.log("data.counts[0].length: #{data.counts[0].length}")
-
   indindex = d3.range(data.ind.length)
 
   # adjust counts object to make proper histogram
@@ -288,7 +280,6 @@ d3.json("data.json", (data) ->
         .y((d) -> lowyScale(d))
 
   randomInd = indindex[Math.floor(Math.random()*data.ind.length)]
-  console.log("randomInd: #{randomInd}")
 
   hist = lowsvg.append("path")
     .datum(data.counts[randomInd])
@@ -326,8 +317,7 @@ d3.json("data.json", (data) ->
               d3.select(this).attr("opacity", "0")
 
     .on "click", (d) ->
-              console.log(d)
-              console.log(data.ind[d])
+              console.log("Click: #{data.ind[d]}")
               clickStatus[d] = 1 - clickStatus[d]
               svg.select("rect#rect#{data.ind[d]}").attr("opacity", clickStatus[d])
               if clickStatus[d]
@@ -385,7 +375,6 @@ d3.json("data.json", (data) ->
   # add legend
   text = "The top panel is like #{data.ind.length} boxplots:\n"
   text += "lines are drawn at the "
-  console.log(data.qu)
   for q,i in data.qu
     if i > 0
       text += ", "
@@ -398,6 +387,5 @@ d3.json("data.json", (data) ->
   d3.select("div#legend").append("p")
     .text("Hover over a column in the top panel and the corresponding histogram is shown below; " +
           "click for it to persist; click again to make it go away.")
-
 
 )
