@@ -7,7 +7,7 @@
 #   is show below; click for it to persist; click again to make it go away.
 #
 
-d3.json("data.json", (data) ->
+d3.json "data.json", (data) ->
 
   # dimensions of SVG
   w = 1000
@@ -54,8 +54,11 @@ d3.json("data.json", (data) ->
 
   # x and y scales for top figure
   xScale = d3.scale.linear()
-             .domain([0, data.ind.length+1])
+             .domain([-1, data.ind.length])
              .range([pad.left, w-pad.right])
+
+  # width of rectangles in top panel
+  recWidth = xScale(1) - xScale(0)
 
   yScale = d3.scale.linear()
              .domain(topylim)
@@ -64,7 +67,7 @@ d3.json("data.json", (data) ->
   # function to create quantile lines
   quline = (j) ->
     d3.svg.line()
-        .x((d) -> xScale(d+1))
+        .x((d) -> xScale(d))
         .y((d) -> yScale(data.quant[j][d]))
 
   svg = d3.select("div#plot").append("svg")
@@ -79,10 +82,11 @@ d3.json("data.json", (data) ->
      .attr("width", w-pad.left-pad.right)
      .attr("stroke", "none")
      .attr("fill", d3.rgb(200, 200, 200))
+     .attr("pointer-events", "none")
 
   # axis on left
   LaxisData = yScale.ticks(6)
-  Laxis = svg.append("g")
+  Laxis = svg.append("g").attr("id", "Laxis")
 
   # axis: white lines
   Laxis.append("g").selectAll("empty")
@@ -96,6 +100,7 @@ d3.json("data.json", (data) ->
      .attr("y1", (d) -> yScale(d))
      .attr("y2", (d) -> yScale(d))
      .attr("stroke", "white")
+     .attr("pointer-events", "none")
 
   # axis: labels
   Laxis.append("g").selectAll("empty")
@@ -109,10 +114,9 @@ d3.json("data.json", (data) ->
      .attr("dominant-baseline", "middle")
      .attr("text-anchor", "end")
 
-
   # axis on bottom
   BaxisData = xScale.ticks(10)
-  Baxis = svg.append("g")
+  Baxis = svg.append("g").attr("id", "Baxis")
 
   # axis: white lines
   Baxis.append("g").selectAll("empty")
@@ -126,6 +130,7 @@ d3.json("data.json", (data) ->
      .attr("x1", (d) -> xScale(d))
      .attr("x2", (d) -> xScale(d))
      .attr("stroke", "white")
+     .attr("pointer-events", "none")
 
   # axis: labels
   Baxis.append("g").selectAll("empty")
@@ -139,7 +144,6 @@ d3.json("data.json", (data) ->
      .attr("dominant-baseline", "middle")
      .attr("text-anchor", "middle")
 
-
   # colors for quantile curves
   colindex = d3.range((nQuant-1)/2)
   tmp = d3.scale.category10().domain(colindex)
@@ -151,7 +155,7 @@ d3.json("data.json", (data) ->
     qucolors.push(tmp(j))
 
   # curves for quantiles
-  curves = svg.append("g")
+  curves = svg.append("g").attr("id", "curves")
 
   for j in [0...nQuant]
     curves.append("path")
@@ -159,33 +163,19 @@ d3.json("data.json", (data) ->
        .attr("d", quline(j))
        .attr("class", "line")
        .attr("stroke", qucolors[j])
-
-  # special rectangles in the background
-  clickStatus = {}
-  index = {}
-  specialrects = svg.append("g")
-  for d in indindex
-    clickStatus[d] = 0
-    specialrects.append("rect")
-       .attr("x", xScale(d+0.5))
-       .attr("y", yScale(data.quant[nQuant-1][d]))
-       .attr("width", 2)
-       .attr("id", "rect#{data.ind[d]}")
-       .attr("height", yScale(data.quant[0][d]) - yScale(data.quant[nQuant-1][d]))
-       .attr("opacity", 0)
-       .attr("stroke", "none")
+       .attr("pointer-events", "none")
 
   # vertical rectangles representing each array
-  indRectGrp = svg.append("g")
+  indRectGrp = svg.append("g").attr("id", "indRect")
 
   indRect = indRectGrp.selectAll("empty")
                  .data(indindex)
                  .enter()
                  .append("rect")
-                 .attr("x", (d) -> xScale(d+0.5))
+                 .attr("x", (d) -> xScale(d) - recWidth/2)
                  .attr("y", (d) -> yScale(data.quant[nQuant-1][d]))
                  .attr("id", (d) -> "rect#{data.ind[d]}")
-                 .attr("width", 2)
+                 .attr("width", recWidth)
                  .attr("height", (d) ->
                     yScale(data.quant[0][d]) - yScale(data.quant[nQuant-1][d]))
                  .attr("fill", "purple")
@@ -193,7 +183,7 @@ d3.json("data.json", (data) ->
                  .attr("opacity", "0")
 
   # label quantiles on right
-  rightAxis = svg.append("g")
+  rightAxis = svg.append("g").attr("id", "rightAxis")
 
   rightAxis.selectAll("empty")
        .data(data.qu)
@@ -244,7 +234,7 @@ d3.json("data.json", (data) ->
 
   # axis on left
   lowBaxisData = lowxScale.ticks(8)
-  lowBaxis = lowsvg.append("g")
+  lowBaxis = lowsvg.append("g").attr("id", "lowBaxis")
 
   # axis: white lines
   lowBaxis.append("g").selectAll("empty")
@@ -271,13 +261,15 @@ d3.json("data.json", (data) ->
      .attr("dominant-baseline", "middle")
      .attr("text-anchor", "middle")
 
-  grp4BkgdHist = lowsvg.append("g")
+  grp4BkgdHist = lowsvg.append("g").attr("id", "bkgdHist")
 
   histline = d3.svg.line()
         .x((d,i) -> lowxScale(br2[i]))
         .y((d) -> lowyScale(d))
 
   randomInd = indindex[Math.floor(Math.random()*data.ind.length)]
+  randomInd = 0
+  d3.select("rect#rect#{data.ind[randomInd]}").attr("opacity", "1")
 
   hist = lowsvg.append("path")
     .datum(data.counts[randomInd])
@@ -300,6 +292,10 @@ d3.json("data.json", (data) ->
         .attr("dominant-baseline", "middle")
         .attr("fill", "blue")
 
+  clickStatus = []
+  for d in indindex
+    clickStatus.push(0)
+
   indRect
     .on "mouseover", (d) ->
               d3.select(this)
@@ -312,18 +308,18 @@ d3.json("data.json", (data) ->
                  .text((d) -> data.ind[d])
 
     .on "mouseout", (d) ->
-              d3.select(this).attr("opacity", "0")
+              if !clickStatus[d]
+                d3.select(this).attr("opacity", "0")
 
     .on "click", (d) ->
-              console.log("Click: #{data.ind[d]}")
+              console.log("Click: #{data.ind[d]} (#{d})")
               clickStatus[d] = 1 - clickStatus[d]
-              svg.select("rect#rect#{data.ind[d]}").attr("opacity", clickStatus[d])
+              d3.select(this).attr("opacity", clickStatus[d])
               if clickStatus[d]
                 curcolor = histColors.shift()
                 histColors.push(curcolor)
 
-                d3.select(this).attr("opacity", "0")
-                svg.select("rect#rect#{data.ind[d]}").attr("fill", curcolor)
+                d3.select(this).attr("fill", curcolor)
 
                 grp4BkgdHist.append("path")
                       .datum(data.counts[d])
@@ -333,7 +329,7 @@ d3.json("data.json", (data) ->
                       .attr("stroke", curcolor)
                       .attr("stroke-width", "2")
               else
-                grp4BkgdHist.select("path#path#{data.ind[d]}").remove()
+                d3.select("path#path#{data.ind[d]}").remove()
 
   # box around the outside
   lowsvg.append("rect")
@@ -385,5 +381,3 @@ d3.json("data.json", (data) ->
   d3.select("div#legend").append("p")
     .text("Hover over a column in the top panel and the corresponding histogram is shown below; " +
           "click for it to persist; click again to make it go away.")
-
-)
