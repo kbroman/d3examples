@@ -77,7 +77,7 @@ d3.json("data.json", (data) ->
         .x((d) -> xScale(d+1))
         .y((d) -> yScale(data.quant[j][d]))
 
-  svg = d3.select("body").append("svg")
+  svg = d3.select("div#plot").append("svg")
           .attr("width", w)
           .attr("height", h)
 
@@ -228,7 +228,7 @@ d3.json("data.json", (data) ->
      .attr("fill", "none")
 
   # lower svg
-  lowsvg = d3.select("body").append("svg")
+  lowsvg = d3.select("div#plot").append("svg")
              .attr("height", h)
              .attr("width", w)
 
@@ -381,4 +381,23 @@ d3.json("data.json", (data) ->
      .attr("fill", "blue")
      .attr("dominant-baseline", "middle")
      .attr("text-anchor", "middle")
+
+  # add legend
+  text = "The top panel is like #{data.ind.length} boxplots:\n"
+  text += "lines are drawn at the "
+  console.log(data.qu)
+  for q,i in data.qu
+    if i > 0
+      text += ", "
+    text += "#{q*100}"
+  text += " percentiles for each of #{data.ind.length} distributions.\n"
+  
+  d3.select("div#legend").append("p")
+    .text(text)
+
+  d3.select("div#legend").append("p")
+    .text("Hover over a column in the top panel and the corresponding histogram is shown below; " +
+          "click for it to persist; click again to make it go away.")
+
+
 )
