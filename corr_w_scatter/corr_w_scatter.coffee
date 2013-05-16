@@ -38,7 +38,7 @@ d3.json "data.json", (data) ->
 
   corXscale = d3.scale.ordinal().domain(d3.range(nvar)).rangeBands([0, w])
   corYscale = d3.scale.ordinal().domain(d3.range(nvar)).rangeBands([h, 0])
-  corZscale = d3.scale.linear().domain([-1, 0, 1]).range(["crimson", "white", "darkslateblue"])
+  corZscale = d3.scale.linear().domain([-1, 0, 1]).range(["darkslateblue", "white", "crimson"])
 
   # create list with correlations
   corr = []
