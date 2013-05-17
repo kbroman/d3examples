@@ -12,7 +12,7 @@ d3.json "data.json", (data) ->
   # dimensions of SVG
   h = 450
   w = h
-  pad = {left:40, top:40, right:20, bottom: 40}
+  pad = {left:50, top:40, right:20, bottom: 40}
   innerPad = 5
   animationDuration = 500
 
@@ -58,63 +58,6 @@ d3.json "data.json", (data) ->
              .attr("stroke-width", 1)
              .attr("pointer-events", "none")
 
-  # colors for scatterplot
-  colors = ["crimson", "green", "darkslateblue"]
-
-  initialDrawn = false
-  drawInitialScatter = (i,j) ->
-    initialDrawn = true
-    xScale = d3.scale.linear()
-                     .domain(d3.extent(data.dat[i]))
-                     .range([innerPad, w-innerPad]) 
-    yScale = d3.scale.linear()
-                     .domain(d3.extent(data.dat[j]))
-                     .range([h-innerPad, innerPad])
-    scatterplot.selectAll("empty")
-               .data(d3.range(nind))
-               .enter()
-               .append("circle")
-               .attr("class", "points")
-               .attr("cx", (d) -> xScale(data.dat[i][d]))
-               .attr("cy", (d) -> yScale(data.dat[j][d]))
-               .attr("r", 3)
-               .attr("stroke", "black")
-               .attr("stroke-width", 1)
-               .attr("fill", (d) -> colors[data.group[d]-1])
-    scatterplot.append("text").attr("id", "xaxis")
-               .attr("x", w/2)
-               .attr("y", h+pad.bottom*0.7)
-               .text(data.var[i])
-               .attr("dominant-baseline", "middle")
-               .attr("text-anchor", "middle")
-    scatterplot.append("text").attr("id", "yaxis")
-               .attr("x", -pad.left*0.7)
-               .attr("y", h/2)
-               .text(data.var[j])
-               .attr("dominant-baseline", "middle")
-               .attr("text-anchor", "middle")
-               .attr("transform", "rotate(270,#{-pad.left*0.7},#{h/2})")
-
-  # scatterplot points
-  drawScatter = (i,j) ->
-    xScale = d3.scale.linear()
-                     .domain(d3.extent(data.dat[i]))
-                     .range([innerPad, w-innerPad]) 
-    yScale = d3.scale.linear()
-                     .domain(d3.extent(data.dat[j]))
-                     .range([h-innerPad, innerPad])
-    d3.selectAll("circle.points")
-      .transition()
-      .duration(animationDuration)
-      .attr("cx", (d) -> xScale(data.dat[i][d]))
-      .attr("cy", (d) -> yScale(data.dat[j][d]))
-    
-    d3.select("text#xaxis")
-      .text(data.var[i])
-    d3.select("text#yaxis")
-      .text(data.var[j])
-
-
   cells = corrplot.selectAll("empty")
              .data(corr)
              .enter().append("rect")
@@ -144,13 +87,98 @@ d3.json "data.json", (data) ->
              .on("mouseout", ->
                  d3.select(this).attr("stroke","none")
                  corrplot.selectAll("text#corrtext").remove())
-             .on("click",(d) ->
-                  if initialDrawn
-                    drawScatter(d.col, d.row)
-                  else
-                    drawInitialScatter(d.col, d.row))
+             .on("click",(d) -> drawScatter(d.col, d.row))
 
+  # colors for scatterplot
+  colors = ["crimson", "green", "darkslateblue"]
 
+  drawScatter = (i,j) ->
+    d3.selectAll("circle.points").remove()
+    d3.selectAll("text.axes").remove()
+    d3.selectAll("line.axes").remove()
+    xScale = d3.scale.linear()
+                     .domain(d3.extent(data.dat[i]))
+                     .range([innerPad, w-innerPad]) 
+    yScale = d3.scale.linear()
+                     .domain(d3.extent(data.dat[j]))
+                     .range([h-innerPad, innerPad])
+    # axis labels
+    scatterplot.append("text")
+               .attr("id", "xaxis")
+               .attr("class", "axes")
+               .attr("x", w/2)
+               .attr("y", h+pad.bottom*0.7)
+               .text(data.var[i])
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "middle")
+               .attr("fill", "slateblue")
+    scatterplot.append("text")
+               .attr("id", "yaxis")
+               .attr("class", "axes")
+               .attr("x", -pad.left)
+               .attr("y", h/2)
+               .text(data.var[j])
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "middle")
+               .attr("transform", "rotate(270,#{-pad.left},#{h/2})")
+               .attr("fill", "slateblue")
+    # axis scales
+    xticks = xScale.ticks(5)
+    yticks = yScale.ticks(5)
+    scatterplot.selectAll("empty")
+               .data(xticks)
+               .enter()
+               .append("text")
+               .attr("class", "axes")
+               .text((d) -> d3.format(".2f")(d))
+               .attr("x", (d) -> xScale(d))
+               .attr("y", h+pad.bottom*0.3)
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "middle")
+    scatterplot.selectAll("empty")
+               .data(yticks)
+               .enter()
+               .append("text")
+               .attr("class", "axes")
+               .text((d) -> d3.format(".2f")(d))
+               .attr("x", -pad.left*0.1)
+               .attr("y", (d) -> yScale(d))
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "end")
+    scatterplot.selectAll("empty")
+               .data(xticks)
+               .enter()
+               .append("line")
+               .attr("class", "axes")
+               .attr("x1", (d) -> xScale(d))
+               .attr("x2", (d) -> xScale(d))
+               .attr("y1", 0)
+               .attr("y2", h)
+               .attr("stroke", "white")
+               .attr("stroke-width", 1)
+    scatterplot.selectAll("empty")
+               .data(yticks)
+               .enter()
+               .append("line")
+               .attr("class", "axes")
+               .attr("y1", (d) -> yScale(d))
+               .attr("y2", (d) -> yScale(d))
+               .attr("x1", 0)
+               .attr("x2", w)
+               .attr("stroke", "white")
+               .attr("stroke-width", 1)
+    # the points
+    scatterplot.selectAll("empty")
+               .data(d3.range(nind))
+               .enter()
+               .append("circle")
+               .attr("class", "points")
+               .attr("cx", (d) -> xScale(data.dat[i][d]))
+               .attr("cy", (d) -> yScale(data.dat[j][d]))
+               .attr("r", 3)
+               .attr("stroke", "black")
+               .attr("stroke-width", 1)
+               .attr("fill", (d) -> colors[data.group[d]-1])
 
   # boxes around panels
   corrplot.append("rect")
