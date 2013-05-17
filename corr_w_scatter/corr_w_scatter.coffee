@@ -103,7 +103,9 @@ d3.json "data.json", (data) ->
 
   # colors for scatterplot
   nGroup = d3.max(data.group)
-  if nGroup <= 3
+  if nGroup == 1
+    colors = [ d3.rgb(150, 150, 150) ]
+  else if nGroup <= 3
     colors = ["crimson", "green", "darkslateblue"]
   else 
     if nGroup <= 10
