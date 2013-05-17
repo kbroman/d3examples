@@ -28,10 +28,11 @@ function(dat, group, reorder=TRUE)
   # data structure for JSON
   require(rjson)
   require(df2json)
+
   output <- list("ind" = toJSON(ind),
                  "var" = toJSON(variables),
                  "corr" = matrix2json(corr),
-                 "dat" =  matrix2json(dat),
+                 "dat" =  matrix2json(t(dat)), # columns as rows
                  "group" = toJSON(group))
   paste0("{", paste0("\"", names(output), "\" :", output, collapse=","), "}")
 }
