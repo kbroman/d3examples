@@ -75,11 +75,11 @@ d3.json "data.json", (data) ->
                          .attr("x", ->
                              mult = -1
                              mult = +1 if d.col < nvar/2
-                             corXscale(d.col) + mult * corXscale.rangeBand()*5)
+                             corXscale(d.col) + mult * 30)
                          .attr("y", ->
                              mult = +1
                              mult = -1 if d.row < nvar/2
-                             corYscale(d.row) + (mult+0.5) * corYscale.rangeBand()*2)
+                             corYscale(d.row) + (mult + 0.35) * 20)
                          .attr("fill", "black")
                          .attr("dominant-baseline", "middle")
                          .attr("text-anchor", "middle")
