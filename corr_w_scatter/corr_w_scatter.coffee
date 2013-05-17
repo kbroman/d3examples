@@ -14,7 +14,6 @@ d3.json "data.json", (data) ->
   w = h
   pad = {left:70, top:40, right:5, bottom: 70}
   innerPad = 5
-  animationDuration = 500
 
   totalh = h + pad.top + pad.bottom
   totalw = (w + pad.left + pad.right)*2
@@ -103,7 +102,15 @@ d3.json "data.json", (data) ->
              .on("click",(d) -> drawScatter(d.col, d.row))
 
   # colors for scatterplot
-  colors = ["crimson", "green", "darkslateblue"]
+  nGroup = d3.max(data.group)
+  if nGroup <= 3
+    colors = ["crimson", "green", "darkslateblue"]
+  else 
+    if nGroup <= 10
+      colorScale = d3.scale.category10()
+    else
+      colorScale = d3.scale.category20()
+    colors = (colorScale(i) for i of d3.range(nGroup))
 
   drawScatter = (i,j) ->
     d3.selectAll("circle.points").remove()
