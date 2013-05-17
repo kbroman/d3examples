@@ -22,3 +22,7 @@ p {
  font-size: 12pt;
 }
 
+div#legend {
+  margin-left: 100px;
+  width: 500px;
+}

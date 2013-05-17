@@ -213,3 +213,6 @@ d3.json "data.json", (data) ->
              .attr("y", -pad.top/2)
              .attr("dominant-baseline", "middle")
              .attr("text-anchor", "middle")
+
+  d3.select("div#legend")
+    .style("opacity", 1)
