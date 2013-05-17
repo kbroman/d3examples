@@ -98,7 +98,7 @@ d3.json "data.json", (data) ->
     d3.selectAll("line.axes").remove()
     xScale = d3.scale.linear()
                      .domain(d3.extent(data.dat[i]))
-                     .range([innerPad, w-innerPad]) 
+                     .range([innerPad, w-innerPad])
     yScale = d3.scale.linear()
                      .domain(d3.extent(data.dat[j]))
                      .range([h-innerPad, innerPad])
