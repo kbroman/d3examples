@@ -38,6 +38,6 @@ function(dat, group, reorder=TRUE)
 }
 
 source("simData.R")
-z <- simData()
+z <- simData(n.groups=4)
 y <- convert4corrwscatter(z$x, z$group)
 cat(y, file="data.json")
