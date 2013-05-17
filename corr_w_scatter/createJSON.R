@@ -13,7 +13,7 @@ function(dat, group, reorder=TRUE)
     stop("names(group) != rownames(dat)")
 
   if(reorder) {
-    ord <- hclust(dist(t(dat)))$order
+    ord <- hclust(dist(t(dat)), method="ward")$order
     variables <- variables[ord]
     dat <- dat[,ord]
   }
