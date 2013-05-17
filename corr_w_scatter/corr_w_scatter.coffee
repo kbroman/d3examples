@@ -12,7 +12,7 @@ d3.json "data.json", (data) ->
   # dimensions of SVG
   h = 450
   w = h
-  pad = {left:50, top:40, right:20, bottom: 40}
+  pad = {left:70, top:40, right:5, bottom: 70}
   innerPad = 5
   animationDuration = 500
 
@@ -83,10 +83,23 @@ d3.json "data.json", (data) ->
                              corYscale(d.row) + (mult+0.5) * corYscale.rangeBand()*2)
                          .attr("fill", "black")
                          .attr("dominant-baseline", "middle")
-                         .attr("text-anchor", "middle"))
+                         .attr("text-anchor", "middle")
+                 corrplot.append("text").attr("class","corrlabel")
+                         .attr("x", corXscale(d.col))
+                         .attr("y", h+pad.bottom*0.2)
+                         .text(data.var[d.col])
+                         .attr("dominant-baseline", "middle")
+                         .attr("text-anchor", "middle")
+                 corrplot.append("text").attr("class","corrlabel")
+                         .attr("y", corYscale(d.row))
+                         .attr("x", -pad.left*0.1)
+                         .text(data.var[d.row])
+                         .attr("dominant-baseline", "middle")
+                         .attr("text-anchor", "end"))
              .on("mouseout", ->
-                 d3.select(this).attr("stroke","none")
-                 corrplot.selectAll("text#corrtext").remove())
+                 d3.selectAll("text.corrlabel").remove()
+                 d3.selectAll("text#corrtext").remove()
+                 d3.select(this).attr("stroke","none"))
              .on("click",(d) -> drawScatter(d.col, d.row))
 
   # colors for scatterplot
@@ -115,12 +128,12 @@ d3.json "data.json", (data) ->
     scatterplot.append("text")
                .attr("id", "yaxis")
                .attr("class", "axes")
-               .attr("x", -pad.left)
+               .attr("x", -pad.left*0.8)
                .attr("y", h/2)
                .text(data.var[j])
                .attr("dominant-baseline", "middle")
                .attr("text-anchor", "middle")
-               .attr("transform", "rotate(270,#{-pad.left},#{h/2})")
+               .attr("transform", "rotate(270,#{-pad.left*0.8},#{h/2})")
                .attr("fill", "slateblue")
     # axis scales
     xticks = xScale.ticks(5)
