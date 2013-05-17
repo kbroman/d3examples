@@ -23,7 +23,7 @@ pc <- cmdscale(dist(islet.mlratio[,probes]))
 qtlg <- 4-as.numeric(cut(pc[,1], c(-Inf, -1, 1, Inf)))
 names(qtlg) <- as.character(f2g$pheno$MouseNum)
 
-probes <- names(pos[pos >= markerpos[2] & pos <= markerpos[3] & lod > 150 & chr != 6])
+probes <- sample(names(pos[pos >= markerpos[2] & pos <= markerpos[3] & lod > 25 & chr != 6]), 100)
 x <- islet.mlratio[,probes]
 group <- qtlg
 colnames(x) <- paste0("gene", 1:ncol(x))
