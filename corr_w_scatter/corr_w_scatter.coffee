@@ -13,6 +13,8 @@ d3.json "data.json", (data) ->
   h = 450
   w = h
   pad = {left:40, top:40, right:20, bottom: 40}
+  innerPad = 5
+  animationDuration = 500
 
   totalh = h + pad.top + pad.bottom
   totalw = (w + pad.left + pad.right)*2
@@ -46,6 +48,73 @@ d3.json "data.json", (data) ->
     for j of data.corr[i]
       corr.push({row:i, col:j, value:data.corr[i][j]})
 
+
+  # gray background on scatterplot
+  scatterplot.append("rect")
+             .attr("height", h)
+             .attr("width", w)
+             .attr("fill", d3.rgb(200, 200, 200))
+             .attr("stroke", "black")
+             .attr("stroke-width", 1)
+             .attr("pointer-events", "none")
+
+  # colors for scatterplot
+  colors = ["crimson", "green", "darkslateblue"]
+
+  initialDrawn = false
+  drawInitialScatter = (i,j) ->
+    initialDrawn = true
+    xScale = d3.scale.linear()
+                     .domain(d3.extent(data.dat[i]))
+                     .range([innerPad, w-innerPad]) 
+    yScale = d3.scale.linear()
+                     .domain(d3.extent(data.dat[j]))
+                     .range([h-innerPad, innerPad])
+    scatterplot.selectAll("empty")
+               .data(d3.range(nind))
+               .enter()
+               .append("circle")
+               .attr("class", "points")
+               .attr("cx", (d) -> xScale(data.dat[i][d]))
+               .attr("cy", (d) -> yScale(data.dat[j][d]))
+               .attr("r", 3)
+               .attr("stroke", "black")
+               .attr("stroke-width", 1)
+               .attr("fill", (d) -> colors[data.group[d]-1])
+    scatterplot.append("text").attr("id", "xaxis")
+               .attr("x", w/2)
+               .attr("y", h+pad.bottom*0.7)
+               .text(data.var[i])
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "middle")
+    scatterplot.append("text").attr("id", "yaxis")
+               .attr("x", -pad.left*0.7)
+               .attr("y", h/2)
+               .text(data.var[j])
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "middle")
+               .attr("transform", "rotate(270,#{-pad.left*0.7},#{h/2})")
+
+  # scatterplot points
+  drawScatter = (i,j) ->
+    xScale = d3.scale.linear()
+                     .domain(d3.extent(data.dat[i]))
+                     .range([innerPad, w-innerPad]) 
+    yScale = d3.scale.linear()
+                     .domain(d3.extent(data.dat[j]))
+                     .range([h-innerPad, innerPad])
+    d3.selectAll("circle.points")
+      .transition()
+      .duration(animationDuration)
+      .attr("cx", (d) -> xScale(data.dat[i][d]))
+      .attr("cy", (d) -> yScale(data.dat[j][d]))
+    
+    d3.select("text#xaxis")
+      .text(data.var[i])
+    d3.select("text#yaxis")
+      .text(data.var[j])
+
+
   cells = corrplot.selectAll("empty")
              .data(corr)
              .enter().append("rect")
@@ -75,6 +144,13 @@ d3.json "data.json", (data) ->
              .on("mouseout", ->
                  d3.select(this).attr("stroke","none")
                  corrplot.selectAll("text#corrtext").remove())
+             .on("click",(d) ->
+                  if initialDrawn
+                    drawScatter(d.col, d.row)
+                  else
+                    drawInitialScatter(d.col, d.row))
+
+
 
   # boxes around panels
   corrplot.append("rect")
