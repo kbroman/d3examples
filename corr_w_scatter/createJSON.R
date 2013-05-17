@@ -37,7 +37,13 @@ function(dat, group, reorder=TRUE)
   paste0("{", paste0("\"", names(output), "\" :", output, collapse=","), "}")
 }
 
-source("simData.R")
-z <- simData(n.groups=4)
-y <- convert4corrwscatter(z$x, z$group)
+# simulated data:
+#source("simData.R")
+#z <- simData(n.groups=4)
+#y <- convert4corrwscatter(z$x, z$group)
+
+# real data:
+load("example_data.RData")
+y <- convert4corrwscatter(x, group)
+
 cat(y, file="data.json")
