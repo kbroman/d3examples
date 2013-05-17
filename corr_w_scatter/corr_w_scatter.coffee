@@ -70,7 +70,7 @@ d3.json "data.json", (data) ->
              .attr("stroke", "none")
              .attr("stroke-width", 2)
              .on("mouseover", (d) ->
-                 d3.select(this).attr("stroke", "white")
+                 d3.select(this).attr("stroke", "black")
                  corrplot.append("text").attr("id", "corrtext")
                          .text(d3.format(".2f")(d.value))
                          .attr("x", ->
@@ -81,7 +81,7 @@ d3.json "data.json", (data) ->
                              mult = +1
                              mult = -1 if d.row < nvar/2
                              corYscale(d.row) + (mult+0.5) * corYscale.rangeBand()*2)
-                         .attr("fill", "white")
+                         .attr("fill", "black")
                          .attr("dominant-baseline", "middle")
                          .attr("text-anchor", "middle"))
              .on("mouseout", ->
