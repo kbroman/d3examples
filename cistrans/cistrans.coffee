@@ -757,7 +757,7 @@ draw = (data) ->
   selectedGene = ""
   $("#geneinput").submit () ->
     newSelection = document.getElementById("genesymbol").value
-    if newSelection == "random"
+    if newSelection == "random" or newSelection == "\"random\""
       newSelection = allgenes[Math.floor(Math.random()*allgenes.length)]
     if newSelection != "" and newSelection != selectedGene
       selectedGene = newSelection
