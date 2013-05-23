@@ -87,6 +87,15 @@ draw = (data) ->
   titlecolor = "blue"    # "Wheat"
   maincolor = "darkblue" # "Wheat"
 
+  # probes for each gene
+  probesByGene = {}
+  for probe of data.probes
+    gene = data.probes[probe].gene
+    if probesByGene?[gene]
+      probesByGene[gene].push(probe)
+    else 
+      probesByGene[gene] = [probe]
+
   # calculate X and Y scales, using cM positions
   totalChrLength = 0;
   for c in data.chrnames
@@ -741,6 +750,29 @@ draw = (data) ->
 
   # initial set of LOD curves at the bottom
   d3.json("data/probe_data/probe517761.json", draw_probe)
+
+  # grab selected gene from the search box
+  selectedGene = ""
+  $("#geneinput").submit () ->
+    newSelection = document.getElementById("genesymbol").value
+    if newSelection != "" and newSelection != selectedGene
+      selectedGene = newSelection
+      if probesByGene?[selectedGene]
+        selectedProbes = probesByGene[selectedGene]
+        if(selectedProbes.length > 1)
+          selectedProbe = selectedProbes[Math.random()*selectedProbes.length]
+        else
+          selectedProbe = selectedProbes[0]
+        d3.json("data/probe_data/probe#{selectedProbe}.json", draw_probe)
+        mgi = "http://www.informatics.jax.org/searchtool/Search.do?query=#{selectedGene}"
+        d3.select("a#currentgenesymbol")
+          .html("Gene: #{selectedGene} &rarr; Probe: #{selectedProbe}")
+          .attr("href", mgi)
+      else
+        d3.select("a#currentgenesymbol")
+          .text("Gene \"#{selectedGene}\" not found")
+          .attr("href", null)
+    return false
 
   # black borders
   for j of left

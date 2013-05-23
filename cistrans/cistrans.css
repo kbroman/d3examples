@@ -54,3 +54,6 @@ text.alignright {
   stroke: none;
   font-family: sans-serif;
 }
+
+a { text-decoration: none; color: #23238e; }
+a:hover { background: #B9EEEE; }
