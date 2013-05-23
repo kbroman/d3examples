@@ -96,6 +96,8 @@ draw = (data) ->
     else 
       probesByGene[gene] = [probe]
 
+  allgenes = (gene for gene of probesByGene)
+
   # calculate X and Y scales, using cM positions
   totalChrLength = 0;
   for c in data.chrnames
@@ -755,12 +757,14 @@ draw = (data) ->
   selectedGene = ""
   $("#geneinput").submit () ->
     newSelection = document.getElementById("genesymbol").value
+    if newSelection == "random"
+      newSelection = allgenes[Math.floor(Math.random()*allgenes.length)]
     if newSelection != "" and newSelection != selectedGene
       selectedGene = newSelection
       if probesByGene?[selectedGene]
         selectedProbes = probesByGene[selectedGene]
         if(selectedProbes.length > 1)
-          selectedProbe = selectedProbes[Math.random()*selectedProbes.length]
+          selectedProbe = selectedProbes[Math.floor(Math.random()*selectedProbes.length)]
         else
           selectedProbe = selectedProbes[0]
         d3.json("data/probe_data/probe#{selectedProbe}.json", draw_probe)
