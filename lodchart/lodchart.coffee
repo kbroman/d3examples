@@ -170,7 +170,6 @@ lodChart = () ->
                      else
                        xpos -= 10
                        anchor = "end"
-                     console.log anchor
                      g.append("text")
                       .attr("x", xpos)
                       .attr("y", yscale(d.lod))
