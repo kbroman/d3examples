@@ -104,7 +104,7 @@ library(RJSONIO)
 cat0 <- function(file, ...) cat(..., sep="", file=file)
 cat0a <- function(file, ...) cat(..., sep="", file=file, append=TRUE)
 
-file <- "../data/insulin_eqtl.json"
+file <- "../data/islet_eqtl.json"
 cat0(file, "{\n")
 cat0a(file, "\"markers\" : \n", toJSON(markernames(f2g)), ",\n\n")
 cat0a(file, "\"chrnames\" : \n", toJSON(names(chr)), ",\n\n")

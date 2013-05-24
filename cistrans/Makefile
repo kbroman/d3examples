@@ -1,5 +1,5 @@
 
-all: cistrans.js data/insulin_eqtl.json data/probe_data/probe10002171767.json cistrans_rev.coffee
+all: cistrans.js data/islet_eqtl.json data/probe_data/probe10002171767.json cistrans_rev.coffee
 
 cistrans.js: cistrans.coffee
 	coffee -c cistrans.coffee
@@ -7,7 +7,7 @@ cistrans.js: cistrans.coffee
 cistrans_rev.js: cistrans_rev.coffee
 	coffee -c cistrans_rev.coffee
 
-data/insulin_eqtl.json: R/grab_data.R R/annot.amit_rev.RData R/maxlod.islet.RData R/aligned_geno_with_pmap.RData R/islet_mlratio_final.RData
+data/islet_eqtl.json: R/grab_data.R R/annot.amit_rev.RData R/maxlod.islet.RData R/aligned_geno_with_pmap.RData R/islet_mlratio_final.RData
 	cd R;R CMD BATCH grab_data.R
 
 data/probe_data/probe10002171767.json: R/grab_lod_curves.R R/annot.amit_rev.RData R/maxlod.islet.RData R/islet_mlratio_final.RData R/scanone.islet.RData R/aligned_geno_with_pmap.RData 
