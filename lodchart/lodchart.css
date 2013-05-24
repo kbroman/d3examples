@@ -1,0 +1,29 @@
+
+body {
+ font-family: sans-serif;
+}
+
+text {
+ font-family: sans-serif;
+ font-size: 11pt;
+}
+
+.y.axis text {
+  dominant-baseline: middle;
+  text-anchor: end;
+}
+
+.y.axis text.title {
+  text-anchor: middle;
+  fill: blue;
+}
+
+.x.axis text {
+  dominant-baseline: hanging;
+  text-anchor: middle;
+}
+
+.x.axis text.title {
+  fill: blue;
+}
+
