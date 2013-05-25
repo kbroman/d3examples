@@ -1,4 +1,4 @@
-# cistrans_coffee
+# cistrans.coffee
 #
 # Interactive cis-trans eQTL plot
 #
