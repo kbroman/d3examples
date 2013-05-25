@@ -10,5 +10,5 @@ curves.json: R/curves.RData R/grab_data.R
 manycurves.js: manycurves.coffee
 	coffee -c manycurves.coffee
 
-web:
+web: all
 	scp index.html manycurves.coffee manycurves.css manycurves.js curves.json broman-2.biostat.wisc.edu:public_html/D3/manycurves/
