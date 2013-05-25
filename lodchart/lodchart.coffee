@@ -21,6 +21,7 @@ lodChart = () ->
   xscale = null
   lodcurve = null
   lodvarname = "lod"
+  markerSelect = null
 
   ## the main function
   chart = (selection) ->
@@ -150,7 +151,8 @@ lodChart = () ->
                     .attr("fill", pointcolor)
                     .attr("pointer-events", "hidden")
       hiddenpoints = g.append("g").attr("id", "markerpoints_hidden")
-      hiddenpoints.selectAll("empty")
+      markerSelect =
+        hiddenpoints.selectAll("empty")
                   .data(data.markers)
                   .enter()
                   .append("circle")
