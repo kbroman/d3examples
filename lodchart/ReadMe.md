@@ -1,24 +1,45 @@
 ### Reusable LOD score chart
 
 Here, I'm trying to create a reusable chart for plotting LOD curves
-across a genome.  I'm following
+across a genome, following
 [Mike Bostock](http://bost.ocks.org/mike)'s
 [Towards Reuseable Charts](http://bost.ocks.org/mike/chart/).
 
-- lodChart makes the basic chart (frame and axes and such)
+For an illustration of its use, see [test_lodchart.coffee](https://github.com/kbroman/d3examples/blob/master/lodchart/test_lodchart.coffee)
 
-  - width
-  - height
-  - pad = {bottom, left, top, right} padding around figure
-  - axispos = {xlabel, xtitle, ylabel, ytitle}: positions of axis
-    title and labels
-  - darkrect and lightrect: colors for alternating chromosomes
-  - ylim: y-axis limits
-  - nyticks = no. ticks on y-axis
-  - yticks = vector of actual y-axis ticks
-  - chrGap = gap (in pixels) between chromosomes
-  - pointcolor color of points at markers
-  - pointsize size of points at markers (in pixels)
-  - linecolor color of LOD curves
-  - linewidth width of LOD curves
+Here are all of the options:
 
+    mychart = lodChart().lodvarname("lod") # variable containing LOD to plot
+                        .width(800) # internal width of chart
+                        .height(500) # internal height
+                        .margin({left:60, top:40, right:40, bottom:40, inner:5}) # margins
+                        .axispos({xtitle:25, ytitle:30, xlabel:5, ylabel:5}) # spacing for axis titles and labels
+                        .ylim(null) # y-axis limits
+                        .nyticks(5) # no. y-axis ticks
+                        .yticks(null) # locations of y-axis ticks
+                        .chrGap(8) # gap between chromosomes in pixels
+                        .darkrect(d3.rgb(200,200,200)) # even chr rectangle color
+                        .lightrect(d3.rgb(230,230,230)) # odd chr rectangle color
+                        .linecolor("darkslateblue") # color for LOD curves
+                        .linewidth(2) # width of LOD curves
+                        .pointcolor("#E9CFEC") # color of points a markers
+                        .pointsize(0) # radius of points at markers (0=hidden)
+                        .xlab("Chromosome") # x-axis label
+                        .ylab("LOD score") # y-axis label
+
+Additional accessors:
+
+    # x-axis scale
+    xscale = mychart.xscale()
+    xscale[chrname](pos)
+    
+    # y-axis scale
+    yscale = mychart.yscale()
+    yscale(lod)
+    
+    # function for plotting LOD curves, using 'path'
+    lodcurve = mychart.lodcurve()
+
+    # selection of points at markers, to add .on("click", ...)
+    markerSelect = mychart.markerSelect()
+    
