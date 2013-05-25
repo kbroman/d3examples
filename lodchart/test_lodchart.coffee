@@ -27,6 +27,15 @@ d3.json "scanone.json", (data) ->
                     return d3.rgb(200,200,200) if i % 2
                     d3.rgb(230,230,230))
 
+  # animate points at markers on click
+  mychart.markerSelect()
+            .on "click", (d) ->
+                  r = d3.select(this).attr("r")
+                  d3.select(this)
+                    .transition().duration(500).attr("r", r*3)
+                    .transition().duration(500).attr("r", r)
+
+# two LOD charts within one SVG
 d3.json "scanone.json", (data) ->
   mychart_em = lodchart().lodvarname("lod.em")
                          .height(h)
@@ -58,4 +67,3 @@ d3.json "scanone.json", (data) ->
 
   chart2.datum(data)
     .call(mychart_hk)
-                
