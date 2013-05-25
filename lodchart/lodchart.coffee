@@ -282,19 +282,19 @@ lodChart = () ->
     chart
 
   chart.xlab = (value) ->
-    if !argments.length
+    if !arguments.length
       return xlab
     xlab = value
     chart
 
   chart.ylab = (value) ->
-    if !argments.length
+    if !arguments.length
       return ylab
     ylab = value
     chart
 
   chart.lodvarname = (value) ->
-    if !argments.length
+    if !arguments.length
       return lodvarname
     lodvarname = value
     chart
