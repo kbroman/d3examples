@@ -13,8 +13,8 @@ lodChart = () ->
   lightrect = d3.rgb(230, 230, 230)
   linecolor = "darkslateblue"
   linewidth = 2
-  pointcolor = "#E9CFEC"
-  pointsize = 1
+  pointcolor = "#E9CFEC" # pink
+  pointsize = 0 # default = no visible points at markers
   xlab = "Chromosome"
   ylab = "LOD score"
   yscale = d3.scale.linear()
