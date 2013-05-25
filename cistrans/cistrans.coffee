@@ -89,12 +89,15 @@ draw = (data) ->
 
   # probes for each gene
   probesByGene = {}
+  origGeneName = {}
   for probe of data.probes
     gene = data.probes[probe].gene
-    if probesByGene?[gene]
-      probesByGene[gene].push(probe)
-    else 
-      probesByGene[gene] = [probe]
+    if gene != "" and gene != null
+      origGeneName[gene.toLowerCase()] = gene
+      if probesByGene?[gene]
+        probesByGene[gene].push(probe)
+      else
+        probesByGene[gene] = [probe]
 
   allgenes = (gene for gene of probesByGene)
 
@@ -761,7 +764,8 @@ draw = (data) ->
       newSelection = allgenes[Math.floor(Math.random()*allgenes.length)]
     if newSelection != "" and newSelection != selectedGene
       selectedGene = newSelection
-      if probesByGene?[selectedGene]
+      if origGeneName?[selectedGene.toLowerCase()]
+        selectedGene = origGeneName[selectedGene.toLowerCase()]
         selectedProbes = probesByGene[selectedGene]
         if(selectedProbes.length > 1)
           selectedProbe = selectedProbes[Math.floor(Math.random()*selectedProbes.length)]
