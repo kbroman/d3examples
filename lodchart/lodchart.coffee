@@ -20,12 +20,13 @@ lodChart = () ->
   yscale = d3.scale.linear()
   xscale = null
   lodcurve = null
+  lodvarname = "lod"
 
   ## the main function
   chart = (selection) ->
     selection.each (data) ->
       if !(ylim?)
-        ylim = [0, d3.max(data.lod)]
+        ylim = [0, d3.max(data[lodvarname])]
 
       # Select the svg element, if it exists.
       svg = d3.select(this).selectAll("svg").data([data])
@@ -57,7 +58,7 @@ lodChart = () ->
         yticks = yscale.ticks(nyticks)
 
       # reorganize lod,pos by chromosomes
-      data = reorgData(data)
+      data = reorgData(data, lodvarname)
       
       # chromosome scales
       data = chrscales(data, width, chrGap)
@@ -290,6 +291,12 @@ lodChart = () ->
     ylab = value
     chart
 
+  chart.lodvarname = (value) ->
+    if !argments.length
+      return lodvarname
+    lodvarname = value
+    chart
+
   chart.yscale = () ->
     return yscale
 
@@ -311,7 +318,7 @@ formatAxis = (d) ->
   d3.format(".#{ndig}f")
 
 # reorganize lod/pos in data by chromosome
-reorgData = (data) ->
+reorgData = (data, lodvarname) ->
   data.posByChr = {}
   data.lodByChr = {}
   for chr,i in data.chrnames
@@ -319,11 +326,11 @@ reorgData = (data) ->
     data.lodByChr[chr] = []
     for pos,j in data.pos
       data.posByChr[chr].push(pos) if data.chr[j] == chr
-      data.lodByChr[chr].push(data.lod[j]) if data.chr[j] == chr
+      data.lodByChr[chr].push(data[lodvarname][j]) if data.chr[j] == chr
   data.markers = []
   for marker,i in data.markernames
     if marker != ""
-      data.markers.push({name:marker, chr:data.chr[i], pos:data.pos[i], lod:data.lod[i]}) 
+      data.markers.push({name:marker, chr:data.chr[i], pos:data.pos[i], lod:data[lodvarname][i]}) 
   data
 
 # calculate chromosome start/end + scales
