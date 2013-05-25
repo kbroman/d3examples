@@ -7,6 +7,8 @@ across a genome, following
 
 For an illustration of its use, see [test_lodchart.coffee](https://github.com/kbroman/d3examples/blob/master/lodchart/test_lodchart.coffee)
 
+Add see it in action [here](http://www.biostat.wisc.edu/~kbroman/D3/lodchart)
+
 Here are all of the options:
 
     mychart = lodChart().lodvarname("lod") # variable containing LOD to plot
