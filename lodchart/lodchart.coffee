@@ -151,7 +151,6 @@ lodchart = () ->
                     .append("circle")
                     .attr("cx", (d) -> xscale[d.chr](d.pos))
                     .attr("cy", (d) -> yscale(d.lod))
-                    .attr("id", (d) -> d.name)
                     .attr("r", pointsize)
                     .attr("fill", pointcolor)
                     .attr("pointer-events", "hidden")
