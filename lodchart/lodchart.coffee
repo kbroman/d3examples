@@ -22,6 +22,7 @@ lodchart = () ->
   lodcurve = null
   lodvarname = "lod"
   markerSelect = null
+  chrSelect = null
 
   ## the main function
   chart = (selection) ->
@@ -67,7 +68,8 @@ lodchart = () ->
       xscale = data.xscale
 
       # chr rectangles
-      chrrect = g.append("g").attr("class", "chrRect")
+      chrSelect =
+                g.append("g").attr("class", "chrRect")
                  .selectAll("empty")
                  .data(data.chrnames)
                  .enter()
@@ -310,6 +312,12 @@ lodchart = () ->
 
   chart.lodcurve = () ->
     return lodcurve
+
+  chart.markerSelect = () ->
+    return markerSelect
+
+  chart.chrSelect = () ->
+    return chrSelect
 
   # return the chart function
   chart            

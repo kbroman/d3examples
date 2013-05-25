@@ -18,6 +18,15 @@ d3.json "scanone.json", (data) ->
     .datum(data)
     .call(mychart)
 
+  # grab chromosome rectangles; color pink on hover
+  chrrect = mychart.chrSelect()
+  chrrect.on "mouseover", ->
+              d3.select(this).attr("fill", "#E9CFEC")
+         .on "mouseout", (d,i) ->
+              d3.select(this).attr("fill", ->
+                    return d3.rgb(200,200,200) if i % 2
+                    d3.rgb(230,230,230))
+
 d3.json "scanone.json", (data) ->
   mychart_em = lodchart().lodvarname("lod.em")
                          .height(h)
@@ -49,3 +58,8 @@ d3.json "scanone.json", (data) ->
 
   chart2.datum(data)
     .call(mychart_hk)
+
+  # animate points at markerson click
+  mychart_em.markerSelect()
+            .on("click", (d) ->
+                
