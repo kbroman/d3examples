@@ -58,8 +58,4 @@ d3.json "scanone.json", (data) ->
 
   chart2.datum(data)
     .call(mychart_hk)
-
-  # animate points at markerson click
-  mychart_em.markerSelect()
-            .on("click", (d) ->
                 
