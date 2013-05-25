@@ -55,13 +55,14 @@ lodchart = () ->
       yscale.domain(ylim)
             .range([height, margin.inner])
 
+      # if yticks not provided, use nyticks to choose pretty ones
       if yticks == null
         yticks = yscale.ticks(nyticks)
 
       # reorganize lod,pos by chromosomes
       data = reorgData(data, lodvarname)
       
-      # chromosome scales
+      # add chromosome scales (for x-axis)
       data = chrscales(data, width, chrGap)
       xscale = data.xscale
 
@@ -80,6 +81,8 @@ lodchart = () ->
                     return darkrect if i % 2
                     lightrect)
                  .attr("stroke", "none")
+
+      # x-axis labels
       xaxis = g.append("g").attr("class", "x axis")
       xaxis.selectAll("empty")
            .data(data.chrnames)
@@ -150,6 +153,7 @@ lodchart = () ->
                     .attr("r", pointsize)
                     .attr("fill", pointcolor)
                     .attr("pointer-events", "hidden")
+      # these hidden points are what gets selected...a bit larger
       hiddenpoints = g.append("g").attr("id", "markerpoints_hidden")
       markerSelect =
         hiddenpoints.selectAll("empty")
@@ -196,7 +200,6 @@ lodchart = () ->
        .attr("stroke-width", "none")
 
   ## configuration parameters
-
   chart.width = (value) ->
     if !arguments.length
       return width
@@ -337,6 +340,7 @@ reorgData = (data, lodvarname) ->
 
 # calculate chromosome start/end + scales
 chrscales = (data, width, chrGap) ->
+  # start and end of chromosome positions
   chrStart = []
   chrEnd = []
   chrLength = []
@@ -349,6 +353,7 @@ chrscales = (data, width, chrGap) ->
     chrLength.push(L)
     totalChrLength += L
 
+  # break up x axis into chromosomes by length, with gaps
   data.chrStart = []
   data.chrEnd = []
   cur = Math.round(chrGap/2)
@@ -358,8 +363,10 @@ chrscales = (data, width, chrGap) ->
     w = Math.round((width-chrGap*data.chrnames.length)/totalChrLength*chrLength[i])
     data.chrEnd.push(cur + w)
     cur = data.chrEnd[i] + chrGap
+    # x-axis scales, by chromosome
     data.xscale[chr] = d3.scale.linear()
                          .domain([chrStart[i], chrEnd[i]])
                          .range([data.chrStart[i], data.chrEnd[i]])
 
+  # return data with new stuff added
   data
