@@ -1,6 +1,6 @@
-# lodChart: reuseable LOD score chart
+# lodchart: reuseable LOD score chart
 
-lodChart = () ->
+lodchart = () ->
   width = 800
   height = 500
   margin = {left:60, top:40, right:40, bottom: 40, inner:5}

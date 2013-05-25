@@ -1,3 +1,4 @@
+# illustration of use of the lodchart function
 
 h = 300
 w = 600
@@ -6,10 +7,9 @@ halfh = (h+margin.top+margin.bottom)
 totalh = halfh*2
 totalw = (w+margin.left+margin.right)
 
-
 # simplest use
 d3.json "scanone.json", (data) ->
-  mychart = lodChart().lodvarname("lod.em")
+  mychart = lodchart().lodvarname("lod.em")
                       .height(h)
                       .width(w)
                       .margin(margin)
@@ -19,14 +19,14 @@ d3.json "scanone.json", (data) ->
     .call(mychart)
 
 d3.json "scanone.json", (data) ->
-  mychart_em = lodChart().lodvarname("lod.em")
+  mychart_em = lodchart().lodvarname("lod.em")
                          .height(h)
                          .width(w)
                          .margin(margin)
                          .ylab("LOD score (by EM)")
                          .pointsize(1)
                          .nyticks(9)
-  mychart_hk = lodChart().lodvarname("lod.hk")
+  mychart_hk = lodchart().lodvarname("lod.hk")
                          .height(h)
                          .width(w)
                          .margin(margin)

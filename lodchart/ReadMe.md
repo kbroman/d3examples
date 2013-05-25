@@ -11,7 +11,7 @@ Add see it in action [here](http://www.biostat.wisc.edu/~kbroman/D3/lodchart).
 
 Here are all of the options:
 
-    mychart = lodChart().lodvarname("lod") # variable containing LOD to plot
+    mychart = lodchart().lodvarname("lod") # variable containing LOD to plot
                         .width(800) # internal width of chart
                         .height(500) # internal height
                         .margin({left:60, top:40, right:40, bottom:40, inner:5}) # margins
