@@ -13,5 +13,5 @@ data/islet_eqtl.json: R/grab_data.R R/annot.amit_rev.RData R/maxlod.islet.RData 
 data/probe_data/probe10002171767.json: R/grab_lod_curves.R R/annot.amit_rev.RData R/maxlod.islet.RData R/islet_mlratio_final.RData R/scanone.islet.RData R/aligned_geno_with_pmap.RData 
 	cd R;R CMD BATCH grab_lod_curves.R
 
-web:
+web: all
 	scp index.html cistrans.coffee cistrans.css cistrans.js cistrans_rev.coffee cistrans_rev.css cistrans_rev.js index_rev.html broman-2.biostat.wisc.edu:public_html/D3/cistrans/
