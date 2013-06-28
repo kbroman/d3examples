@@ -13,5 +13,5 @@ I have some additional simple examples in my [JSbroman](http://github.com/kbroma
 There is some really awful code in here.
 I just barely know what I'm doing.
 
-[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
-
+<hr/>
+Licensed under the [MIT license](License.txt). ([More information](http://en.wikipedia.org/wiki/MIT_License))
