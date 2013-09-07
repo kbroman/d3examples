@@ -1,0 +1,12 @@
+.d3-tip {
+  fill: darkslateblue;
+  stroke: none;
+  font-weight: bold;
+}
+
+.d3-tip text {
+  fill: white;
+  font-size: 12px;
+  stroke: none;
+  font-family: sans-serif;
+}

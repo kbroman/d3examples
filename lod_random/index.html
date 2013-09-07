@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Illustration of permutation test for QTL mapping</title>
+    <link rel=stylesheet type="text/css" href="lod_random.css">
+    <link rel=stylesheet type="text/css" href="d3-tip.css">
+    <script charset="utf-8" type="text/javascript" src="../d3/d3.js"></script>
+    <script type="text/javascript" src="../d3-tip/d3.tip.old.js"></script>
+</head>
+
+<body>
+
+<div id="figure"></div>
+
+
+<div id="legend" style="width:700px;margin-left:25px;">
+<p>This is an illustration of a permutation test: To assess whether a
+given LOD score is sufficiently large to indicate evidence of a QTL,
+we compare it to the distribution of the genome-wide maximum LOD score
+under the null hypothesis of no QTL.
+
+<p>The null distribution of the genome-wide maximum LOD is estimated by
+permuting the phenotypes relative to the genotypes.
+
+<p>Click the green button to shuffle the phenotypes and re-draw the LOD
+curves.
+
+<p>There&rsquo;s a hidden &ldquo;back&rdquo; button a bit to the right of
+the green button.
+
+<p>The code is on <a href="https://github.com/kbroman/d3examples/tree/master/lod_random">github</a>.
+
+</div>
+
+
+<script type="text/javascript" src="lod_random.js"></script>
+</body>
+</html>
