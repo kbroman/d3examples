@@ -131,9 +131,9 @@ draw = (data) ->
 
     if col == 0 # if at the beginning, make back button disappear
       d3.select(this).transition().duration(250).attr("opacity", 0)
+      backbuttontext.transition().duration(250).attr("opacity", 0)
 
     drawRandom(data, col)
-
 
   backbutton.on("mouseover", ->
                      if col != 0 # if not at beginning
@@ -141,7 +141,7 @@ draw = (data) ->
                       backbuttontext.transition().duration(250).attr("opacity", 1))
             .on("mouseout", ->
                      d3.select(this).transition().duration(1000).attr("opacity", 0)
-                     backbuttontext.transition().duration(250).attr("opacity", 0))
+                     backbuttontext.transition().duration(1000).attr("opacity", 0))
                       
 
 # function that does all of the work
