@@ -13,5 +13,5 @@ I have some additional simple examples in my [JSbroman](http://github.com/kbroma
 There is some really awful code in here.
 I just barely know what I'm doing.
 
-<hr/>
-Licensed under the [MIT license](License.txt). ([More information](http://en.wikipedia.org/wiki/MIT_License))
+---
+Licensed under the [MIT license](License.md). ([More information](http://en.wikipedia.org/wiki/MIT_License))
