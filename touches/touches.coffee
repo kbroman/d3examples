@@ -16,9 +16,7 @@ svg.append("rect")
 random_circles = (number, width, height) ->
   dat = []
   for i in [0...number]
-    x = Math.random()*width
-    y = Math.random()*height
-    dat.push([x,y])
+    dat.push([width,height].map((d) -> Math.floor(Math.random()*d)))
   dat
 
 dat = random_circles(ncircles, width, height)
