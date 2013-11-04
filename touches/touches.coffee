@@ -83,5 +83,5 @@ print_event = (type, location) ->
   nevents++
   d3.select("div#console")
     .append("p")
-    .text("#{type} #{nevents} : #{location.map(Math.round)}")
+    .text("#{type} #{nevents} : #{location}")
   
