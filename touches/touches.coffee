@@ -2,6 +2,8 @@
 
 width = 920
 height = 450
+ncircles = 20
+colors = ["orchid", "#4DF0A7"]
 svg = d3.select("div#chart")
         .append("svg")
         .attr({width: width, height: height})
@@ -10,6 +12,31 @@ svg.append("rect")
    .attr({x:0, y:0, width:width, height:height})
    .attr({"stroke-width": 5, stroke:"black", fill:d3.rgb(200, 200, 200)})
    .style("pointer-events", "none")
+
+random_circles = (number, width, height) ->
+  dat = []
+  for i in [0...number]
+    x = Math.random()*width
+    y = Math.random()*height
+    dat.push([x,y])
+  dat
+
+dat = random_circles(ncircles, width, height)
+circolor = []
+for i in [0...dat.length]
+  circolor[i] = colors[0]
+
+circles = svg.selectAll("empty")
+   .data(dat)
+   .enter()
+     .append("circle")
+     .attr("cx", (d) -> d[0])
+     .attr("cy", (d) -> d[1])
+     .attr({r: 8})
+     .attr({stroke:"black", "stroke-width": 2, fill: colors[0]})
+   .on "click", (d,i) ->
+      circolor[i] = if circolor[i] == colors[0] then colors[1] else colors[0]
+      d3.select(this).transition().ease("linear").duration(500).attr("fill", circolor[i])
 
 ripples = (position) ->
    svg.selectAll("empty")
@@ -23,7 +50,7 @@ ripples = (position) ->
         .ease("linear")
         .duration(500)
         .delay((d) -> d*50)
-        .attr("r", 50)
+        .attr("r", 100)
         .style("opacity", 0)
         .remove()
 
