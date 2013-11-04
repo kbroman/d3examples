@@ -40,6 +40,13 @@ circles = svg.selectAll("empty")
       d3.select(this).transition().ease("linear").duration(500).attr("fill", circolor[i])
 
 ripples = (position) ->
+   svg.append("circle")
+        .attr({cx:position[0], cy:position[1], r:4})
+        .attr({stroke:"slateblue", fill:"slateblue"})
+      .transition()
+        .delay(500)
+        .remove()
+
    svg.selectAll("empty")
       .data([0,1,2,3,4])
       .enter()
