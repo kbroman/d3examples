@@ -35,6 +35,7 @@ circles = svg.selectAll("empty")
      .attr({r: 8})
      .attr({stroke:"black", "stroke-width": 2, fill: colors[0]})
    .on "click", (d,i) ->
+      print_event("circle click", [i, d[0], d[1]])
       circolor[i] = if circolor[i] == colors[0] then colors[1] else colors[0]
       d3.select(this).transition().ease("linear").duration(500).attr("fill", circolor[i])
 
@@ -75,5 +76,5 @@ print_event = (type, location) ->
   nevents++
   d3.select("div#console")
     .append("p")
-    .text("#{type} #{nevents} : #{location}")
+    .text("#{type} #{nevents} : #{location.map(Math.round)}")
   
