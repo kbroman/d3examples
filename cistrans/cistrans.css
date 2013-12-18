@@ -57,3 +57,8 @@ text.alignright {
 
 a { text-decoration: none; color: #23238e; }
 a:hover { background: #B9EEEE; }
+
+/* default form input made gray */
+.inactive {
+  color: #888;
+}

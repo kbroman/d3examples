@@ -791,5 +791,21 @@ draw = (data) ->
        .attr("width", w[j])
        .attr("class", "outerBox")
 
+# grayed-out "Gene symbol" within text input box
+$('input#genesymbol').each(() ->
+  console.log($(this).val())
+  $(this)
+    .data('default', $(this).val())
+    .addClass('inactive')
+    .focus(() ->
+      $(this).removeClass('inactive')
+      $(this).val('') if($(this).val() is $(this).data('default') or $(this).val() is '')
+    )
+    .blur(() ->
+      if($(this).val() is '')
+        $(this).addClass('inactive').val($(this).data('default'))
+    )
+  )
+
 # load json file and call draw function
 d3.json("data/islet_eqtl.json", draw)
