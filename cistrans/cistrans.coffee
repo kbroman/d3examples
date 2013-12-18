@@ -798,7 +798,6 @@ draw = (data) ->
 
 # grayed-out "Gene symbol" within text input box
 $('input#genesymbol').each(() ->
-  console.log($(this).val())
   $(this)
     .data('default', $(this).val())
     .addClass('inactive')
