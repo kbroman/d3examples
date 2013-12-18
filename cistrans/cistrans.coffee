@@ -796,6 +796,16 @@ draw = (data) ->
        .attr("width", w[j])
        .attr("class", "outerBox")
 
+  # autocomplete
+  $('#genesymbol').autocomplete({
+    source: (request, response) ->
+      matches = $.map(allgenes, (tag) ->
+        tag if tag.toUpperCase().indexOf(request.term.toUpperCase()) is 0)
+      response(matches)
+    ,
+    autoFill:true,
+    selectFirst:true})
+
 # grayed-out "Gene symbol" within text input box
 $('input#genesymbol').each(() ->
   $(this)
