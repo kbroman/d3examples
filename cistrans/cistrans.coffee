@@ -797,7 +797,7 @@ draw = (data) ->
        .attr("class", "outerBox")
 
   # autocomplete
-  $('#genesymbol').autocomplete({
+  $('input#genesymbol').autocomplete({
     source: (request, response) ->
       matches = $.map(allgenes, (tag) ->
         tag if tag.toUpperCase().indexOf(request.term.toUpperCase()) is 0)
