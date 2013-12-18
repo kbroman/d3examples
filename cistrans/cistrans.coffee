@@ -21,6 +21,8 @@
 #
 # This is awful code; I just barely know what I'm doing.
 
+selectedGene = ""
+
 # function that does all of the work
 draw = (data) ->
 
@@ -752,6 +754,9 @@ draw = (data) ->
                  d3.selectAll("#eqtltip").remove()
              .on "click", (d) ->
                  d3.json("data/probe_data/probe#{d.probe}.json", draw_probe)
+                 selectedGene = ""
+                 $('input#genesymbol').each(() -> $(this).val($(this).data('default')).addClass('inactive'))
+                 d3.select("a#currentgenesymbol").html("")
 
   # initial set of LOD curves at the bottom
   d3.json("data/probe_data/probe517761.json", draw_probe)
