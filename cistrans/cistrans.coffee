@@ -101,7 +101,7 @@ draw = (data) ->
       else
         probesByGene[gene] = [probe]
 
-  allgenes = (gene for gene of probesByGene)
+  allgenes = (gene for gene of probesByGene).sort()
 
   # calculate X and Y scales, using cM positions
   totalChrLength = 0;
