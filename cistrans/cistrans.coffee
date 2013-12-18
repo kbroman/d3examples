@@ -801,10 +801,7 @@ draw = (data) ->
     source: (request, response) ->
       matches = $.map(allgenes, (tag) ->
         tag if tag.toUpperCase().indexOf(request.term.toUpperCase()) is 0)
-      response(matches)
-    ,
-    autoFill:true,
-    selectFirst:true})
+      response(matches)})
 
 # grayed-out "Gene symbol" within text input box
 $('input#genesymbol').each(() ->
