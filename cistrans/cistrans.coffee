@@ -798,10 +798,15 @@ draw = (data) ->
 
   # autocomplete
   $('input#genesymbol').autocomplete({
+    autoFocus: true,
     source: (request, response) ->
       matches = $.map(allgenes, (tag) ->
         tag if tag.toUpperCase().indexOf(request.term.toUpperCase()) is 0)
-      response(matches)})
+      response(matches)
+    ,
+    select: (event, ui) ->
+      $('input#genesymbol').val(ui.item.label)
+      $('input#submit').submit()})
 
 # grayed-out "Gene symbol" within text input box
 $('input#genesymbol').each(() ->
