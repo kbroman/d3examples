@@ -11,5 +11,3 @@ click to view effect plot and phenotype-vs-genotype plot.
 In effect plot, hover over means to see values.
 
 In pheno-vs-geno plot, hover over points to see individual ID.
-
-This is awful code; I just barely know what I'm doing.

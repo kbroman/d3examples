@@ -16,5 +16,3 @@ curves.
 
 There&rsquo;s a hidden &ldquo;back&rdquo; button a bit to the right of
 the green button.
-
-This is awful code.

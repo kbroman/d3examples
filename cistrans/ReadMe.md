@@ -20,5 +20,3 @@ a marker to see the phenotype-vs-genotype plot to right.  In
 geno-vs-pheno plot, hover over average to view value, and hover over
 points to view individual IDs.
 
-This is awful code; I just barely know what I'm doing.
-

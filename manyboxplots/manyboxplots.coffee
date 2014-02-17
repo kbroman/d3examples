@@ -5,8 +5,6 @@
 #   for each of 500 distributions
 # Hover over a column in the top panel and the corresponding distribution
 #   is show below; click for it to persist; click again to make it go away.
-#
-# This is awful code; I just barely know what I'm doing.
 
 # function that does all of the work
 draw = (data) ->

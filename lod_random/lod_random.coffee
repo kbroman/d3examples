@@ -1,6 +1,4 @@
 # Interactive lod curve and QTL effect plot
-#
-# This is awful code; I just barely know what I'm doing.
 
 # set up svg
 # colors
