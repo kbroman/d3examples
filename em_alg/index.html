@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LOD curves and QTL effects</title>
+    <title>Illustration of EM algorithm for QTL mapping</title>
     <link rel=stylesheet type="text/css" href="../d3-tip/d3-tip.min.css">
     <link rel=stylesheet type="text/css" href="http://kbroman.org/qtlcharts/assets/panels/panelutil.css">
 <style>
-div.qtlcharts { font-size: 20pt; }
+h3 { font-size:24pt; font-family: sans-serif; }
+div.qtlcharts { font-size: 18pt; }
 div.qtlcharts .title text { fill: #048; }
 .d3-tip { background: slateblue; }
 .d3-tip.e:after { color: slateblue; }
@@ -19,12 +20,20 @@ div.qtlcharts .title text { fill: #048; }
 
 <body>
 
+<h3>Illustration of EM algorithm for QTL mapping</h3>
+
 <div id="chart" class="qtlcharts"></div>
 
 <div id="legend" style="width:700px;margin-left:25px;font-family:sans-serif;">
-<p>Put a legend here.
+<p>Plot of phenotype vs conditional genotype probabilities at each
+iteration of the EM algorithm. Each point is an individual; pink line
+segments are at the current estimated averages.</p>
 
-<p>The code is on <a href="https://github.com/kbroman/d3examples/tree/master/em_alg">github</a>.
+<p>Click on &ldquo;Next&rdquo; to go to next iteration and
+&ldquo;Back&rdquo; to go back. Hover over points to see the prior QTL
+genotype probabilities; hover over line segments to see estimated averages.</p>
+
+<p>The code is on <a href="https://github.com/kbroman/d3examples/tree/master/em_alg">github</a>.</p>
 
 </div>
 

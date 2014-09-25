@@ -1,8 +1,8 @@
 # illustration of EM algorithm for QTL mapping
 
-h = 600
+h = 550
 w = 800
-margin = {left:110, top:80, right:80, bottom: 140, inner:15}
+margin = {left:100, top:40, right:10, bottom: 90, inner:15}
 axispos = {xtitle:50, ytitle:85, xlabel:10, ylabel:10}
 radius = 4
 bigradius = 6
