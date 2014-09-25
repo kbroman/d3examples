@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Test of reusable LOD score chart</title>
+    <script charset="utf-8" type="text/javascript" src="../../../d3/d3.min.js"></script>
+    <link rel=stylesheet type="text/css" href="../../../d3-tip/d3-tip.min.css">
+    <script type="text/javascript" src="../../../d3-tip/d3-tip.min.js"></script>
+
+    <script type="text/javascript" src="../../panelutil.js"></script>
+    <link rel=stylesheet type="text/css" href="../../panelutil.css">
+
+    <script type="text/javascript" src="../lodchart.js"></script>
+    <style>body { font-family: sans-serif; }</style>
+</head>
+
+<body>
+<h3>Test of reusable LOD score chart</h3>
+
+<h4>Top chart</h4>
+<div class="qtlcharts" id="topchart"></div>
+
+<p style="margin-left:25px;">Hover over a marker to see the marker name.<br>
+Hover over a chromosome rectangle and it will change to pink.<br>
+Click on a marker point and it will be animated.</p>
+
+<hr>
+
+<h4>Bottom chart, with panels</h4>
+<div class="qtlcharts" id="bottomchart"></div>
+
+<p style="margin-left:25px;">Hover over a marker to see the marker name.</p>
+
+<hr>
+
+<p>Source code at <a href="https://github.com/kbroman/qtlcharts/tree/master/inst/panels/lodchart">github</a>.</p>
+
+<script type="text/javascript" src="test_lodchart.js"></script>
+</body>
+</html>
