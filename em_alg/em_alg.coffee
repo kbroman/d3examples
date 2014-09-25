@@ -10,6 +10,10 @@ pointcolor = "slateblue"
 hilitpointcolor = "Orchid"
 pointstrokecolor = "black"
 pointstrokewidth = 1
+segwidth = 50
+segcolor = "violetred"
+seglwd = 6
+duration = 1500
 
 # permute button
 buttonw = 80
@@ -47,7 +51,7 @@ d3.json "data.json", (data) ->
                            .yvar("y")
                            .xlab("Pr(AB | marker data)")
                            .ylab("Phenotype")
-                           .xlim([-0.05, 1.05])
+                           .xlim([-0.025, 1.025])
                            .height(h)
                            .width(w)
                            .margin(margin)
@@ -62,6 +66,8 @@ d3.json "data.json", (data) ->
       .datum(toplot)
       .call(mychart)
 
+    thesvg = d3.select("svg svg g")
+
     points = mychart.pointsSelect()
                     .on("mouseover", () ->
                                 d3.select(this)
@@ -72,6 +78,29 @@ d3.json "data.json", (data) ->
                                   .attr("fill", pointcolor)
                                   .attr("r", radius))
 
+    segtip = d3.tip()
+               .attr('class', 'd3-tip')
+               .attr('id', 'violet')
+               .html((d,i) -> d3.format(".2f")(data.theta[iteration][i]))
+               .direction('e')
+               .offset([0,10])
+    thesvg.call(segtip)
+
+    segments = thesvg.selectAll("empty")
+                     .data([0,1])
+                     .enter()
+                     .append("line")
+                     .attr("x1", (d) -> mychart.xscale()(d)-segwidth/2)
+                     .attr("x2", (d) -> mychart.xscale()(d)+segwidth/2)
+                     .attr("y1", (d) -> mychart.yscale()(data.theta[0][d]))
+                     .attr("y2", (d) -> mychart.yscale()(data.theta[0][d]))
+                     .attr("fill", "none")
+                     .attr("stroke", segcolor)
+                     .attr("stroke-width", seglwd)
+                     .on("mouseover", segtip.show)
+                     .on("mouseout", segtip.hide)
+    
+
     permbutton.on "click", ->
                       iteration++ unless iteration >= data.lod.length - 1
                       if iteration > 0
@@ -81,7 +110,7 @@ d3.json "data.json", (data) ->
                           backbuttontext.transition()
                                         .duration(250)
                                         .attr("opacity", 1)
-                      update_points()
+                      update()
 
     backbutton.on "click", ->
                       iteration-- unless iteration == 0
@@ -92,19 +121,19 @@ d3.json "data.json", (data) ->
                           backbuttontext.transition()
                                         .duration(250)
                                         .attr("opacity", 0)
-                      update_points()
+                      update()
 
-    update_points = () ->
+    update = () ->
                  d3.select("g.title text").text("Iteration #{iteration}, " +
                                      "LOD = #{d3.format(".2f")(data.lod[iteration])}")
-                 points.transition().duration(1500)
+                 points.transition().duration(duration)
                        .attr("cx", (d) -> mychart.xscale()(data.p[iteration][d]))
+                 segments.transition().duration(duration)
+                     .attr("y1", (d) -> mychart.yscale()(data.theta[iteration][d]))
+                     .attr("y2", (d) -> mychart.yscale()(data.theta[iteration][d]))
                  d3.select("g.x.axis text.title").text(() ->
                      return "Pr(AB | marker data)" if iteration == 0
                      "Pr(AB | marker data, y, \u03b8)")
-
-                 console.log(iteration)
-       
 
 
 add_buttons = () ->
