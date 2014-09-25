@@ -40,7 +40,7 @@ d3.json "data.json", (data) ->
     toplot = {data:{x: data.p[0], y: data.y}, indID:[]}
 
     for i of data.y
-        toplot.indID[i] = d3.format(".%f")(data.p[0])
+        toplot.indID[i] = d3.format(".3f")(data.p[0][i])
 
     # using scatterplot just to get the frame, really
     mychart = scatterplot().xvar("x")
@@ -53,39 +53,24 @@ d3.json "data.json", (data) ->
                            .margin(margin)
                            .axispos(axispos)
                            .dataByInd(false)
+                           .pointcolor(pointcolor)
+                           .pointsize(radius)
+                           .pointstroke(pointstrokecolor)
                            .title("Iteration 0, LOD = #{d3.format(".2f")(data.lod[0])}")
   
     d3.select("svg")
       .datum(toplot)
       .call(mychart)
 
-    # erase the points produced by scatterplot
-    mychart.pointsSelect().remove()
-    
-    thesvg = d3.select("svg svg")
-
-    indtip = d3.tip()
-               .attr('class', 'd3-tip')
-               .html((d,i) -> d3.format(".3f")(data.p[0][i]))
-               .direction('e')
-               .offset([0,10])
-    thesvg.call(indtip)
-
-    pointg = thesvg.append("g").attr("id", "newpoints")
-    points = pointg.selectAll("empty")
-                   .data(d3.range(data.y.length))
-                   .enter()
-                   .append("circle")
-                   .attr("cx", (d) -> mychart.xscale()(data.p[0][d]))
-                   .attr("cy", (d) -> mychart.yscale()(data.y[d]))
-                   .attr("r", radius)
-                   .attr("fill", pointcolor)
-                   .attr("stroke", pointstrokecolor)
-                   .attr("stroke-width", pointstrokewidth)
-                   .on("mouseover.newtip", indtip.show)
-                   .on("mouseout.newtip", indtip.hide)
-                   .on("mouseover", () -> d3.select(this).attr("fill", hilitpointcolor).attr("r", bigradius))
-                   .on("mouseout", () -> d3.select(this).attr("fill", pointcolor).attr("r", radius))
+    points = mychart.pointsSelect()
+                    .on("mouseover", () ->
+                                d3.select(this)
+                                  .attr("fill", hilitpointcolor)
+                                  .attr("r", bigradius))
+                    .on("mouseout", () ->
+                                d3.select(this)
+                                  .attr("fill", pointcolor)
+                                  .attr("r", radius))
 
     permbutton.on "click", ->
                       iteration++ unless iteration >= data.lod.length - 1
@@ -97,21 +82,30 @@ d3.json "data.json", (data) ->
 
     backbutton.on("mouseover", ->
                       if iteration > 0
-                          d3.select(this).transition().duration(250).attr("opacity", 1)
-                          backbuttontext.transition().duration(250).attr("opacity", 1)
+                          d3.select(this).transition()
+                                         .duration(250)
+                                         .attr("opacity", 1)
+                          backbuttontext.transition()
+                                        .duration(250)
+                                        .attr("opacity", 1)
                   )
               .on("mouseout", ->
-                      d3.select(this).transition().duration(1000).attr("opacity", 0)
-                      backbuttontext.transition().duration(1000).attr("opacity", 0))
+                      d3.select(this).transition()
+                                     .duration(1000)
+                                     .attr("opacity", 0)
+                      backbuttontext.transition()
+                                    .duration(1000)
+                                    .attr("opacity", 0))
 
 
     update_points = () ->
-                 d3.select("g.title text").text("Iteration #{iteration}, LOD = #{d3.format(".2f")(data.lod[iteration])}")
+                 d3.select("g.title text").text("Iteration #{iteration}, " +
+                                     "LOD = #{d3.format(".2f")(data.lod[iteration])}")
                  points.transition().duration(1500)
                        .attr("cx", (d) -> mychart.xscale()(data.p[iteration][d]))
                  d3.select("g.x.axis text.title").text(() ->
                      return "Pr(AB | marker data)" if iteration == 0
-                     "Pr(AB | marker data, y, theta-hat)")
+                     "Pr(AB | marker data, y, \u03b8)")
 
                  console.log(iteration)
        

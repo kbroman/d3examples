@@ -51,7 +51,7 @@ backbuttontext = null;
 iteration = 0;
 
 d3.json("data.json", function(data) {
-  var i, indtip, mychart, pointg, points, thesvg, toplot, update_points;
+  var i, mychart, points, toplot, update_points;
   add_buttons();
   toplot = {
     data: {
@@ -61,29 +61,11 @@ d3.json("data.json", function(data) {
     indID: []
   };
   for (i in data.y) {
-    toplot.indID[i] = d3.format(".%f")(data.p[0]);
+    toplot.indID[i] = d3.format(".3f")(data.p[0][i]);
   }
-  mychart = scatterplot().xvar("x").yvar("y").xlab("Pr(AB | marker data)").ylab("Phenotype").xlim([-0.05, 1.05]).height(h).width(w).margin(margin).axispos(axispos).dataByInd(false).title("Iteration 0, LOD = " + (d3.format(".2f")(data.lod[0])));
+  mychart = scatterplot().xvar("x").yvar("y").xlab("Pr(AB | marker data)").ylab("Phenotype").xlim([-0.05, 1.05]).height(h).width(w).margin(margin).axispos(axispos).dataByInd(false).pointcolor(pointcolor).pointsize(radius).pointstroke(pointstrokecolor).title("Iteration 0, LOD = " + (d3.format(".2f")(data.lod[0])));
   d3.select("svg").datum(toplot).call(mychart);
-  d3.select("g.x.axis text.title").text(function() {
-    if (iteration === 0) {
-      return "Pr(AB | marker data)";
-    }
-    return "Pr(AB | marker data, y, theta-hat)";
-  });
-  d3.select("g.y.axis text.title").text("Phenotype");
-  mychart.pointsSelect().remove();
-  thesvg = d3.select("svg svg");
-  indtip = d3.tip().attr('class', 'd3-tip').html(function(d, i) {
-    return d3.format(".3f")(data.p[0][i]);
-  }).direction('e').offset([0, 10]);
-  thesvg.call(indtip);
-  pointg = thesvg.append("g").attr("id", "newpoints");
-  points = pointg.selectAll("empty").data(d3.range(data.y.length)).enter().append("circle").attr("cx", function(d) {
-    return mychart.xscale()(data.p[0][d]);
-  }).attr("cy", function(d) {
-    return mychart.yscale()(data.y[d]);
-  }).attr("r", radius).attr("fill", pointcolor).attr("stroke", pointstrokecolor).attr("stroke-width", pointstrokewidth).on("mouseover.newtip", indtip.show).on("mouseout.newtip", indtip.hide).on("mouseover", function() {
+  points = mychart.pointsSelect().on("mouseover", function() {
     return d3.select(this).attr("fill", hilitpointcolor).attr("r", bigradius);
   }).on("mouseout", function() {
     return d3.select(this).attr("fill", pointcolor).attr("r", radius);
@@ -110,7 +92,7 @@ d3.json("data.json", function(data) {
     return backbuttontext.transition().duration(1000).attr("opacity", 0);
   });
   return update_points = function() {
-    d3.select("g.title text").text("Iteration " + iteration + ", LOD = " + (d3.format(".2f")(data.lod[iteration])));
+    d3.select("g.title text").text(("Iteration " + iteration + ", ") + ("LOD = " + (d3.format(".2f")(data.lod[iteration]))));
     points.transition().duration(1500).attr("cx", function(d) {
       return mychart.xscale()(data.p[iteration][d]);
     });
@@ -118,7 +100,7 @@ d3.json("data.json", function(data) {
       if (iteration === 0) {
         return "Pr(AB | marker data)";
       }
-      return "Pr(AB | marker data, y, theta-hat)";
+      return "Pr(AB | marker data, y, \u03b8)";
     });
     return console.log(iteration);
   };
