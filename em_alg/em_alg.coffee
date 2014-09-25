@@ -2,7 +2,14 @@
 
 h = 600
 w = 800
-margin = {left:70, top:40, right:40, bottom: 70, inner:5}
+margin = {left:110, top:80, right:80, bottom: 140, inner:15}
+axispos = {xtitle:50, ytitle:85, xlabel:10, ylabel:10}
+radius = 4
+bigradius = 6
+pointcolor = "slateblue"
+hilitpointcolor = "Orchid"
+pointstrokecolor = "black"
+pointstrokewidth = 1
 
 # permute button
 buttonw = 80
@@ -19,19 +26,21 @@ svg = d3.select("div#chart")
         .attr("height", totalh)
         .attr("width", w+margin.left*margin.right)
 
+# globals
 permbutton = null
 backbutton = null
 backbuttontext = null
 iteration = 0
-radius = 4
-bigradius = 6
 
 
 d3.json "data.json", (data) ->
 
     add_buttons()
     
-    toplot = {x: data.p[0], y: data.y}
+    toplot = {data:{x: data.p[0], y: data.y}, indID:[]}
+
+    for i of data.y
+        toplot.indID[i] = d3.format(".%f")(data.p[0])
 
     # using scatterplot just to get the frame, really
     mychart = scatterplot().xvar("x")
@@ -42,11 +51,12 @@ d3.json "data.json", (data) ->
                            .height(h)
                            .width(w)
                            .margin(margin)
+                           .axispos(axispos)
                            .dataByInd(false)
                            .title("Iteration 0, LOD = #{d3.format(".2f")(data.lod[0])}")
   
     d3.select("svg")
-      .datum({data:toplot})
+      .datum(toplot)
       .call(mychart)
 
     # x and y axis labels
@@ -75,13 +85,13 @@ d3.json "data.json", (data) ->
                    .attr("cx", (d) -> mychart.xscale()(data.p[0][d]))
                    .attr("cy", (d) -> mychart.yscale()(data.y[d]))
                    .attr("r", radius)
-                   .attr("fill", "slateblue")
-                   .attr("stroke", "black")
-                   .attr("stroke-width", "1")
+                   .attr("fill", pointcolor)
+                   .attr("stroke", pointstrokecolor)
+                   .attr("stroke-width", pointstrokewidth)
                    .on("mouseover.newtip", indtip.show)
                    .on("mouseout.newtip", indtip.hide)
-                   .on("mouseover", () -> d3.select(this).attr("fill", "Orchid").attr("r", bigradius))
-                   .on("mouseout", () -> d3.select(this).attr("fill", "slateblue").attr("r", radius))
+                   .on("mouseover", () -> d3.select(this).attr("fill", hilitpointcolor).attr("r", bigradius))
+                   .on("mouseout", () -> d3.select(this).attr("fill", pointcolor).attr("r", radius))
 
     permbutton.on "click", ->
                       iteration++ unless iteration >= data.lod.length - 1
@@ -115,7 +125,7 @@ d3.json "data.json", (data) ->
 
 add_buttons = () ->
     permbuttong = svg.append("g").attr("id", "random_permutebutton")
-                     .attr("transform", "translate(#{margin.left},#{totalh-buttonh})")
+                     .attr("transform", "translate(#{margin.left},#{totalh-buttonh*1.1})")
     permbutton = permbuttong.append("rect")
                             .attr("x", 0)
                             .attr("y", 0)
@@ -135,7 +145,7 @@ add_buttons = () ->
                .attr("fill", "black")
 
     backbuttong = svg.append("g").attr("id", "random_backbutton")
-                     .attr("transform", "translate(#{margin.left+buttonw+buttonw2/2},#{totalh-buttonh})")
+                     .attr("transform", "translate(#{margin.left+buttonw+buttonw2/2},#{totalh-buttonh*1.1})")
     backbutton = backbuttong.append("rect")
                             .attr("x", 0)
                             .attr("y", 0)
