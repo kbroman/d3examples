@@ -42,7 +42,6 @@ tinyRad = "1"
 buttonw = 170
 buttonh = 40
 totalh += buttonh + pad.bottom/2
-
 # back button
 buttonw2 = 80
 
@@ -57,7 +56,7 @@ lodpanel = svg.append("g").attr("id", "random_lodpanel")
 effpanel = svg.append("g").attr("id", "random_effpanel")
 
 permbuttong = svg.append("g").attr("id", "random_permutebutton")
-                .attr("transform", "translate(#{pad.left},#{totalh-buttonh})")
+                .attr("transform", "translate(#{pad.left},#{totalh-buttonh-pad.bottom/2})")
 permbutton = permbuttong.append("rect")
           .attr("x", 0)
           .attr("y", 0)
@@ -77,7 +76,7 @@ permbuttong.append("text")
           .attr("fill", "black")
 
 backbuttong = svg.append("g").attr("id", "random_backbutton")
-                .attr("transform", "translate(#{pad.left+buttonw+buttonw2/2},#{totalh-buttonh})")
+                .attr("transform", "translate(#{pad.left+buttonw+buttonw2/2},#{totalh-buttonh-pad.bottom/2})")
 backbutton = backbuttong.append("rect")
           .attr("x", 0)
           .attr("y", 0)
