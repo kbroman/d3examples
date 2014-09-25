@@ -1,5 +1,5 @@
 
-all: panelutil.js scatterplot.js em_alg.js data.json
+all: em_alg.js data.json
 
 # R_OPTS: --vanilla without --no-environ
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
