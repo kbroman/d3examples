@@ -3,7 +3,7 @@ var add_buttons, axispos, backbutton, backbuttontext, bigradius, buttonh, button
 
 h = 550;
 
-w = 800;
+w = 650;
 
 margin = {
   left: 100,
