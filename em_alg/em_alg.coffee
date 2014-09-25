@@ -59,12 +59,6 @@ d3.json "data.json", (data) ->
       .datum(toplot)
       .call(mychart)
 
-    # x and y axis labels
-    d3.select("g.x.axis text.title").text(() ->
-                         return "Pr(AB | marker data)" if iteration == 0
-                         "Pr(AB | marker data, y, theta-hat)")
-    d3.select("g.y.axis text.title").text("Phenotype")
-
     # erase the points produced by scatterplot
     mychart.pointsSelect().remove()
     
