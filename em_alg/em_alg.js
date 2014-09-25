@@ -74,22 +74,21 @@ d3.json("data.json", function(data) {
     if (!(iteration >= data.lod.length - 1)) {
       iteration++;
     }
+    if (iteration > 0) {
+      backbutton.transition().duration(250).attr("opacity", 1);
+      backbuttontext.transition().duration(250).attr("opacity", 1);
+    }
     return update_points();
   });
   backbutton.on("click", function() {
     if (iteration !== 0) {
       iteration--;
     }
-    return update_points();
-  });
-  backbutton.on("mouseover", function() {
-    if (iteration > 0) {
-      d3.select(this).transition().duration(250).attr("opacity", 1);
-      return backbuttontext.transition().duration(250).attr("opacity", 1);
+    if (iteration === 0) {
+      backbutton.transition().duration(250).attr("opacity", 0);
+      backbuttontext.transition().duration(250).attr("opacity", 0);
     }
-  }).on("mouseout", function() {
-    d3.select(this).transition().duration(1000).attr("opacity", 0);
-    return backbuttontext.transition().duration(1000).attr("opacity", 0);
+    return update_points();
   });
   return update_points = function() {
     d3.select("g.title text").text(("Iteration " + iteration + ", ") + ("LOD = " + (d3.format(".2f")(data.lod[iteration]))));

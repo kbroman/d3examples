@@ -74,29 +74,25 @@ d3.json "data.json", (data) ->
 
     permbutton.on "click", ->
                       iteration++ unless iteration >= data.lod.length - 1
+                      if iteration > 0
+                          backbutton.transition()
+                                    .duration(250)
+                                    .attr("opacity", 1)
+                          backbuttontext.transition()
+                                        .duration(250)
+                                        .attr("opacity", 1)
                       update_points()
 
     backbutton.on "click", ->
                       iteration-- unless iteration == 0
-                      update_points()
-
-    backbutton.on("mouseover", ->
-                      if iteration > 0
-                          d3.select(this).transition()
-                                         .duration(250)
-                                         .attr("opacity", 1)
+                      if iteration == 0
+                          backbutton.transition()
+                                    .duration(250)
+                                    .attr("opacity", 0)
                           backbuttontext.transition()
                                         .duration(250)
-                                        .attr("opacity", 1)
-                  )
-              .on("mouseout", ->
-                      d3.select(this).transition()
-                                     .duration(1000)
-                                     .attr("opacity", 0)
-                      backbuttontext.transition()
-                                    .duration(1000)
-                                    .attr("opacity", 0))
-
+                                        .attr("opacity", 0)
+                      update_points()
 
     update_points = () ->
                  d3.select("g.title text").text("Iteration #{iteration}, " +
