@@ -105,8 +105,10 @@ draw = (data) ->
   drawRandom(data, col)
 
   permbutton.on "click", ->
-    col++
-    col = 1 if col >= data.phevals.length
+    col++ if col < data.phevals.length-1
+    if col > 0
+        backbutton.transition().duration(250).attr("opacity", 1)
+        backbuttontext.transition().duration(250).attr("opacity", 1)
 
     lodpanel.remove()
     effpanel.remove()
@@ -117,8 +119,7 @@ draw = (data) ->
     drawRandom(data, col)
 
   backbutton.on "click", ->
-    col--
-    col = 0 if col < 0
+    col-- if col > 0
 
     lodpanel.remove()
     effpanel.remove()
@@ -132,14 +133,6 @@ draw = (data) ->
 
     drawRandom(data, col)
 
-  backbutton.on("mouseover", ->
-                     if col != 0 # if not at beginning
-                      d3.select(this).transition().duration(250).attr("opacity", 1)
-                      backbuttontext.transition().duration(250).attr("opacity", 1))
-            .on("mouseout", ->
-                     d3.select(this).transition().duration(1000).attr("opacity", 0)
-                     backbuttontext.transition().duration(1000).attr("opacity", 0))
-                      
 
 # function that does all of the work
 drawRandom = (data, column) ->
