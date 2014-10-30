@@ -33,7 +33,7 @@ plot = (data) ->
     top_panel_var = ["total", "not_distracted", "speeding", "alcohol", "ins_premium", "ins_losses"]
     xlim = [[0,25],[0,25],[0,25],[0,25],[0,1500],[0,200]]
     nxticks = [6,6,6,6, 4, 5]
-    xlab = ["", "", "", "", "Dollars", "Dollars"]
+    xlab = ["Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles", "Dollars", "Dollars"]
     title = ["Total", "Not distracted", "Speeding", "Alcohol", "Ave. Ins. premium", "Ave. Ins. Losses"]
     dotplots = []
     for i of top_panel_var
@@ -77,14 +77,6 @@ plot = (data) ->
                      .style("dominant-baseline", "middle")
                      .style("text-anchor", "end")
                      .attr("id", (d,i) -> "text#{i}")
-
-    # add x-axis label for first four panels
-    svg.append("g").attr("class", "x axis")
-       .append("text")
-       .attr("x", statenamewidth + 2*fullpanelwidth_top)
-       .attr("y", margin_top.top + panelheight_top + 25)
-       .attr("class", "title")
-       .text("Crashes per billion miles")
 
 # load the data and make the plot
 d3.json("data.json", plot)
