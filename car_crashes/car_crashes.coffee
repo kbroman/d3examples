@@ -5,24 +5,21 @@ plot = (data) ->
     # sizes of things
     htop = 530
     hbot = 500
-    height = htop + hbot
+    height = htop + hbot+200
 
     margin_top = {left:5, top:20, right:25, bottom:40, inner:0}
     fullpanelwidth_top = 180
     panelwidth_top = fullpanelwidth_top - margin_top.left - margin_top.right
     panelheight_top = htop - margin_top.top - margin_top.bottom
-    statenamewidth = 201
+    statenamewidth = 101
     width = statenamewidth + fullpanelwidth_top*6
 
-    margin_bot = {left:60, top:40, right:40, bottom:40, inner:5}
+    margin_bot = {left:60, top:20, right:25, bottom:40, inner:5}
 
-    panelwidth_bot = width/3
-
-    # print the sizes of things
-    console.log("width = #{width}")
-    console.log("height = #{height}")
-    console.log("top width = #{panelwidth_top}")
-    console.log("bot width = #{panelwidth_bot}")
+    fullpanelwidth_bot = width/3
+    panelwidth_bot = fullpanelwidth_bot - margin_bot.left - margin_bot.right
+    fullpanelheight_bot = hbot/2
+    panelheight_bot = fullpanelheight_bot - margin_bot.top - margin_bot.bottom
 
     # make the svg
     svg = d3.select("div#chart")
@@ -34,10 +31,11 @@ plot = (data) ->
     top_panel_var = ["total", "not_distracted", "speeding", "alcohol", "ins_premium", "ins_losses"]
     xlim = [[0,25],[0,25],[0,25],[0,25],[0,1500],[0,200]]
     nxticks = [6,6,6,6, 4, 5]
-    xlab = ["Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles", "Dollars", "Dollars"]
+    xlab = ["Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles",
+            "Crashes per billion miles", "Dollars", "Dollars"]
     title = ["Total", "Not distracted", "Speeding", "Alcohol", "Ave. Ins. premium", "Ave. Ins. Losses"]
 
-    # now make the dot plots
+    # make the dot plots
     dotplots = []
     for i of top_panel_var
 
@@ -72,8 +70,6 @@ plot = (data) ->
         points = this_dotplot.pointsSelect().on("mouseover.paneltip", (d) -> d)
                                             .on("mouseout.paneltip", (d) -> d)
 
-
-
         points.on("mouseover", highlight_state)
               .on("mouseout",  lowlight_state)
 
@@ -98,10 +94,60 @@ plot = (data) ->
                      .on("mouseout",  lowlight_state)
 
 
+    # variables for lower scatterplots
+    row = [0, 0, 0, 1, 1, 1]
+    col = [0, 1, 2, 0, 1, 2]
+    lower_xvar = [0, 0, 0, 0, 0, 4]
+    lower_yvar = [1, 2, 3, 4, 5, 5]
+
+    # make the scatterplots
+    scatterplots = []
+    for i of top_panel_var
+
+        this_scatterplot = scatterplot().width(panelwidth_bot)
+                                    .height(panelheight_bot)
+                                    .margin(margin_bot)
+                                    .titlepos(10)
+                                    .xNA({handle:false})
+                                    .yNA({handle:false})
+                                    .xlim(xlim[lower_xvar[i]])
+                                    .ylim(xlim[lower_yvar[i]])
+                                    .nxticks(nxticks[lower_xvar[i]])
+                                    .nyticks(nxticks[lower_yvar[i]])
+                                    .xlab(xlab[lower_xvar[i]])
+                                    .ylab(xlab[lower_yvar[i]])
+                                    .pointsize(3)
+                                    .dataByInd(false)
+                                    .xvar(top_panel_var[lower_xvar[i]])
+                                    .yvar(top_panel_var[lower_yvar[i]])
+        scatterplots.push(this_scatterplot)
+
+        hpos = fullpanelwidth_bot*col[i]
+        vpos = htop+row[i]*fullpanelheight_bot+margin_bot.top
+        this_g = svg.append("g")
+                    .attr("class", "scatterplot")
+                    .attr("id", "scatterplot#{i}")
+                    .attr("transform", "translate(#{hpos},#{vpos})")
+
+        this_g.datum({data:data, indID:data.abbrev})
+              .call(this_scatterplot)
+
+        # remove the tool tips
+        d3.selectAll(".d3-tip").remove()
+        points = this_scatterplot.pointsSelect().on("mouseover.paneltip", (d) -> d)
+                                                .on("mouseout.paneltip", (d) -> d)
+
+        points.on("mouseover", highlight_state)
+              .on("mouseout",  lowlight_state)
+
+
+
+
 highlight_state = (d,i) ->
     d3.selectAll("circle.pt#{i}")
       .attr("fill", "Orchid")
       .attr("r", 5)
+      .moveToFront()
     d3.select("text#state#{i}")
       .attr("fill", "violetred")
 
@@ -109,6 +155,7 @@ lowlight_state = (d,i) ->
     d3.selectAll("circle.pt#{i}")
       .attr("fill", "slateblue")
       .attr("r", 3)
+      .moveToBack()
     d3.select("text#state#{i}")
       .attr("fill", "black")
 
