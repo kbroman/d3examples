@@ -9,4 +9,5 @@ library(jsonlite)
 
 crashes$state <- rownames(crashes)
 rownames(crashes) <- 1:nrow(crashes)
+crashes$rank <- rank(crashes$total, ties.method="first")
 cat(toJSON(crashes, dataframe="columns"), file="data.json")
