@@ -289,7 +289,7 @@ matrixMaxAbs = function(mat) {
   result = Math.abs(mat[0][0]);
   for (i in mat) {
     for (j in mat[i]) {
-      if (result < mat[i][j]) {
+      if (result < Math.abs(mat[i][j])) {
         result = Math.abs(mat[i][j]);
       }
     }

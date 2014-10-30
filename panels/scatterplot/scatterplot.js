@@ -279,7 +279,7 @@ scatterplot = function() {
     if (!arguments.length) {
       return titlepos;
     }
-    titlepos;
+    titlepos = value;
     return chart;
   };
   chart.xlim = function(value) {
