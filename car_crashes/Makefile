@@ -9,3 +9,6 @@ data.json: data2json.R data.R
 
 %.js: %.coffee
 	coffee -bc $<
+
+web: all
+	scp data.json index.html car_crashes.css car_crashes.js broman-10.biostat.wisc.edu:public_html/D3/car_crashes
