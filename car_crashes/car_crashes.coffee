@@ -67,13 +67,10 @@ plot = (data) ->
         this_g.datum({data:data, indID:data.abbrev})
               .call(this_dotplot)
 
-        # remove the tool tips
-        d3.selectAll(".d3-tip").remove()
-        points = this_dotplot.pointsSelect().on("mouseover.paneltip", (d) -> d)
-                                            .on("mouseout.paneltip", (d) -> d)
-
-        points.on("mouseover", highlight_state)
-              .on("mouseout",  lowlight_state)
+        # mouseover/mouseout
+        points = this_dotplot.pointsSelect()
+                             .on("mouseover", highlight_state)
+                             .on("mouseout",  lowlight_state)
 
     # make the horizontal grid lines gray
     d3.selectAll("g.dotplot g.y.axis line").attr("stroke", "#bbb")
@@ -135,16 +132,10 @@ plot = (data) ->
         this_g.datum({data:data, indID:data.abbrev})
               .call(this_scatterplot)
 
-        # remove the tool tips
-        d3.selectAll(".d3-tip").remove()
-        points = this_scatterplot.pointsSelect().on("mouseover.paneltip", (d) -> d)
-                                                .on("mouseout.paneltip", (d) -> d)
-
-        points.on("mouseover", highlight_state)
-              .on("mouseout",  lowlight_state)
-
-
-
+        # mouseover/mouseout
+        points = this_scatterplot.pointsSelect()
+                                 .on("mouseover", highlight_state)
+                                 .on("mouseout",  lowlight_state)
 
 highlight_state = (d,i) ->
     d3.selectAll("circle.pt#{i}")
