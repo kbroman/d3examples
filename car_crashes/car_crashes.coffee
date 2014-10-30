@@ -3,11 +3,11 @@ plot = (data) ->
     n_states = data.state.length
 
     # sizes of things
-    htop = 500
+    htop = 530
     hbot = 500
     height = htop + hbot
 
-    margin_top = {left:5, top:40, right:25, bottom:40, inner:0}
+    margin_top = {left:5, top:20, right:25, bottom:40, inner:0}
     fullpanelwidth_top = 180
     panelwidth_top = fullpanelwidth_top - margin_top.left - margin_top.right
     panelheight_top = htop - margin_top.top - margin_top.bottom
@@ -30,17 +30,21 @@ plot = (data) ->
             .attr("height", height)
             .attr("width", width)
 
+    # info top panels, with dot plots
     top_panel_var = ["total", "not_distracted", "speeding", "alcohol", "ins_premium", "ins_losses"]
     xlim = [[0,25],[0,25],[0,25],[0,25],[0,1500],[0,200]]
     nxticks = [6,6,6,6, 4, 5]
     xlab = ["Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles", "Dollars", "Dollars"]
     title = ["Total", "Not distracted", "Speeding", "Alcohol", "Ave. Ins. premium", "Ave. Ins. Losses"]
+
+    # now make the dot plots
     dotplots = []
     for i of top_panel_var
 
         this_dotplot = scatterplot().width(panelwidth_top)
                                     .height(panelheight_top)
                                     .margin(margin_top)
+                                    .titlepos(10)
                                     .xNA({handle:false})
                                     .yNA({handle:false})
                                     .xlim(xlim[i])
@@ -55,13 +59,15 @@ plot = (data) ->
         dotplots.push(this_dotplot)
 
         this_g = svg.append("g")
+                    .attr("class", "dotplot")
                     .attr("id", "dotplot#{i}")
                     .attr("transform", "translate(#{statenamewidth+i*fullpanelwidth_top},0)")
 
         this_g.datum({data:data, indID:data.abbrev})
               .call(this_dotplot)
 
-        d3.selectAll("g.y.axis line").attr("stroke", "#bbb")
+    # make the horizontal grid lines gray
+    d3.selectAll("g.dotplot g.y.axis line").attr("stroke", "#bbb")
 
     # add state names
     yscale = dotplots[0].yscale()
