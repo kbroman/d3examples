@@ -14,7 +14,8 @@ plot = (data) ->
     statenamewidth = 101
     width = statenamewidth + fullpanelwidth_top*6
 
-    margin_bot = {left:60, top:20, right:25, bottom:40, inner:5}
+    margin_bot = {left:80, top:20, right:25, bottom:40, inner:5}
+    axispos_bot = {xtitle:25, ytitle:50, xlabel:5, ylabel:5}
 
     fullpanelwidth_bot = width/3
     panelwidth_bot = fullpanelwidth_bot - margin_bot.left - margin_bot.right
@@ -33,7 +34,8 @@ plot = (data) ->
     nxticks = [6,6,6,6, 4, 5]
     xlab = ["Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles",
             "Crashes per billion miles", "Dollars", "Dollars"]
-    title = ["Total", "Not distracted", "Speeding", "Alcohol", "Ave. Ins. premium", "Ave. Ins. Losses"]
+    title = ["Total crashes", "Not distracted crashes", "Speeding crashes", "Alcohol crashes",
+            "Ave. Ins. premium", "Ave. Ins. Losses"]
 
     # make the dot plots
     dotplots = []
@@ -107,6 +109,7 @@ plot = (data) ->
         this_scatterplot = scatterplot().width(panelwidth_bot)
                                     .height(panelheight_bot)
                                     .margin(margin_bot)
+                                    .axispos(axispos_bot)
                                     .titlepos(10)
                                     .xNA({handle:false})
                                     .yNA({handle:false})
@@ -114,8 +117,8 @@ plot = (data) ->
                                     .ylim(xlim[lower_yvar[i]])
                                     .nxticks(nxticks[lower_xvar[i]])
                                     .nyticks(nxticks[lower_yvar[i]])
-                                    .xlab(xlab[lower_xvar[i]])
-                                    .ylab(xlab[lower_yvar[i]])
+                                    .xlab(title[lower_xvar[i]])
+                                    .ylab(title[lower_yvar[i]])
                                     .pointsize(3)
                                     .dataByInd(false)
                                     .xvar(top_panel_var[lower_xvar[i]])
