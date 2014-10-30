@@ -52,6 +52,7 @@ plot = (data) ->
                                     .yticks(d3.range(n_states).map (d) -> d+1)
                                     .xlab(xlab[i])
                                     .ylab("")
+                                    .pointsize(3)
                                     .dataByInd(false)
                                     .xvar(top_panel_var[i])
                                     .yvar("rank")
@@ -65,6 +66,16 @@ plot = (data) ->
 
         this_g.datum({data:data, indID:data.abbrev})
               .call(this_dotplot)
+
+        # remove the tool tips
+        d3.selectAll(".d3-tip").remove()
+        points = this_dotplot.pointsSelect().on("mouseover.paneltip", (d) -> d)
+                                            .on("mouseout.paneltip", (d) -> d)
+
+
+
+        points.on("mouseover", highlight_state)
+              .on("mouseout",  lowlight_state)
 
     # make the horizontal grid lines gray
     d3.selectAll("g.dotplot g.y.axis line").attr("stroke", "#bbb")
@@ -82,7 +93,26 @@ plot = (data) ->
                      .style("font-size", "8pt")
                      .style("dominant-baseline", "middle")
                      .style("text-anchor", "end")
-                     .attr("id", (d,i) -> "text#{i}")
+                     .attr("id", (d,i) -> "state#{i}")
+                     .on("mouseover", highlight_state)
+                     .on("mouseout",  lowlight_state)
+
+
+highlight_state = (d,i) ->
+    d3.selectAll("circle.pt#{i}")
+      .attr("fill", "Orchid")
+      .attr("r", 5)
+    d3.select("text#state#{i}")
+      .attr("fill", "violetred")
+
+lowlight_state = (d,i) ->
+    d3.selectAll("circle.pt#{i}")
+      .attr("fill", "slateblue")
+      .attr("r", 3)
+    d3.select("text#state#{i}")
+      .attr("fill", "black")
+
+
 
 # load the data and make the plot
 d3.json("data.json", plot)
