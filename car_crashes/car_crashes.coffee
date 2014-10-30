@@ -30,12 +30,12 @@ plot = (data) ->
 
     # info top panels, with dot plots
     top_panel_var = ["total", "not_distracted", "speeding", "alcohol", "ins_premium", "ins_losses"]
-    xlim = [[0,25],[0,25],[0,25],[0,25],[0,1500],[0,200]]
+    xlim = [[0,25],[0,25], [0,25], [0,25],[0,1500],[0,200]]
     nxticks = [6,6,6,6, 4, 5]
     xlab = ["Crashes per billion miles", "Crashes per billion miles", "Crashes per billion miles",
             "Crashes per billion miles", "Dollars", "Dollars"]
     title = ["Total crashes", "Not distracted crashes", "Speeding crashes", "Alcohol crashes",
-            "Ave. Ins. premium", "Ave. Ins. Losses"]
+            "Ave. ins. premium", "Ave. ins. losses"]
 
     # make the dot plots
     dotplots = []
@@ -99,6 +99,8 @@ plot = (data) ->
     lower_xvar = [0, 0, 0, 0, 0, 4]
     lower_yvar = [1, 2, 3, 4, 5, 5]
 
+    lower_xlim = [[0,25],[0,25], [0,12], [0,12],[0,1500],[0,200]]
+
     # make the scatterplots
     scatterplots = []
     for i of top_panel_var
@@ -110,8 +112,8 @@ plot = (data) ->
                                     .titlepos(10)
                                     .xNA({handle:false})
                                     .yNA({handle:false})
-                                    .xlim(xlim[lower_xvar[i]])
-                                    .ylim(xlim[lower_yvar[i]])
+                                    .xlim(lower_xlim[lower_xvar[i]])
+                                    .ylim(lower_xlim[lower_yvar[i]])
                                     .nxticks(nxticks[lower_xvar[i]])
                                     .nyticks(nxticks[lower_yvar[i]])
                                     .xlab(title[lower_xvar[i]])
