@@ -5,7 +5,7 @@ plot = (data) ->
     # sizes of things
     htop = 530
     hbot = 500
-    height = htop + hbot+200
+    height = htop + hbot
 
     margin_top = {left:5, top:20, right:25, bottom:40, inner:0}
     fullpanelwidth_top = 180
@@ -125,7 +125,7 @@ plot = (data) ->
         scatterplots.push(this_scatterplot)
 
         hpos = fullpanelwidth_bot*col[i]
-        vpos = htop+row[i]*fullpanelheight_bot+margin_bot.top
+        vpos = htop+row[i]*fullpanelheight_bot
         this_g = svg.append("g")
                     .attr("class", "scatterplot")
                     .attr("id", "scatterplot#{i}")
