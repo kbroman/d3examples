@@ -260,7 +260,7 @@ chrheatmap = function() {
     if (!arguments.length) {
       return titlepos;
     }
-    titlepos;
+    titlepos = value;
     return chart;
   };
   chart.rectcolor = function(value) {

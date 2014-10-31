@@ -200,7 +200,7 @@ lodchart = function() {
     if (!arguments.length) {
       return titlepos;
     }
-    titlepos;
+    titlepos = value;
     return chart;
   };
   chart.axispos = function(value) {

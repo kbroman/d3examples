@@ -199,7 +199,7 @@ crosstab = function() {
     if (!arguments.length) {
       return titlepos;
     }
-    titlepos;
+    titlepos = value;
     return chart;
   };
   chart.title = function(value) {
