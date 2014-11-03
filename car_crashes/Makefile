@@ -4,7 +4,7 @@ all: data.json car_crashes.js
 
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 
-data.json: data2json.R data.R
+data.json: data2json.R proper_data.R data.R
 	R CMD BATCH ${R_OPTS} $<
 
 %.js: %.coffee
