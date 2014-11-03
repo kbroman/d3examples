@@ -1,8 +1,8 @@
 # create JSON file with car crash data
 # (from http://fivethirtyeight.com/datalab/which-state-has-the-worst-drivers/)
 
-# read data (read off figs by hand, with a ruler)
-source("data.R")
+# read data (from https://github.com/fivethirtyeight/data/tree/master/bad-drivers)
+source("proper_data.R")
 
 # convert to json format
 library(jsonlite)
