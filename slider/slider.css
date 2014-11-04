@@ -1,0 +1,22 @@
+body {
+    font-family: sans-serif;
+}
+
+text {
+    font-family: sans-serif;
+    font-size: 11pt;
+}
+
+a {
+    color: #08c;
+    text-decoration: none;
+}
+
+a:hover {
+    color: violetred;
+    text-decoration: none;
+}
+
+input {
+    vertical-align: middle;
+}
