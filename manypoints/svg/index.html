@@ -12,6 +12,10 @@ div#chart {
     top:75px;
     left:50px;
 }
+p#foot {
+    position: absolute;
+    top: 900px;
+}
 </style>
 
 <script src="../../d3/d3.min.js"></script>
@@ -22,6 +26,11 @@ div#chart {
 
 <p>SVG with 100,000 points. Hover to highlight.</p>
 
+<p id="foot">Also see the canvas versions highlighting
+<a href="../canvas_all">all overlapping points</a> or
+<a href="../canvas_closest">just the closest point</a>.<br>
+Source on <a href="https://github.com/kbroman/d3examples/tree/master/manypoints">GitHub</a>.
+</p>
 
 <script src="manypoints_svg.js"></script>
 </body> </html>

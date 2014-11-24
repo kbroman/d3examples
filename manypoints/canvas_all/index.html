@@ -12,6 +12,10 @@ div#chart {
     top:75px;
     left:50px;
 }
+p#foot {
+    position: absolute;
+    top: 900px;
+}
 </style>
 
 <script src="../../d3/d3.min.js"></script>
@@ -23,6 +27,12 @@ div#chart {
 <p>Canvas with 100,000 points. Hover to highlight.</p>
 
 <p id="message"></p>
+
+<p id="foot">Also see the canvas version
+<a href="../canvas_closest">highlighting just the closest point</a>
+and the <a href="../svg">SVG version</a>.<br>
+Source on <a href="https://github.com/kbroman/d3examples/tree/master/manypoints">GitHub</a>.
+</p>
 
 <script src="manypoints_canvas_all.js"></script>
 </body> </html>
