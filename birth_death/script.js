@@ -32,15 +32,16 @@
 
   n = 10;
 
-  generate_point = function() {
+  generate_point = function(i) {
     return {
       x: Math.random() * w,
-      y: Math.random() * h
+      y: Math.random() * h,
+      id: i
     };
   };
 
   points = d3.range(n).map(function(i) {
-    return generate_point();
+    return generate_point(i);
   });
 
   update = function(data, time) {
@@ -48,7 +49,9 @@
     if (time == null) {
       time = 3000;
     }
-    circles = svg.selectAll("circle.points").data(data).attr("cx", function(d) {
+    circles = svg.selectAll("circle.points").data(data, function(d) {
+      return d.id;
+    }).attr("cx", function(d) {
       return d.x;
     }).attr("cy", function(d) {
       return d.y;
@@ -60,7 +63,7 @@
     }).attr("r", 0).attr("class", "points").transition().duration(time).attr("r", 10);
     return circles.exit().classed({
       "dead": true
-    }).transition().duration(time).attr("r", 0).transition().delay(time).remove();
+    }).transition().duration(time).attr("r", 0).remove();
   };
 
   update(points);
@@ -68,13 +71,15 @@
   note = svg.append("text").attr("x", 20).attr("y", 20);
 
   buttons.on("click", function(d) {
+    var to_die;
     if (d === 1) {
-      points.pop();
-      note.text("death to number " + (points.length + 1));
+      to_die = Math.floor(Math.random() * points.length);
+      note.text("death to number " + (points[to_die].id + 1));
+      points.splice(to_die, 1);
       console.log(points.length);
     } else {
-      points.push(generate_point());
-      note.text("birth to number " + (points.length + 1));
+      points.push(generate_point(points[points.length - 1].id + 1));
+      note.text("birth to number " + (points[points.length-1].id + 1));
     }
     return update(points);
   });

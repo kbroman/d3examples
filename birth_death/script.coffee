@@ -37,14 +37,14 @@ svg.selectAll("empty")
 # simulate data
 n = 10
 
-generate_point = () ->  {x:Math.random()*w, y:Math.random()*h}
-points = d3.range(n).map((i) -> generate_point())
+generate_point = (i) ->  {x:Math.random()*w, y:Math.random()*h, id:i}
+points = d3.range(n).map((i) -> generate_point(i))
 
 # function to update circles
 update = (data, time=3000) ->
     circles =
     svg.selectAll("circle.points")
-       .data(data)
+       .data(data, (d) -> d.id)
        .attr("cx", (d) -> d.x)
        .attr("cy", (d) -> d.y)
        .attr("r", 10)
@@ -66,29 +66,22 @@ update = (data, time=3000) ->
            .transition()
            .duration(time)
            .attr("r", 0)
-           .transition()
-           .delay(time)
            .remove()
 
 update(points)
-
-#setTimeout( (-> update(points)), 4000)
 
 note = svg.append("text")
           .attr("x", 20)
           .attr("y", 20)
 
-
 buttons.on "click", (d) ->
     if d==1 # death
-#        to_die = Math.floor(Math.random()*points.length)
-#        points.splice(to_die, 1)
-        points.pop()
-#        note.text("death to number #{to_die+1}")
-        note.text("death to number #{points.length+1}")
+        to_die = Math.floor(Math.random()*points.length)
+        points.splice(to_die, 1)
+        note.text("death to number #{points[to_die].id+1}")
         console.log(points.length)
     else # birth
-        points.push(generate_point())
-        note.text("birth to number #{points.length+1}")
+        points.push(generate_point(points[points.length-1].id+1))
+        note.text("birth to number #{points[to_die].id+1}")
 
     update(points)
