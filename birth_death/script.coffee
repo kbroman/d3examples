@@ -5,13 +5,16 @@ h =  500
 h_button = 50
 w_button = 120
 gap = 25
+r = 10
 
 # svg and background rectangle
 svg = d3.select("div#figure").append("svg").attr("height", h+gap+h_button).attr("width", w)
 
 rect = svg.append("rect")
-          .attr("height", h)
-          .attr("width", w)
+          .attr("x", 1)
+          .attr("y", 1)
+          .attr("height", h-2)
+          .attr("width", w-2)
           .attr("class", "background")
 
 # birth/death buttons at the bottom
@@ -42,7 +45,7 @@ note = svg.append("text")
 
 # simulate data
 n = 4
-generate_point = (i) ->  {x:Math.random()*w, y:Math.random()*h, id:i}
+generate_point = (i) ->  {x:Math.random()*(w-2*r)+r, y:Math.random()*(h-2*r)+r, id:i}
 points = d3.range(n).map((i) -> generate_point(i))
 points_last = n-1
 
@@ -53,7 +56,7 @@ update = (data, time=1000) ->
        .data(data, (d) -> d.id)
        .attr("cx", (d) -> d.x)
        .attr("cy", (d) -> d.y)
-       .attr("r", 10)
+       .attr("r", r)
        .attr("class", "points")
 
 
@@ -65,7 +68,7 @@ update = (data, time=1000) ->
        .attr("class", "points")
        .transition()
        .duration(time)
-       .attr("r", 10)
+       .attr("r", r)
 
     circles.exit()
            .classed({"dead":true})
