@@ -58,7 +58,9 @@
     }).attr("cy", function(d) {
       return d.y;
     }).attr("r", 0).attr("class", "points").transition().duration(time).attr("r", 10);
-    return circles.exit().transition().attr("fill", "violetred");
+    return circles.exit().classed({
+      "dead": true
+    }).transition().duration(time).attr("r", 0).transition().delay(time).remove();
   };
 
   update(points);
@@ -66,11 +68,9 @@
   note = svg.append("text").attr("x", 20).attr("y", 20);
 
   buttons.on("click", function(d) {
-    var to_die;
     if (d === 1) {
-      to_die = Math.floor(Math.random() * points.length);
       points.pop();
-      note.text("death to number " + (to_die + 1));
+      note.text("death to number " + (points.length + 1));
       console.log(points.length);
     } else {
       points.push(generate_point());

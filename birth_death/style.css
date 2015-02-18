@@ -27,7 +27,7 @@ circle.points {
     stroke: none;
 }
 
-circle.dying {
+circle.dead {
     fill: violetred;
 }
 

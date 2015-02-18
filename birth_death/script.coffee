@@ -62,12 +62,13 @@ update = (data, time=3000) ->
        .attr("r", 10)
 
     circles.exit()
+           .classed({"dead":true})
            .transition()
-           .attr("fill", "violetred")
-#    circles.exit()
-#           .transition()
-#           .delay(time*1.5)
-#           .remove()
+           .duration(time)
+           .attr("r", 0)
+           .transition()
+           .delay(time)
+           .remove()
 
 update(points)
 
@@ -80,10 +81,11 @@ note = svg.append("text")
 
 buttons.on "click", (d) ->
     if d==1 # death
-        to_die = Math.floor(Math.random()*points.length)
+#        to_die = Math.floor(Math.random()*points.length)
 #        points.splice(to_die, 1)
         points.pop()
-        note.text("death to number #{to_die+1}")
+#        note.text("death to number #{to_die+1}")
+        note.text("death to number #{points.length+1}")
         console.log(points.length)
     else # birth
         points.push(generate_point())
