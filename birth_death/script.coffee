@@ -14,6 +14,7 @@ rect = svg.append("rect")
           .attr("width", w)
           .attr("class", "background")
 
+# birth/death buttons at the bottom
 buttons = svg.selectAll("empty")
    .data([0,1])
    .enter()
@@ -24,6 +25,7 @@ buttons = svg.selectAll("empty")
    .attr("width", w_button)
    .attr("class", "button")
 
+# text for the buttons
 svg.selectAll("empty")
    .data([0,1])
    .enter()
@@ -33,15 +35,19 @@ svg.selectAll("empty")
    .attr("y", (d) -> h+gap + h_button/2)
    .text((d) -> ["birth", "death"][d])
 
+# to contain note at top left
+note = svg.append("text")
+          .attr("x", 20)
+          .attr("y", 20)
 
 # simulate data
-n = 10
-
+n = 4
 generate_point = (i) ->  {x:Math.random()*w, y:Math.random()*h, id:i}
 points = d3.range(n).map((i) -> generate_point(i))
+points_last = n-1
 
 # function to update circles
-update = (data, time=3000) ->
+update = (data, time=1000) ->
     circles =
     svg.selectAll("circle.points")
        .data(data, (d) -> d.id)
@@ -64,24 +70,23 @@ update = (data, time=3000) ->
     circles.exit()
            .classed({"dead":true})
            .transition()
-           .duration(time)
+           .duration(time/2)
+           .delay(time/2)
            .attr("r", 0)
            .remove()
 
+# create the initial points
 update(points)
 
-note = svg.append("text")
-          .attr("x", 20)
-          .attr("y", 20)
-
+# button actions
 buttons.on "click", (d) ->
-    if d==1 # death
+    if d==1 and points.length > 0 # death
         to_die = Math.floor(Math.random()*points.length)
-        points.splice(to_die, 1)
         note.text("death to number #{points[to_die].id+1}")
-        console.log(points.length)
-    else # birth
-        points.push(generate_point(points[points.length-1].id+1))
-        note.text("birth to number #{points[to_die].id+1}")
+        points.splice(to_die-1, 1)
+    else if d==0 # birth
+        points_last += 1
+        points.push(generate_point(points_last))
+        note.text("birth to number #{points_last}")
 
     update(points)
