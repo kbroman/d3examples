@@ -1,0 +1,37 @@
+body {
+    font-family: sans-serif;
+    font-size: 16pt;
+}
+
+rect.background {
+    fill: #ddd;
+    stroke: black;
+    stroke-width: 1;
+}
+
+rect.button {
+    fill: #slateblue;
+    stroke: none;
+}
+
+text.button {
+    fill: white;
+    color: white;
+    dominant-baseline: middle;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+circle.points {
+    fill: slateblue;
+    stroke: none;
+}
+
+circle.dying {
+    fill: violetred;
+}
+
+svg text {
+    dominent-baseline: hanging;
+    text-anchor: start;
+}
