@@ -16,7 +16,7 @@ printSliderValue = (sliderID) ->
 # stuff for form
 param =
     n:
-        text: "sample size, <em>n</em>"
+        text: "sample size per group, <em>n</em>"
         min: 2
         max: 1000
         step: 1
@@ -63,3 +63,7 @@ d3.select("form#sliders")
   .on("change", () ->
                    for par in ["n", "alpha", "delta", "sigma"]
                        printSliderValue(par))
+
+# population distributions
+# sampling distributions
+# test statistic, null and alternative
