@@ -1,3 +1,9 @@
 body {
     font-family: sans-serif;
 }
+
+div#chart {
+    position: fixed;
+    top: 20px;
+    left: 400px;
+}
