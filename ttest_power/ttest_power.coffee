@@ -25,19 +25,19 @@ param =
         min: 2
         max: 100
         step: 1
-        value: 50
+        value: 25
     delta:
         text: "effect, &Delta;"
         min: 0
         max: 10
         step: 0.1
-        value: 1
+        value: 2
     sigma:
         text: "population SD, &sigma;"
         min: 0.1
         max: 10
         step: 0.1
-        value: 1
+        value: 2
     alpha:
         text: "significance level, &alpha;"
         min: -4
