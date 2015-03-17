@@ -6,6 +6,10 @@ form {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
+
+    position: fixed;
+    top: 80px;
+    left: 20px;
 }
 
 div#chart {
