@@ -1,5 +1,7 @@
-ttest_power.js: ttest_power.coffee
-	coffee -bc ttest_power.coffee
+all: ttest_power.js distributions.js
 
-web: ttest_power.js
-	scp index.html ttest_power.js ttest_power.css broman-10:public_html/D3/ttest_power/
+%.js: %.coffee
+	coffee -bc $(<F)
+
+web: ttest_power.js distributions.js
+	scp index.html ttest_power.css *.js broman-10:public_html/D3/ttest_power/
