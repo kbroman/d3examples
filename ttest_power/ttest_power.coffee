@@ -257,8 +257,13 @@ update_plots = () ->
     x = d3.range(npts).map (i) -> scale4x(i/npts)
 
     data = []
+    maxalty = maxaltx = 0 # for placing label (later)
     for j of x
-        data.push({x:x[j], y:dnct(x[j], df, ncp)})
+        y = dnct(x[j], df, ncp)
+        data.push({x:x[j], y:y})
+        if y > maxalty
+            maxalty = y
+            maxaltx = x[j]
 
     figs[2].append("path")
            .attr("class", "curves")
@@ -285,6 +290,25 @@ update_plots = () ->
                .attr("fill", colors[1])
                .attr("stroke", "none")
                .attr("opacity", opacity)
+
+    # label the distributions
+    figs[2].append("text").attr("class", "curves")
+           .text("null")
+           .attr("dominant-baseline", "middle")
+           .attr("text-anchor", "end")
+           .attr("x", xscale[2](-0.9))
+           .attr("y", yscale[2](dt(-0.7, df)))
+
+    figs[2].append("text").attr("class", "curves")
+           .text("alternative")
+           .attr("dominant-baseline", "middle")
+           .attr("text-anchor", () ->
+                   return "end" if maxaltx > 5
+                   "start")
+           .attr("x", () ->
+                   x = if maxaltx > 5 then maxaltx - 0.8 else maxaltx + 0.8
+                   xscale[2](x))
+           .attr("y", yscale[2](dt(-0.7, df)))
 
 
 update_plots()

@@ -150,7 +150,7 @@ curve = function(index) {
 };
 
 update_plots = function() {
-  var alpha, critval, data, delta, df, j, mu, n, ncp, power, scale4x, sem, sigma, x;
+  var alpha, critval, data, delta, df, j, maxaltx, maxalty, mu, n, ncp, power, scale4x, sem, sigma, x, y;
   svg.selectAll(".curves").remove();
   sigma = +getSliderValue("sigma");
   delta = +getSliderValue("delta");
@@ -232,11 +232,17 @@ update_plots = function() {
     return scale4x(i / npts);
   });
   data = [];
+  maxalty = maxaltx = 0;
   for (j in x) {
+    y = dnct(x[j], df, ncp);
     data.push({
       x: x[j],
-      y: dnct(x[j], df, ncp)
+      y: y
     });
+    if (y > maxalty) {
+      maxalty = y;
+      maxaltx = x[j];
+    }
   }
   figs[2].append("path").attr("class", "curves").datum(data).attr("d", curve(2)).attr("fill", "none").attr("stroke", colors[0]).attr("stroke-width", 2);
   if (critval < xrange[2][1]) {
@@ -259,8 +265,18 @@ update_plots = function() {
       x: critval,
       y: 0
     });
-    return figs[2].append("path").attr("class", "curves").datum(data).attr("d", curve(2)).attr("fill", colors[1]).attr("stroke", "none").attr("opacity", opacity);
+    figs[2].append("path").attr("class", "curves").datum(data).attr("d", curve(2)).attr("fill", colors[1]).attr("stroke", "none").attr("opacity", opacity);
   }
+  figs[2].append("text").attr("class", "curves").text("null").attr("dominant-baseline", "middle").attr("text-anchor", "end").attr("x", xscale[2](-0.9)).attr("y", yscale[2](dt(-0.7, df)));
+  return figs[2].append("text").attr("class", "curves").text("alternative").attr("dominant-baseline", "middle").attr("text-anchor", function() {
+    if (maxaltx > 5) {
+      return "end";
+    }
+    return "start";
+  }).attr("x", function() {
+    x = maxaltx > 5 ? maxaltx - 0.8 : maxaltx + 0.8;
+    return xscale[2](x);
+  }).attr("y", yscale[2](dt(-0.7, df)));
 };
 
 update_plots();
