@@ -99,6 +99,8 @@ width = figtotw;
 
 svg = d3.select("div#chart").append("svg").attr("width", width).attr("height", height);
 
+svg.attr("viewBox", "0,0," + width + "," + height).style("height", window.innerHeight - 20).style("width", window.innerWidth - 420).attr("preserveAspectRatio", "xMinYMin meet");
+
 figs = [null, null, null];
 
 titles = ["Population distributions", "Distributions of sample mean", "Distribution of test statistic"];
@@ -116,7 +118,7 @@ yrange = [[0, 1], [0, 1], [0, dnorm(0, 0, 1)]];
 draw_plot = function(index) {
   var ticks;
   figs[index] = svg.append("g").attr("id", short[index]).attr("transform", "translate(0," + (figtoth * index) + ")").append("svg").attr("width", figtotw).attr("height", figtoth);
-  figs[index].append("rect").attr("x", margin.left).attr("y", margin.top).attr("height", figheight).attr("width", figwidth).attr("fill", bgcolor).attr("stroke", "black").attr("stroke-width", 2);
+  figs[index].append("rect").attr("x", margin.left).attr("y", margin.top).attr("height", figheight).attr("width", figwidth).attr("fill", bgcolor).attr("stroke", "black").attr("stroke-width", 1);
   figs[index].append("text").text(titles[index]).attr("x", margin.left + figwidth / 2).attr("y", margin.top / 2).attr("dominant-baseline", "middle").attr("text-anchor", "middle");
   if (index === 0 || index === 1) {
     xrange[index] = [100 - param.sigma.max * 3, 100 + param.delta.max + param.sigma.max * 3];
@@ -130,11 +132,12 @@ draw_plot = function(index) {
   }).attr("x2", function(d) {
     return xscale[index](d);
   }).attr("y1", margin.top).attr("y2", figheight + margin.top).attr("stroke", "white").attr("stroke-width", 1);
-  return figs[index].selectAll("empty").data(ticks).enter().append("text").attr("x", function(d) {
+  figs[index].selectAll("empty").data(ticks).enter().append("text").attr("x", function(d) {
     return xscale[index](d);
   }).attr("y", figheight + margin.top + margin.bottom * 0.4).text(function(d) {
     return d;
   }).attr("dominant-baseline", "middle").attr("text-anchor", "middle");
+  return figs[index].append("rect").attr("x", margin.left).attr("y", margin.top).attr("height", figheight).attr("width", figwidth).attr("fill", "none").attr("stroke", "black").attr("stroke-width", 1);
 };
 
 for (i = k = 0; k <= 2; i = ++k) {

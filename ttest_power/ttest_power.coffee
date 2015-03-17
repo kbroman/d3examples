@@ -117,7 +117,7 @@ draw_plot = (index) ->
                .attr("width", figwidth)
                .attr("fill", bgcolor)
                .attr("stroke", "black")
-               .attr("stroke-width", 2)
+               .attr("stroke-width", 1)
     figs[index].append("text")
                .text(titles[index])
                .attr("x", margin.left + figwidth/2)
@@ -157,6 +157,16 @@ draw_plot = (index) ->
         .text((d) -> d)
         .attr("dominant-baseline", "middle")
         .attr("text-anchor", "middle")
+
+    # black border again
+    figs[index].append("rect")
+               .attr("x", margin.left)
+               .attr("y", margin.top)
+               .attr("height", figheight)
+               .attr("width", figwidth)
+               .attr("fill", "none")
+               .attr("stroke", "black")
+               .attr("stroke-width", 1)
 
 for i in [0..2]
     draw_plot(i)
