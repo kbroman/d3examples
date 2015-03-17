@@ -2,4 +2,5 @@
 
 Working on an interactive illustration of power in a t-test.
 
-So far, I've just got some sliders.
+(It's still got some issues in the calculation of the density for the
+non-central t for large values of the non-centrality parameter.)
