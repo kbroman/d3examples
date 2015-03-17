@@ -24,3 +24,9 @@ div#power {
     left: 80px;
     font-size: 30px;
 }
+
+div#code {
+    position: fixed;
+    top: 900px;
+    left: 80px;
+}
