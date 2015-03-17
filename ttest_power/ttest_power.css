@@ -2,6 +2,12 @@ body {
     font-family: sans-serif;
 }
 
+form {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
 div#chart {
     position: fixed;
     top: 20px;
