@@ -72,7 +72,7 @@ d3.select("form#sliders")
 
 # create svg
 bgcolor = "#ccc"
-colors = ["slateblue", "violetred"]
+colors = ["slateblue", "#d02090"]
 npts = 500
 figwidth = 500
 figheight= 250

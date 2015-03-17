@@ -71,7 +71,7 @@ d3.select("form#sliders").on("input", function() {
 
 bgcolor = "#ccc";
 
-colors = ["slateblue", "violetred"];
+colors = ["slateblue", "#d02090"];
 
 npts = 500;
 
