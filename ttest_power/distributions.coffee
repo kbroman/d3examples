@@ -227,7 +227,9 @@ pnct = (x, df, ncp, tol=1e-14) ->
     j = 0
     val = tol+1
     y = x*x/(x*x+df)
-    while val > tol
+    lastval = val
+    while lastval > tol or val > tol or j < 3
+        lastval = val
         tmp = ncp*ncp/2
         tmp = -tmp + j*Math.log(tmp)
         p = Math.exp(tmp - lgamma(j+1))

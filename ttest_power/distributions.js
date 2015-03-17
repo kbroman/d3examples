@@ -288,7 +288,7 @@ qt = function(p, df, hi, tol) {
 };
 
 pnct = function(x, df, ncp, tol) {
-  var flip, j, p, prob, q, tmp, val, y;
+  var flip, j, lastval, p, prob, q, tmp, val, y;
   if (tol == null) {
     tol = 1e-14;
   }
@@ -310,7 +310,9 @@ pnct = function(x, df, ncp, tol) {
   j = 0;
   val = tol + 1;
   y = x * x / (x * x + df);
-  while (val > tol) {
+  lastval = val;
+  while (lastval > tol || val > tol || j < 3) {
+    lastval = val;
     tmp = ncp * ncp / 2;
     tmp = -tmp + j * Math.log(tmp);
     p = Math.exp(tmp - lgamma(j + 1));
