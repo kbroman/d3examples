@@ -271,15 +271,21 @@ update_plots = function() {
     figs[2].append("path").attr("class", "curves").datum(data).attr("d", curve(2)).attr("fill", colors[1]).attr("stroke", "none").attr("opacity", opacity);
   }
   figs[2].append("text").attr("class", "curves").text("null").attr("dominant-baseline", "middle").attr("text-anchor", "end").attr("x", xscale[2](-0.9)).attr("y", yscale[2](dt(-0.7, df)));
-  return figs[2].append("text").attr("class", "curves").text("alternative").attr("dominant-baseline", "middle").attr("text-anchor", function() {
-    if (maxaltx > 5) {
-      return "end";
-    }
-    return "start";
-  }).attr("x", function() {
-    x = maxaltx > 5 ? maxaltx - 0.8 : maxaltx + 0.8;
-    return xscale[2](x);
-  }).attr("y", yscale[2](dt(-0.7, df)));
+  if (maxalty > 0.001) {
+    return figs[2].append("text").attr("class", "curves").text("alternative").attr("dominant-baseline", "middle").attr("text-anchor", function() {
+      if (maxaltx > 5) {
+        return "end";
+      }
+      return "start";
+    }).attr("x", function() {
+      x = maxaltx > 5 ? maxaltx - 0.8 : maxaltx + 0.8;
+      return xscale[2](x);
+    }).attr("y", yscale[2](dt(-0.7, df)));
+  } else {
+    return figs[2].append("text").attr("class", "curves").html("alternative &rarr;").attr("dominant-baseline", "middle").attr("text-anchor", "end").attr("x", function() {
+      return xscale[2](7.9);
+    }).attr("y", yscale[2](dt(-0.7, df)));
+  }
 };
 
 update_plots();

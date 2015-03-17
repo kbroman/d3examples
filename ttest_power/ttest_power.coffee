@@ -311,16 +311,27 @@ update_plots = () ->
            .attr("x", xscale[2](-0.9))
            .attr("y", yscale[2](dt(-0.7, df)))
 
-    figs[2].append("text").attr("class", "curves")
-           .text("alternative")
-           .attr("dominant-baseline", "middle")
-           .attr("text-anchor", () ->
-                   return "end" if maxaltx > 5
-                   "start")
-           .attr("x", () ->
-                   x = if maxaltx > 5 then maxaltx - 0.8 else maxaltx + 0.8
-                   xscale[2](x))
-           .attr("y", yscale[2](dt(-0.7, df)))
+    if maxalty > 0.001
+        figs[2].append("text").attr("class", "curves")
+               .text("alternative")
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", () ->
+                       return "end" if maxaltx > 5
+                       "start")
+               .attr("x", () ->
+                       x = if maxaltx > 5 then maxaltx - 0.8 else maxaltx + 0.8
+                       xscale[2](x))
+               .attr("y", yscale[2](dt(-0.7, df)))
+
+    else
+        figs[2].append("text").attr("class", "curves")
+               .html("alternative &rarr;")
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "end")
+               .attr("x", () -> xscale[2](7.9))
+               .attr("y", yscale[2](dt(-0.7, df)))
+
+
 
 
 update_plots()
