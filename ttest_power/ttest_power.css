@@ -17,3 +17,10 @@ div#chart {
     top: 20px;
     left: 400px;
 }
+
+div#power {
+    position: fixed;
+    top: 420px;
+    left: 80px;
+    font-size: 30px;
+}

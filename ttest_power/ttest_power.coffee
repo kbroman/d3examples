@@ -76,6 +76,7 @@ colors = ["slateblue", "violetred"]
 npts = 500
 figwidth = 500
 figheight= 250
+opacity = 0.5
 
 margin = {left:50,right:10, bottom:50, top:30, inner: 5}
 figtotw = figwidth + margin.left + margin.right
@@ -150,6 +151,7 @@ update_plots = () ->
     sem = sigma/Math.sqrt(n)
     df = 2*n-2
     alpha = +getSliderValue("alpha")
+    ncp = delta/sem/Math.sqrt(2)
 
     scale4x = d3.scale.linear().domain([0,1]).range([100-sigma*6, 100+delta+sigma*6])
     x = d3.range(npts).map (i) -> scale4x(i/npts)
@@ -189,7 +191,7 @@ update_plots = () ->
                .attr("stroke", colors[i])
                .attr("stroke-width", 2)
 
-    scale4x = d3.scale.linear().domain([0,1]).range([-4, 8])
+    scale4x = d3.scale.linear().domain([0,1]).range(xrange[2])
     x = d3.range(npts).map (i) -> scale4x(i/npts)
 
     data = []
@@ -206,21 +208,23 @@ update_plots = () ->
 
     critval = qt(1-alpha/2, df)
 
-    if critval < 8
-        scale4x = d3.scale.linear().domain([0,1]).range([critval, 8])
+    # shade region under null distribution
+    if critval < xrange[2][1]
+        scale4x = d3.scale.linear().domain([0,1]).range([critval, xrange[2][1]])
         x = d3.range(npts).map (i) -> scale4x(i/npts)
         data = []
         for j of x
             data.push({x:x[j], y:dt(x[j], df)})
+        data.push({x:xrange[2][1], y:0})
         data.push({x:critval, y:0})
 
         figs[2].append("path")
                .attr("class", "curves")
                .datum(data)
                .attr("d", curve(2))
-               .attr("fill", "slateblue")
+               .attr("fill", colors[0])
                .attr("stroke", "none")
-               .attr("opacity", 0.5)
+               .attr("opacity", opacity)
         figs[2].append("line")
                .attr("class", "curves")
                .attr("x1", xscale[2](critval))
@@ -235,6 +239,45 @@ update_plots = () ->
                .text("T")
                .attr("dominant-baseline", "middle")
                .attr("text-anchor", "middle")
+
+    # power
+    power = (1-pnct(critval, df, ncp))
+    d3.select("div#power p")
+      .text("Power = #{d3.format("%0d")(power)}")
+
+    # distribution under alternative
+    scale4x = d3.scale.linear().domain([0,1]).range(xrange[2])
+    x = d3.range(npts).map (i) -> scale4x(i/npts)
+
+    data = []
+    for j of x
+        data.push({x:x[j], y:dnct(x[j], df, ncp)})
+
+    figs[2].append("path")
+           .attr("class", "curves")
+           .datum(data)
+           .attr("d", curve(2))
+           .attr("fill", "none")
+           .attr("stroke", colors[0])
+           .attr("stroke-width", 2)
+
+    # shade region under alternative
+    if critval < xrange[2][1]
+        scale4x = d3.scale.linear().domain([0,1]).range([critval, xrange[2][1]])
+        x = d3.range(npts).map (i) -> scale4x(i/npts)
+        data = []
+        for j of x
+            data.push({x:x[j], y:dnct(x[j], df, ncp)})
+        data.push({x:xrange[2][1], y:0})
+        data.push({x:critval, y:0})
+
+        figs[2].append("path")
+               .attr("class", "curves")
+               .datum(data)
+               .attr("d", curve(2))
+               .attr("fill", colors[1])
+               .attr("stroke", "none")
+               .attr("opacity", opacity)
 
 
 update_plots()
