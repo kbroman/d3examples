@@ -150,12 +150,13 @@ update_plots = () ->
     sigma = +getSliderValue("sigma")
     delta = +getSliderValue("delta")
     n = +getSliderValue("n")
+    sem = sigma/Math.sqrt(n)
 
-    scale4x = d3.scale.linear().domain([0,1]).range(xrange[0])
+    scale4x = d3.scale.linear().domain([0,1]).range([100-sigma*6, 100+delta+sigma*6])
     x = d3.range(npts).map (i) -> scale4x(i/npts)
 
     yscale[0].domain([0, dnorm(0, 0, sigma)])
-    yscale[1].domain([0, dnorm(0, 0, sigma/Math.sqrt(n))])
+    yscale[1].domain([0, dnorm(0, 0, sem)])
 
     mu = [100, 100+delta]
     for i of mu
@@ -170,11 +171,13 @@ update_plots = () ->
                .attr("stroke", colors[i])
                .attr("stroke-width", 2)
 
-    mu = [100, 100+delta]
+    scale4x = d3.scale.linear().domain([0,1]).range([100-sem*6, 100+delta+sem*6])
+    x = d3.range(npts).map (i) -> scale4x(i/npts)
+
     for i of mu
         data = []
         for j of x
-            data.push({x:x[j], y:dnorm(x[j], mu[i], sigma/Math.sqrt(n))})
+            data.push({x:x[j], y:dnorm(x[j], mu[i], sem)})
 
         figs[1].append("path")
                .datum(data)
