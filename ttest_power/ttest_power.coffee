@@ -23,9 +23,9 @@ param =
     n:
         text: "sample size per group, <em>n</em>"
         min: 2
-        max: 1000
+        max: 100
         step: 1
-        value: 100
+        value: 50
     delta:
         text: "effect, &Delta;"
         min: 0
@@ -41,7 +41,7 @@ param =
     alpha:
         text: "significance level, &alpha;"
         min: -4
-        max: -0.3
+        max: -0.6
         step: 0.01
         value: Math.log10(0.05)
 
@@ -88,8 +88,8 @@ svg = d3.select("div#chart")
         .attr("height", height)
 
 figs = [null, null, null]
-titles = ["Population distribution",
-    "Distribution of sample mean",
+titles = ["Population distributions",
+    "Distributions of sample mean",
     "Distribution of test statistic"]
 short = ["pop", "samp", "stat"]
 xscale = [null, null, null]
@@ -142,13 +142,14 @@ curve = (index) ->
       .y((d) -> yscale[index](d.y))
 
 update_plots = () ->
-    svg.selectAll("path").remove()
+    svg.selectAll(".curves").remove()
 
     sigma = +getSliderValue("sigma")
     delta = +getSliderValue("delta")
     n = +getSliderValue("n")
     sem = sigma/Math.sqrt(n)
     df = 2*n-2
+    alpha = +getSliderValue("alpha")
 
     scale4x = d3.scale.linear().domain([0,1]).range([100-sigma*6, 100+delta+sigma*6])
     x = d3.range(npts).map (i) -> scale4x(i/npts)
@@ -164,6 +165,7 @@ update_plots = () ->
             data.push({x:x[j], y:dnorm(x[j], mu[i], sigma)})
 
         figs[0].append("path")
+               .attr("class", "curves")
                .datum(data)
                .attr("d", curve(0))
                .attr("fill", "none")
@@ -180,6 +182,7 @@ update_plots = () ->
             data.push({x:x[j], y:dnorm(x[j], mu[i], sem)})
 
         figs[1].append("path")
+               .attr("class", "curves")
                .datum(data)
                .attr("d", curve(1))
                .attr("fill", "none")
@@ -194,11 +197,45 @@ update_plots = () ->
         data.push({x:x[j], y:dt(x[j], df)})
 
     figs[2].append("path")
+           .attr("class", "curves")
            .datum(data)
            .attr("d", curve(2))
            .attr("fill", "none")
            .attr("stroke", "black")
            .attr("stroke-width", 2)
+
+    critval = qt(1-alpha/2, df)
+
+    if critval < 8
+        scale4x = d3.scale.linear().domain([0,1]).range([critval, 8])
+        x = d3.range(npts).map (i) -> scale4x(i/npts)
+        data = []
+        for j of x
+            data.push({x:x[j], y:dt(x[j], df)})
+        data.push({x:critval, y:0})
+
+        figs[2].append("path")
+               .attr("class", "curves")
+               .datum(data)
+               .attr("d", curve(2))
+               .attr("fill", "slateblue")
+               .attr("stroke", "none")
+               .attr("opacity", 0.5)
+        figs[2].append("line")
+               .attr("class", "curves")
+               .attr("x1", xscale[2](critval))
+               .attr("y1", figheight+margin.top)
+               .attr("x2", xscale[2](critval))
+               .attr("y2", figheight+margin.top+margin.bottom*0.2)
+               .attr("stroke", "black")
+        figs[2].append("text")
+               .attr("class", "curves")
+               .attr("x", xscale[2](critval))
+               .attr("y", margin.top + figheight + margin.bottom/2)
+               .text("T")
+               .attr("dominant-baseline", "middle")
+               .attr("text-anchor", "middle")
+
 
 update_plots()
 
