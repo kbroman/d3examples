@@ -104,6 +104,9 @@ pbeta = (x, a, b, tol=1e-8) ->
 
 # normal density
 dnorm = (x, mu=0, sd=1) ->
+    x = parseFloat(x)
+    mu = parseFloat(mu)
+    sd = parseFloat(sd)
     if sd <= 0
         console.log("dnorm: sd must be positive")
         return null
@@ -115,6 +118,9 @@ dnorm = (x, mu=0, sd=1) ->
 
 # CDF of normal distribution
 pnorm = (x, mu=0, sd=1) ->
+    x = parseFloat(x)
+    mu = parseFloat(mu)
+    sd = parseFloat(sd)
     if sd <= 0
         console.log("pnorm: sd must be positive")
         return null
@@ -127,6 +133,9 @@ pnorm = (x, mu=0, sd=1) ->
 
 # quantile of normal distribution
 qnorm = (p, mu=0, sd=1) ->
+    p = parseFloat(p)
+    mu = parseFloat(mu)
+    sd = parseFloat(sd)
     if sd <= 0
         console.log("qnorm: sd must be positive")
         return null
@@ -142,6 +151,8 @@ qnorm = (p, mu=0, sd=1) ->
 
 # t density
 dt = (x, df) ->
+    x = parseFloat(x)
+    df = parseFloat(df)
     if df <= 0
         console.log("dt: df must be positive")
         return null
@@ -155,6 +166,8 @@ dt = (x, df) ->
 
 # CDF of t distribution
 pt = (x, df) ->
+    x = parseFloat(x)
+    df = parseFloat(df)
     if df <= 0
         console.log("dt: df must be positive")
         return null
@@ -169,6 +182,8 @@ pt = (x, df) ->
 
 # quantile of t distribution by binary search
 qt = (p, df, hi=5, tol=0.0001) ->
+    p = parseFloat(p)
+    df = parseFloat(df)
     if df <= 0
         console.log("qt: df must be positive")
         return null
