@@ -86,7 +86,7 @@ width=   figtotw
 svg = d3.select("div#chart")
         .append("svg")
         .attr("width", window.innerWidth-420)
-        .attr("height", window.innerHeight-60)
+        .attr("height", window.innerHeight-20)
 svg.attr("viewBox", "0,0,#{width},#{height}")
    .attr("preserveAspectRatio", "xMinYMin meet")
 
