@@ -47,7 +47,44 @@ pbeta = (x, a, b, tol=1e-8) ->
 
 # normal density
 dnorm = (x, mu=100, sd=5) ->
+    if sd <= 0
+        console.log("dnorm: sd must be positive")
+        return null
+
     if Array.isArray(x)
         return (dnorm(xval, mu, sd) for xval in x)
 
     Math.exp(-0.5*Math.pow((x-mu)/sd, 2))/(sd * Math.sqrt(2*Math.PI))
+
+# t density
+dt = (x, nu) ->
+    if nu <= 0
+        console.log("dt: nu must be positive")
+        return null
+
+    if Array.isArray(x)
+        return (dt(xval, nu) for xval in x)
+
+    ldt = lgamma((nu+1)/2) - 0.5*Math.log(nu*Math.PI) -
+        lgamma(nu/2) - ((nu+1)/2) * Math.log(1 + x*x/nu)
+    Math.exp(ldt)
+
+# CDF of t distribution
+pt = (x, nu) ->
+    if nu <= 0
+        console.log("dt: nu must be positive")
+        return null
+
+    if Array.isArray(x)
+        return (pt(xval, nu) for xval in x)
+
+    return 0.5 if x == 0
+    y = 0.5 * pbeta(nu/(x*x+nu), nu/2, 1/2)
+    return y if x < 0
+    1-y
+
+# quantiles of t distribution
+
+# non-central t distribution
+
+# CDF of non-central t distribution
