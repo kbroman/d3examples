@@ -97,9 +97,9 @@ height = figtoth * 3;
 
 width = figtotw;
 
-svg = d3.select("div#chart").append("svg").attr("width", width).attr("height", height);
+svg = d3.select("div#chart").append("svg").attr("width", window.innerWidth - 420).attr("height", window.innerHeight - 60);
 
-svg.attr("viewBox", "0,0," + width + "," + height).style("height", window.innerHeight - 20).style("width", window.innerWidth - 420).attr("preserveAspectRatio", "xMinYMin meet");
+svg.attr("viewBox", "0,0," + width + "," + height).attr("preserveAspectRatio", "xMinYMin meet");
 
 figs = [null, null, null];
 

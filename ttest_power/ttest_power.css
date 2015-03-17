@@ -13,8 +13,7 @@ form {
 }
 
 div#chart {
-    position: fixed;
-    top: 20px;
+    position: relative;
     left: 400px;
 }
 
