@@ -65,7 +65,7 @@ for par of param
 
 # when any slider changes...
 d3.select("form#sliders")
-  .on("change", () ->
+  .on("input", () ->
                    for par in ["n", "alpha", "delta", "sigma"]
                        printSliderValue(par)
                    update_plots() )
