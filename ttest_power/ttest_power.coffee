@@ -89,13 +89,13 @@ svg = d3.select("div#chart")
 
 figs = [null, null, null]
 titles = ["Population distribution",
-    "Sampling distribution",
+    "Distribution of sample mean",
     "Distribution of test statistic"]
 short = ["pop", "samp", "stat"]
 xscale = [null, null, null]
 yscale = [null, null, null]
-xrange = [[0,1], [0,1], [0,1]]
-yrange = [[0,1], [0,1], [0,1]]
+xrange = [[0,1], [0,1], [-4,8]]
+yrange = [[0,1], [0,1], [0, dnorm(0, 0, 1)]]
 
 draw_plot = (index) ->
     figs[index] = svg.append("g")
@@ -123,9 +123,6 @@ draw_plot = (index) ->
     if index==0 or index==1 # population distribution
         xrange[index] = [100-param.sigma.max*3, 100+param.delta.max+param.sigma.max*3]
         yrange[index] = [0, dnorm(0, 0, param.sigma.min)]
-    else
-        xrange[2] = [-5, 20]
-        yrange[2] = [0, 1]
 
     xscale[index] = d3.scale.linear().clamp(true)
                             .range([margin.left, margin.left+figwidth])
@@ -151,6 +148,7 @@ update_plots = () ->
     delta = +getSliderValue("delta")
     n = +getSliderValue("n")
     sem = sigma/Math.sqrt(n)
+    df = 2*n-2
 
     scale4x = d3.scale.linear().domain([0,1]).range([100-sigma*6, 100+delta+sigma*6])
     x = d3.range(npts).map (i) -> scale4x(i/npts)
@@ -158,6 +156,7 @@ update_plots = () ->
     yscale[0].domain([0, dnorm(0, 0, sigma)])
     yscale[1].domain([0, dnorm(0, 0, sem)])
 
+    # curves for population distributions
     mu = [100, 100+delta]
     for i of mu
         data = []
@@ -174,6 +173,7 @@ update_plots = () ->
     scale4x = d3.scale.linear().domain([0,1]).range([100-sem*6, 100+delta+sem*6])
     x = d3.range(npts).map (i) -> scale4x(i/npts)
 
+    # curves for sampling distributions
     for i of mu
         data = []
         for j of x
@@ -185,6 +185,20 @@ update_plots = () ->
                .attr("fill", "none")
                .attr("stroke", colors[i])
                .attr("stroke-width", 2)
+
+    scale4x = d3.scale.linear().domain([0,1]).range([-4, 8])
+    x = d3.range(npts).map (i) -> scale4x(i/npts)
+
+    data = []
+    for j of x
+        data.push({x:x[j], y:dt(x[j], df)})
+
+    figs[2].append("path")
+           .datum(data)
+           .attr("d", curve(2))
+           .attr("fill", "none")
+           .attr("stroke", "black")
+           .attr("stroke-width", 2)
 
 update_plots()
 
