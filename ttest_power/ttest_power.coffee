@@ -78,7 +78,7 @@ figwidth = 500
 figheight= 250
 opacity = 0.5
 
-margin = {left:50,right:10, bottom:50, top:30, inner: 5}
+margin = {left:50,right:20, bottom:50, top:30, inner: 5}
 figtotw = figwidth + margin.left + margin.right
 figtoth = figheight + margin.top + margin.bottom
 height = figtoth*3
@@ -121,7 +121,7 @@ draw_plot = (index) ->
                .attr("dominant-baseline", "middle")
                .attr("text-anchor", "middle")
 
-    if index==0 or index==1 # population distribution
+    if index==0 or index==1 # population or sampling distribution
         xrange[index] = [100-param.sigma.max*3, 100+param.delta.max+param.sigma.max*3]
         yrange[index] = [0, dnorm(0, 0, param.sigma.min)]
 
@@ -132,6 +132,27 @@ draw_plot = (index) ->
                             .range([margin.top+figheight, margin.top+margin.inner])
                             .domain(yrange[index])
 
+    ticks = xscale[index].ticks(6)
+    figs[index].append("g").attr("class", "axis")
+        .selectAll("empty")
+        .data(ticks)
+        .enter()
+        .append("line")
+        .attr("x1", (d) -> xscale[index](d))
+        .attr("x2", (d) -> xscale[index](d))
+        .attr("y1", margin.top)
+        .attr("y2", figheight + margin.top)
+        .attr("stroke", "white")
+        .attr("stroke-width", 1)
+    figs[index].selectAll("empty")
+        .data(ticks)
+        .enter()
+        .append("text")
+        .attr("x", (d) -> xscale[index](d))
+        .attr("y", figheight + margin.top + margin.bottom * 0.4)
+        .text((d) -> d)
+        .attr("dominant-baseline", "middle")
+        .attr("text-anchor", "middle")
 
 for i in [0..2]
     draw_plot(i)
@@ -225,20 +246,6 @@ update_plots = () ->
                .attr("fill", colors[0])
                .attr("stroke", "none")
                .attr("opacity", opacity)
-        figs[2].append("line")
-               .attr("class", "curves")
-               .attr("x1", xscale[2](critval))
-               .attr("y1", figheight+margin.top)
-               .attr("x2", xscale[2](critval))
-               .attr("y2", figheight+margin.top+margin.bottom*0.2)
-               .attr("stroke", "black")
-        figs[2].append("text")
-               .attr("class", "curves")
-               .attr("x", xscale[2](critval))
-               .attr("y", margin.top + figheight + margin.bottom/2)
-               .text("T")
-               .attr("dominant-baseline", "middle")
-               .attr("text-anchor", "middle")
 
     # power
     power = (1-pnct(critval, df, ncp))

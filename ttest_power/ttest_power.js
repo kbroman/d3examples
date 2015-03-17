@@ -83,7 +83,7 @@ opacity = 0.5;
 
 margin = {
   left: 50,
-  right: 10,
+  right: 20,
   bottom: 50,
   top: 30,
   inner: 5
@@ -114,6 +114,7 @@ xrange = [[0, 1], [0, 1], [-4, 8]];
 yrange = [[0, 1], [0, 1], [0, dnorm(0, 0, 1)]];
 
 draw_plot = function(index) {
+  var ticks;
   figs[index] = svg.append("g").attr("id", short[index]).attr("transform", "translate(0," + (figtoth * index) + ")").append("svg").attr("width", figtotw).attr("height", figtoth);
   figs[index].append("rect").attr("x", margin.left).attr("y", margin.top).attr("height", figheight).attr("width", figwidth).attr("fill", bgcolor).attr("stroke", "black").attr("stroke-width", 2);
   figs[index].append("text").text(titles[index]).attr("x", margin.left + figwidth / 2).attr("y", margin.top / 2).attr("dominant-baseline", "middle").attr("text-anchor", "middle");
@@ -122,7 +123,18 @@ draw_plot = function(index) {
     yrange[index] = [0, dnorm(0, 0, param.sigma.min)];
   }
   xscale[index] = d3.scale.linear().clamp(true).range([margin.left, margin.left + figwidth]).domain(xrange[index]);
-  return yscale[index] = d3.scale.linear().clamp(true).range([margin.top + figheight, margin.top + margin.inner]).domain(yrange[index]);
+  yscale[index] = d3.scale.linear().clamp(true).range([margin.top + figheight, margin.top + margin.inner]).domain(yrange[index]);
+  ticks = xscale[index].ticks(6);
+  figs[index].append("g").attr("class", "axis").selectAll("empty").data(ticks).enter().append("line").attr("x1", function(d) {
+    return xscale[index](d);
+  }).attr("x2", function(d) {
+    return xscale[index](d);
+  }).attr("y1", margin.top).attr("y2", figheight + margin.top).attr("stroke", "white").attr("stroke-width", 1);
+  return figs[index].selectAll("empty").data(ticks).enter().append("text").attr("x", function(d) {
+    return xscale[index](d);
+  }).attr("y", figheight + margin.top + margin.bottom * 0.4).text(function(d) {
+    return d;
+  }).attr("dominant-baseline", "middle").attr("text-anchor", "middle");
 };
 
 for (i = k = 0; k <= 2; i = ++k) {
@@ -212,8 +224,6 @@ update_plots = function() {
       y: 0
     });
     figs[2].append("path").attr("class", "curves").datum(data).attr("d", curve(2)).attr("fill", colors[0]).attr("stroke", "none").attr("opacity", opacity);
-    figs[2].append("line").attr("class", "curves").attr("x1", xscale[2](critval)).attr("y1", figheight + margin.top).attr("x2", xscale[2](critval)).attr("y2", figheight + margin.top + margin.bottom * 0.2).attr("stroke", "black");
-    figs[2].append("text").attr("class", "curves").attr("x", xscale[2](critval)).attr("y", margin.top + figheight + margin.bottom / 2).text("T").attr("dominant-baseline", "middle").attr("text-anchor", "middle");
   }
   power = 1 - pnct(critval, df, ncp);
   d3.select("div#power p").text("Power = " + (d3.format("%0d")(power)));
