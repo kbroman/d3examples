@@ -1,7 +1,6 @@
 ### d3examples
 
-Karl W Broman,
-[http://www.biostat.wisc.edu/~kbroman](http://www.biostat.wisc.edu/~kbroman)
+[Karl W Broman](http://kbroman.org)
 
 Examples of interactive graphics using [d3](http://d3js.org).
 
