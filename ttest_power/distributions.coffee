@@ -28,6 +28,63 @@ betinc = (x, a, b, tol=1e-8) ->
         b1=1
     a1/a
 
+# error function
+# from jStat: https://github.com/jstat/jstat/blob/master/src/special.js
+# (MIT license)
+erf = (x) ->
+    cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
+           -9.561514786808631e-3, -9.46595344482036e-4, 3.66839497852761e-4,
+            4.2523324806907e-5, -2.0278578112534e-5, -1.624290004647e-6,
+            1.303655835580e-6, 1.5626441722e-8, -8.5238095915e-8,
+            6.529054439e-9, 5.059343495e-9, -9.91364156e-10,
+           -2.27365122e-10, 9.6467911e-11, 2.394038e-12,
+           -6.886027e-12, 8.94487e-13, 3.13092e-13,
+           -1.12708e-13, 3.81e-16, 7.106e-15,
+           -1.523e-15, -9.4e-17, 1.21e-16,
+           -2.8e-17]
+    j = cof.length - 1
+    isneg = false
+    d = 0
+    dd = 0
+
+    if x < 0
+      x = -x
+      isneg = true
+
+    t = 2 / (2 + x)
+    ty = 4 * t - 2
+
+    while j > 0
+        tmp = d
+        d = ty * d - dd + cof[j]
+        dd = tmp
+        j -= 1
+
+    res = t * Math.exp(-x * x + 0.5 * (cof[0] + ty * d) - dd)
+    return res - 1 if isneg
+    1 - res
+
+# inverse of the complement of the error function
+# from jStat: https://github.com/jstat/jstat/blob/master/src/special.js
+# (MIT license)
+erfcinv = (p) ->
+    j = 0
+    return -100 if p >= 2
+    return  100 if p <= 0
+
+    pp = if p < 1 then p else 2-p
+
+    t = Math.sqrt(-2 * Math.log(pp / 2))
+    x = -0.70711 * ((2.30753 + t * 0.27061) /
+                  (1 + t * (0.99229 + t * 0.04481)) - t)
+    while j < 2
+        err = 1-erf(x) - pp
+        x += err / (1.12837916709551257 * Math.exp(-x * x) - x * err)
+        j += 1
+
+    return x if p < 1
+    -x
+
 # CDF of beta distribution
 pbeta = (x, a, b, tol=1e-8) ->
     if a <=0 or b <= 0
@@ -46,7 +103,7 @@ pbeta = (x, a, b, tol=1e-8) ->
     1 - bt*betinc(1-x, b, a, tol)
 
 # normal density
-dnorm = (x, mu=100, sd=5) ->
+dnorm = (x, mu=0, sd=1) ->
     if sd <= 0
         console.log("dnorm: sd must be positive")
         return null
@@ -56,78 +113,80 @@ dnorm = (x, mu=100, sd=5) ->
 
     Math.exp(-0.5*Math.pow((x-mu)/sd, 2))/(sd * Math.sqrt(2*Math.PI))
 
-# quantile of standard normal distribution
-qnorm = (p) ->
-    split=0.42
-    a0=  2.50662823884
-    a1=-18.61500062529
-    a2= 41.39119773534
-    a3=-25.44106049637
-    b1= -8.47351093090
-    b2= 23.08336743743
-    b3=-21.06224101826
-    b4=  3.13082909833
-    c0= -2.78718931138
-    c1= -2.29796479134
-    c2=  4.85014127135
-    c3=  2.32121276858
-    d1=  3.54388924762
-    d2=  1.63706781897
-    q=p-0.5
-    if Math.abs(q)<=split
-        r=q*q
-        ppnd=q*(((a3*r+a2)*r+a1)*r+a0)/((((b4*r+b3)*r+b2)*r+b1)*r+1)
-    else
-        r=p
-        r=1-p if q>0
-        if r>0
-            r=Math.sqrt(-Math.log(r))
-            ppnd=(((c3*r+c2)*r+c1)*r+c0)/((d2*r+d1)*r+1)
-            ppnd=-ppnd if q<0
-        else
-           ppnd=0
+# CDF of normal distribution
+pnorm = (x, mu=0, sd=1) ->
+    if sd <= 0
+        console.log("pnorm: sd must be positive")
+        return null
+    if Array.isArray(x)
+        return (dnorm(xval, mu, sd) for xval in x)
 
-    ppnd
+    z = (x - mu)/sd
+
+    0.5 * (1 + erf(x/Math.sqrt(2)))
+
+# quantile of normal distribution
+qnorm = (p, mu=0, sd=1) ->
+    if sd <= 0
+        console.log("qnorm: sd must be positive")
+        return null
+    if p <= 0 or p >= 1
+        console.log("qnorm: p must be in (0,1)")
+        return null
+    if Array.isArray(p)
+        return (qnorm(pval, mu, sd) for pval in p)
+
+    z = -1.41421356237309505 * erfcinv(2*p)
+
+    z*sd + mu
 
 # t density
-dt = (x, nu) ->
-    if nu <= 0
-        console.log("dt: nu must be positive")
+dt = (x, df) ->
+    if df <= 0
+        console.log("dt: df must be positive")
         return null
 
     if Array.isArray(x)
-        return (dt(xval, nu) for xval in x)
+        return (dt(xval, df) for xval in x)
 
-    ldt = lgamma((nu+1)/2) - 0.5*Math.log(nu*Math.PI) -
-        lgamma(nu/2) - ((nu+1)/2) * Math.log(1 + x*x/nu)
+    ldt = lgamma((df+1)/2) - 0.5*Math.log(df*Math.PI) -
+        lgamma(df/2) - ((df+1)/2) * Math.log(1 + x*x/df)
     Math.exp(ldt)
 
 # CDF of t distribution
-pt = (x, nu) ->
-    if nu <= 0
-        console.log("dt: nu must be positive")
+pt = (x, df) ->
+    if df <= 0
+        console.log("dt: df must be positive")
         return null
 
     if Array.isArray(x)
-        return (pt(xval, nu) for xval in x)
+        return (pt(xval, df) for xval in x)
 
     return 0.5 if x == 0
-    y = 0.5 * pbeta(nu/(x*x+nu), nu/2, 1/2)
+    y = 0.5 * pbeta(df/(x*x+df), df/2, 1/2)
     return y if x < 0
     1-y
 
 # quantile of t distribution by binary search
-qt = (p, nu, hi=5, tol=0.0001) ->
+qt = (p, df, hi=5, tol=0.0001) ->
+    if df <= 0
+        console.log("qt: df must be positive")
+        return null
+
+    if p <= 0 or p >= 1
+        console.log("qt: p must be in (0,1)")
+        return null
+
     lo = qnorm(p)
 
     # adjust hi if below quantile
-    while pt(hi, nu) <= p
+    while pt(hi, df) <= p
         lo = hi
         hi += 1
 
     quant = (hi+lo)/2
     while hi-lo > tol
-        if pt(quant, nu) > p
+        if pt(quant, df) > p
             hi = quant
         else
             lo = quant
