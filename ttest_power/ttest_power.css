@@ -20,13 +20,14 @@ div#chart {
 
 div#power {
     position: fixed;
-    top: 420px;
+    top: 280px;
     left: 80px;
     font-size: 30px;
 }
 
 div#code {
     position: fixed;
-    top: 900px;
-    left: 80px;
+    top: 400px;
+    left: 20px;
+    font-size: 14px;
 }
