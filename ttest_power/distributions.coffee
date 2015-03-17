@@ -210,7 +210,7 @@ qt = (p, df, hi=5, tol=0.0001) ->
     quant
 
 # CDF of non-central t distribution
-pnct = (x, df, ncp, tol=1e-5) ->
+pnct = (x, df, ncp, tol=1e-14) ->
     x = parseFloat(x)
     df = parseFloat(df)
     ncp = parseFloat(ncp)
@@ -240,7 +240,7 @@ pnct = (x, df, ncp, tol=1e-5) ->
     prob
 
 # density of non-central t distribution
-dnct = (x, df, ncp, tol=1e-5) ->
+dnct = (x, df, ncp, tol=1e-14) ->
     x = parseFloat(x)
     df = parseFloat(df)
     ncp = parseFloat(ncp)
