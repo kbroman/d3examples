@@ -1,22 +1,7 @@
 # code to create interactive graph demonstrating power in a two-sample t-test
 
-# function that prints slider value next to slider
-printSliderValue = (sliderID) ->
-    textboxID = "#{sliderID}value"
-
-    textbox = document.getElementById(textboxID)
-    slider = document.getElementById(sliderID)
-
-    if sliderID=="alpha"
-        digits=Math.floor(-slider.value)+2
-        textbox.value = Math.round(10**slider.value * 10**digits)/10**digits
-    else
-        textbox.value = slider.value
-
+# function that grabs slider value
 getSliderValue = (sliderID) ->
-    textboxID = "#{sliderID}value"
-
-    textbox = document.getElementById(textboxID)
     slider = document.getElementById(sliderID)
 
     if sliderID=="alpha"
@@ -24,6 +9,14 @@ getSliderValue = (sliderID) ->
         return(Math.round(10**slider.value * 10**digits)/10**digits)
     else
         return(slider.value)
+
+# function that prints slider value next to slider
+printSliderValue = (sliderID) ->
+    val = getSliderValue(sliderID)
+
+    textboxID = "#{sliderID}value"
+    textbox = document.getElementById(textboxID)
+    textbox.value = val
 
 # stuff for form
 param =
@@ -77,16 +70,13 @@ d3.select("form#sliders")
                        printSliderValue(par)
                    update_plots() )
 
-# normal distribution
-dnorm = (x, mu=100, sd=5) ->
-    Math.exp(-0.5*Math.pow((x-mu)/sd, 2))/(sd * Math.sqrt(2*Math.PI))
-
 # create svg
 bgcolor = "#ccc"
 colors = ["slateblue", "violetred"]
-npts = 600
-figwidth = 600
-figheight= 300
+npts = 500
+figwidth = 500
+figheight= 250
+
 margin = {left:50,right:10, bottom:50, top:30, inner: 5}
 figtotw = figwidth + margin.left + margin.right
 figtoth = figheight + margin.top + margin.bottom
@@ -161,8 +151,8 @@ update_plots = () ->
     delta = +getSliderValue("delta")
     n = +getSliderValue("n")
 
-    x = d3.range(npts).map (i) ->
-        xrange[0][0] + i/npts*(xrange[0][1] - xrange[0][0])
+    scale4x = d3.scale.linear().domain([0,1]).range(xrange[0])
+    x = d3.range(npts).map (i) -> scale4x(i/npts)
 
     yscale[0].domain([0, dnorm(0, 0, sigma)])
     yscale[1].domain([0, dnorm(0, 0, sigma/Math.sqrt(n))])
@@ -195,6 +185,4 @@ update_plots = () ->
 
 update_plots()
 
-# population distributions
-# sampling distributions
 # test statistic, null and alternative
