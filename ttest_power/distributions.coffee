@@ -209,11 +209,16 @@ qt = (p, df, hi=5, tol=0.0001) ->
 
     quant
 
-# non-central t distribution
+# CDF of non-central t distribution
 pnct = (x, df, ncp, tol=1e-5) ->
     x = parseFloat(x)
     df = parseFloat(df)
     ncp = parseFloat(ncp)
+    if df <= 0
+        console.log("pnct: df must be positive")
+        return null
+
+    return pt(x, df) if ncp==0
 
     flip = (x < 0)
     ncp = -ncp if x < 0
@@ -230,9 +235,22 @@ pnct = (x, df, ncp, tol=1e-5) ->
         val = p*pbeta(y, j+0.5, df/2) + q*pbeta(y, j+1, df/2)
         prob += 0.5*val
         j += 1
-        console.log(j)
 
     return 1-prob if flip
     prob
 
-# CDF of non-central t distribution
+# density of non-central t distribution
+dnct = (x, df, ncp, tol=1e-5) ->
+    x = parseFloat(x)
+    df = parseFloat(df)
+    ncp = parseFloat(ncp)
+    if df <= 0
+        console.log("dnct: df must be positive")
+        return null
+
+    return dt(x, df) if ncp==0
+
+    if x == 0
+        return Math.exp( lgamma((df+1)/2) - ncp*ncp/2 - 0.5*Math.log(Math.PI * df) - lgamma(df/2) )
+
+    df/x * (pnct(x*Math.sqrt(1 + 2/df), df+2, ncp, tol) - pnct(x, df, ncp, tol) )
