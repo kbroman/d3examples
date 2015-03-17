@@ -56,6 +56,39 @@ dnorm = (x, mu=100, sd=5) ->
 
     Math.exp(-0.5*Math.pow((x-mu)/sd, 2))/(sd * Math.sqrt(2*Math.PI))
 
+# quantile of standard normal distribution
+qnorm = (p) ->
+    split=0.42
+    a0=  2.50662823884
+    a1=-18.61500062529
+    a2= 41.39119773534
+    a3=-25.44106049637
+    b1= -8.47351093090
+    b2= 23.08336743743
+    b3=-21.06224101826
+    b4=  3.13082909833
+    c0= -2.78718931138
+    c1= -2.29796479134
+    c2=  4.85014127135
+    c3=  2.32121276858
+    d1=  3.54388924762
+    d2=  1.63706781897
+    q=p-0.5
+    if Math.abs(q)<=split
+        r=q*q
+        ppnd=q*(((a3*r+a2)*r+a1)*r+a0)/((((b4*r+b3)*r+b2)*r+b1)*r+1)
+    else
+        r=p
+        r=1-p if q>0
+        if r>0
+            r=Math.sqrt(-Math.log(r))
+            ppnd=(((c3*r+c2)*r+c1)*r+c0)/((d2*r+d1)*r+1)
+            ppnd=-ppnd if q<0
+        else
+           ppnd=0
+
+    ppnd
+
 # t density
 dt = (x, nu) ->
     if nu <= 0
@@ -83,7 +116,24 @@ pt = (x, nu) ->
     return y if x < 0
     1-y
 
-# quantiles of t distribution
+# quantile of t distribution by binary search
+qt = (p, nu, hi=5, tol=0.0001) ->
+    lo = qnorm(p)
+
+    # adjust hi if below quantile
+    while pt(hi, nu) <= p
+        lo = hi
+        hi += 1
+
+    quant = (hi+lo)/2
+    while hi-lo > tol
+        if pt(quant, nu) > p
+            hi = quant
+        else
+            lo = quant
+        quant = (hi+lo)/2
+
+    quant
 
 # non-central t distribution
 
