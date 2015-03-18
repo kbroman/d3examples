@@ -287,10 +287,13 @@ qt = function(p, df, hi, tol) {
   return quant;
 };
 
-pnct = function(x, df, ncp, tol) {
+pnct = function(x, df, ncp, tol, min_iterations) {
   var flip, j, lastval, p, prob, q, tmp, val, y;
   if (tol == null) {
-    tol = 1e-14;
+    tol = 1e-8;
+  }
+  if (min_iterations == null) {
+    min_iterations = 10;
   }
   x = parseFloat(x);
   df = parseFloat(df);
@@ -311,7 +314,7 @@ pnct = function(x, df, ncp, tol) {
   val = tol + 1;
   y = x * x / (x * x + df);
   lastval = val;
-  while (lastval > tol || val > tol || j < 3) {
+  while (lastval > tol || val > tol || j < min_iterations) {
     lastval = val;
     tmp = ncp * ncp / 2;
     tmp = -tmp + j * Math.log(tmp);
@@ -327,9 +330,12 @@ pnct = function(x, df, ncp, tol) {
   return prob;
 };
 
-dnct = function(x, df, ncp, tol) {
+dnct = function(x, df, ncp, tol, min_iterations) {
   if (tol == null) {
-    tol = 1e-14;
+    tol = 1e-8;
+  }
+  if (min_iterations == null) {
+    min_iterations = 10;
   }
   x = parseFloat(x);
   df = parseFloat(df);
@@ -344,5 +350,5 @@ dnct = function(x, df, ncp, tol) {
   if (x === 0) {
     return Math.exp(lgamma((df + 1) / 2) - ncp * ncp / 2 - 0.5 * Math.log(Math.PI * df) - lgamma(df / 2));
   }
-  return df / x * (pnct(x * Math.sqrt(1 + 2 / df), df + 2, ncp, tol) - pnct(x, df, ncp, tol));
+  return df / x * (pnct(x * Math.sqrt(1 + 2 / df), df + 2, ncp, tol) - pnct(x, df, ncp, tol, min_iterations));
 };

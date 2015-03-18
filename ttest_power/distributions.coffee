@@ -210,7 +210,7 @@ qt = (p, df, hi=5, tol=0.0001) ->
     quant
 
 # CDF of non-central t distribution
-pnct = (x, df, ncp, tol=1e-14) ->
+pnct = (x, df, ncp, tol=1e-8, min_iterations=10) ->
     x = parseFloat(x)
     df = parseFloat(df)
     ncp = parseFloat(ncp)
@@ -228,7 +228,7 @@ pnct = (x, df, ncp, tol=1e-14) ->
     val = tol+1
     y = x*x/(x*x+df)
     lastval = val
-    while lastval > tol or val > tol or j < 3
+    while lastval > tol or val > tol or j < min_iterations
         lastval = val
         tmp = ncp*ncp/2
         tmp = -tmp + j*Math.log(tmp)
@@ -242,7 +242,7 @@ pnct = (x, df, ncp, tol=1e-14) ->
     prob
 
 # density of non-central t distribution
-dnct = (x, df, ncp, tol=1e-14) ->
+dnct = (x, df, ncp, tol=1e-8, min_iterations=10) ->
     x = parseFloat(x)
     df = parseFloat(df)
     ncp = parseFloat(ncp)
@@ -255,4 +255,4 @@ dnct = (x, df, ncp, tol=1e-14) ->
     if x == 0
         return Math.exp( lgamma((df+1)/2) - ncp*ncp/2 - 0.5*Math.log(Math.PI * df) - lgamma(df/2) )
 
-    df/x * (pnct(x*Math.sqrt(1 + 2/df), df+2, ncp, tol) - pnct(x, df, ncp, tol) )
+    df/x * (pnct(x*Math.sqrt(1 + 2/df), df+2, ncp, tol) - pnct(x, df, ncp, tol, min_iterations) )
