@@ -18,6 +18,10 @@ printSliderValue = (sliderID) ->
     textbox = document.getElementById(textboxID)
     textbox.value = val
 
+# detect mobile browser
+isMobile = () ->
+    typeof window.orientation isnt 'undefined'
+
 # stuff for form
 param =
     n:
@@ -64,11 +68,18 @@ for par of param
     printSliderValue(par)
 
 # when any slider changes...
-d3.select("form#sliders")
-  .on("input", () ->
-                   for par in ["n", "alpha", "delta", "sigma"]
-                       printSliderValue(par)
-                   update_plots() )
+if isMobile()
+    d3.select("form#sliders")
+      .on("change", () ->
+                       for par in ["n", "alpha", "delta", "sigma"]
+                           printSliderValue(par)
+                       update_plots() )
+else    
+    d3.select("form#sliders")
+      .on("input", () ->
+                       for par in ["n", "alpha", "delta", "sigma"]
+                           printSliderValue(par)
+                       update_plots() )
 
 # create svg
 bgcolor = "#ccc"
