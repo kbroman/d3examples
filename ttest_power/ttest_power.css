@@ -7,27 +7,27 @@ form {
     -webkit-user-select: none;
     -moz-user-select: none;
 
-    position: fixed;
-    top: 80px;
+    position: relative;
+    top: 20px;
     left: 20px;
 }
 
 div#chart {
     position: relative;
-    top: -40px;
+    top: -280px;
     left: 400px;
 }
 
 div#power {
-    position: fixed;
-    top: 280px;
+    position: relative;
+    top: 130px;
     left: 80px;
     font-size: 30px;
 }
 
 div#code {
-    position: fixed;
-    top: 400px;
+    position: relative;
+    top: 200px;
     left: 20px;
     font-size: 14px;
 }
