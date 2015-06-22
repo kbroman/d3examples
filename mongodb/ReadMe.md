@@ -16,6 +16,10 @@ a mongoDB database.
   &ndash; python script setting up local server to handle requests to
   the mongoDB database. Go to `http://localhost:8080/anscombe/I` to
   get the first dataset; then `/II`, `/III`, and `/IV`.
+- [`anscombe.coffee`](https://github.com/kbroman/d3examples/blob/master/mongodb/anscombe.coffee)
+  &ndash; coffeescript to make the plot; uses the
+  [`scatterplot` function](https://github.com/kbroman/d3panels/blob/master/src/scatterplot.coffee)
+  in [d3panels](http://kbroman.org/d3panels).
 
 Things you need:
 

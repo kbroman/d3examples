@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel=stylesheet type="text/css" href="../d3-tip/d3-tip.min.css">
+<link rel=stylesheet type="text/css" href="../panels/panelutil.css">
+<link rel=stylesheet type="text/css" href="anscombe.css">
+
+<script charset="utf-8" type="text/javascript" src="../d3/d3.min.js"></script>
+<script type="text/javascript" src="../d3-tip/d3-tip.min.js"></script>
+<script type="text/javascript" src="../panels/panelutil.js"></script>
+<script type="text/javascript" src="../panels/scatterplot/scatterplot.js"></script>
+
+<title>Anscombe's quartet, with mongoDB</title>
+</head>
+
+<body>
+<h2>Anscombe's quartet, with mongoDB</h2>
+
+<p>Here I'm trying out the use of <a
+href="https://www.mongodb.org/">MongoDB</a> on the back end, to store
+data for a <a href="http://d3js.org">D3</a>-based plot.</p>
+
+<div id="chart" class="qtlcharts"></div>
+
+<p>Click on a circle at the left to load a dataset from the mongoDB and
+then plot it.</p>
+
+<p>Code at <a href="https://github.com/kbroman/d3examples/tree/master/mongodb">github</a>.</p>
+
+<script type="text/javascript" src="anscombe.js"></script>
+</body>
+</html>
