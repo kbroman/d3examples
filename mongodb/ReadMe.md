@@ -21,9 +21,28 @@ a mongoDB database.
   [`scatterplot` function](https://github.com/kbroman/d3panels/blob/master/src/scatterplot.coffee)
   in [d3panels](http://kbroman.org/d3panels).
 
-Things you need:
+### Things you need
 
 - [mongoDB](https://www.mongodb.org/downloads)
 - python modules:
   - [pymongo](http://api.mongodb.org/python/current/)
   - [bottle](http://bottlepy.org/docs/dev/index.html)
+
+### Preparations
+
+- Start the mongoDB daemon, `mongod`.
+- Run
+  [`mongo_insert.py`](https://github.com/kbroman/d3examples/blob/master/mongodb/mongo_insert.py)
+  to insert the data from
+  [`anscombe_quartet.json`](https://github.com/kbroman/d3examples/blob/master/mongodb/anscombe_quartet.json)
+  into the database.
+
+### Use
+
+- Start the mongoDB daemon, `mongod`.
+- Run
+  [`mongo_request.py`](https://github.com/kbroman/d3examples/blob/master/mongodb/mongo_request.py)
+  to start the database server.
+- Open
+  [`index.html`](https://github.com/kbroman/d3examples/blob/master/mongodb/index.html)
+  in a browser.
