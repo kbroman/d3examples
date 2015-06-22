@@ -16,3 +16,7 @@ a:hover {
     color: violetred;
     text-decoration: none;
 }
+
+p.legend {
+    width:800px;
+}
