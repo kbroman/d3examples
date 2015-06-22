@@ -4,7 +4,7 @@ height = 500
 width  = 800
 left_width = 80
 gap = 10
-bigrad = 20
+button_size = 20
 rad = 3
 color = "slateblue"
 hilit = "violetred"
@@ -18,15 +18,16 @@ svg = d3.select("div#chart")
 
 
 sets = ["I", "II", "III", "IV"]
-y = (height/8 + height/4*i for i of sets)
+y = (margin.top + i*button_size*1.5 for i of sets)
 
 svg.selectAll("empty")
    .data(sets)
    .enter()
-   .append("circle")
-   .attr("cx", left_width-bigrad-gap)
-   .attr("cy", (d,i) -> y[i])
-   .attr("r", bigrad)
+   .append("rect")
+   .attr("x", gap)
+   .attr("y", (d,i) -> y[i])
+   .attr("height", button_size)
+   .attr("width", button_size)
    .attr("fill", color)
    .on("mouseover", (d) -> d3.select(this).attr("fill", hilit))
    .on("mouseout", (d) -> d3.select(this).attr("fill", color))
@@ -37,8 +38,8 @@ svg.selectAll("empty")
    .enter()
    .append("text")
    .text((d) -> d)
-   .attr("x", gap)
-   .attr("y", (d,i) -> y[i])
+   .attr("x", gap + button_size*2)
+   .attr("y", (d,i) -> y[i] + button_size/2.0)
    .style("dominant-baseline", "middle")
    .style("text-anchor", "middle")
    .style("font-size", "20px")
