@@ -1,6 +1,6 @@
 ## D3.js with MongoDB
 
-This is a small example to have a D3-based graph that is connection to
+This is a small example to have a D3-based graph that is connected to
 a mongoDB database.
 
 - [`grab_anscombe.R`](https://github.com/kbroman/d3examples/blob/master/mongodb/grab_anscombe.R)
