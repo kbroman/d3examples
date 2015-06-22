@@ -25,8 +25,10 @@ graph that is connected to a mongoDB database
 
 - [mongoDB](https://www.mongodb.org/downloads)
 - python modules:
-  - [pymongo](http://api.mongodb.org/python/current/)
-  - [bottle](http://bottlepy.org/docs/dev/index.html)
+  - [pymongo](http://api.mongodb.org/python/current/) &ndash; the
+    mongo driver
+  - [bottle](http://bottlepy.org/docs/dev/index.html) &ndash; handles
+    http requests
 
 ### Preparations
 
