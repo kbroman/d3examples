@@ -6,8 +6,8 @@ left_width = 80
 gap = 10
 button_size = 20
 rad = 3
-color = "slateblue"
-hilit = "violetred"
+color = "#6A5ACD" # slateblue
+hilit = "#C71585" # violetred
 margin = {left:60, top:40, right:40, bottom:40, inner:5}
 
 # four big points that, when clicked, generate the scatterplot

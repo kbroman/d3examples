@@ -14,9 +14,9 @@
 
   rad = 3;
 
-  color = "slateblue";
+  color = "#6A5ACD";
 
-  hilit = "violetred";
+  hilit = "#C71585";
 
   margin = {
     left: 60,
