@@ -12,7 +12,7 @@ a mongoDB database.
 - [`mongo_insert.py`](https://github.com/kbroman/d3examples/blob/master/mongodb/mongo_insert.py)
   &ndash; python script to insert the data into a mongoDB database
   (database `"anscombe"` and collection `"quartet"`)
-- [`mongo_request.py`]https://github.com/kbroman/d3examples/blob/master/mongodb/mongo_request.py)
+- [`mongo_request.py`](https://github.com/kbroman/d3examples/blob/master/mongodb/mongo_request.py)
   &ndash; python script setting up local server to handle requests to
   the mongoDB database. Go to `http://localhost:8080/anscombe/I` to
   get the first dataset; then `/II`, `/III`, and `/IV`.
