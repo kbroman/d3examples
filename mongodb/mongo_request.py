@@ -11,6 +11,7 @@ dbcoll = client.anscombe.quartet
 
 @bottle.route('/anscombe/<name>')
 def grab_record(name):
+    bottle.response.headers['Access-Control-Allow-Origin'] = '*' # <- needed to allow request from D3
     return dbcoll.find_one({'name':name}, {'_id':False})
 
 bottle.run(host='localhost', port=8080, debug=True)
