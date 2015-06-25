@@ -3,6 +3,5 @@
 Rout.txt
 *.json
 *.csv
-d3/
-d3-tip/
-jquery/
+bower/bower_components
+!bower/bower.json
