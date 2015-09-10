@@ -12,8 +12,8 @@ file indicates the libraries (and minimal versions) to get.
 
 - Install these packages (indicated within the `bower.json` file)
 
-      bower install
+        bower install
 
 - To update the packages
 
-      bower update
+        bower update
