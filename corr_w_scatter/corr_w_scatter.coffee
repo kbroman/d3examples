@@ -53,7 +53,7 @@ d3.json "data.json", (data) ->
              .attr("stroke-width", 1)
              .attr("pointer-events", "none")
 
-  cells = corrplot.selectAll("empty")
+  cells = corrplot.append("g").attr("id", "cells").selectAll("empty")
              .data(corr)
              .enter().append("rect")
              .attr("class", "cell")
