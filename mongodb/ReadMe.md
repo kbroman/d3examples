@@ -47,4 +47,5 @@ graph that is connected to a mongoDB database
   to start the database server.
 - Open
   [`index.html`](https://github.com/kbroman/d3examples/blob/master/mongodb/index.html)
-  in a browser.
+  in a browser. (Note: *don't* go to `localhost:8080` which is just
+  used for the data; rather, just open `index.html` as `file:///.../index.html`)
