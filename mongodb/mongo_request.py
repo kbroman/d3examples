@@ -14,12 +14,4 @@ def grab_record(name):
     bottle.response.headers['Access-Control-Allow-Origin'] = '*' # <- needed to allow request from D3
     return dbcoll.find_one({'name':name}, {'_id':False})
 
-@bottle.route('/')
-def main_page():
-    return bottle.static_file('index.html', root=".")
-
-@bottle.route('/<file>')
-def static_file(file):
-    return bottle.static_file(file, root=".")
-
 bottle.run(host='localhost', port=8080, debug=True)
