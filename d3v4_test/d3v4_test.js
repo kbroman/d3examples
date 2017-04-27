@@ -18,14 +18,13 @@ var data = d3.range(n)
 
 var min_jump = 20
 var max_jump = 200
-var u = function() {
-    ru = d3.randomUniform(min_jump, max_jump)
+var random_jump = function() {
+    radius = d3.randomUniform(min_jump, max_jump)()
+    console.log(radius)
+    angle = d3.randomUniform(0, 2*Math.PI)()
+    console.log(angle)
 
-    if(Math.random() < 0.5) {
-        return ru()
-    } else {
-        return -1*ru()
-    }
+    return {x: radius*Math.cos(angle), y:radius*Math.sin(angle)}
 }
 
 // circles jump away on mouseover, then slowly come back
@@ -39,10 +38,11 @@ svg.selectAll("empty")
     .attr("fill", (d) => d3.rgb(Math.random()*255,
                                 Math.random()*255,
                                 Math.random()*255))
-    .on("mouseover", (d,i,array) =>
+    .on("mouseover", (d,i,array) => {
+        u = random_jump()
         d3.select(array[i]).transition().attr("r", r*5)
-        .attr("cx", (d) => d.x + u())
-        .attr("cy", (d) => d.y + u()))
+            .attr("cx", (d) => d.x + u.x)
+            .attr("cy", (d) => d.y + u.y) })
     .on("mouseout", (d,i,array) =>
         d3.select(array[i]).transition().duration(2000)
         .delay(200).attr("r", r)
