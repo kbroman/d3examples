@@ -20,9 +20,7 @@ var min_jump = 20
 var max_jump = 200
 var random_jump = function() {
     radius = d3.randomUniform(min_jump, max_jump)()
-    console.log(radius)
     angle = d3.randomUniform(0, 2*Math.PI)()
-    console.log(angle)
 
     return {x: radius*Math.cos(angle), y:radius*Math.sin(angle)}
 }
