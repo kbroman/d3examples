@@ -2,7 +2,7 @@
 var slider;
 
 slider = function(chartOpts) {
-  var buttoncolor, buttondotfill, buttondotsize, buttonround, buttonsize, buttonstroke, chart, height, margin, nticks, rectcolor, rectheight, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, slider_svg, stopindex, textsize, tickgap, tickheight, ticks, value, width;
+  var buttoncolor, buttondotcolor, buttondotsize, buttonround, buttonsize, buttonstroke, chart, height, margin, nticks, rectcolor, rectheight, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, slider_svg, stopindex, textsize, tickgap, tickheight, ticks, value, width;
   if (chartOpts == null) {
     chartOpts = {};
   }
@@ -15,7 +15,7 @@ slider = function(chartOpts) {
   buttoncolor = (ref6 = chartOpts != null ? chartOpts.buttoncolor : void 0) != null ? ref6 : "#eee";
   buttonstroke = (ref7 = chartOpts != null ? chartOpts.buttonstroke : void 0) != null ? ref7 : "black";
   buttonround = (ref8 = chartOpts != null ? chartOpts.buttonround : void 0) != null ? ref8 : buttonsize * 0.2;
-  buttondotfill = (ref9 = chartOpts != null ? chartOpts.buttondotfill : void 0) != null ? ref9 : "slateblue";
+  buttondotcolor = (ref9 = chartOpts != null ? chartOpts.buttondotcolor : void 0) != null ? ref9 : "slateblue";
   buttondotsize = (ref10 = chartOpts != null ? chartOpts.buttondotsize : void 0) != null ? ref10 : buttonsize / 4;
   tickheight = (ref11 = chartOpts != null ? chartOpts.tickheight : void 0) != null ? ref11 : 10;
   tickgap = (ref12 = chartOpts != null ? chartOpts.tickgap : void 0) != null ? ref12 : tickheight / 2;
@@ -76,7 +76,7 @@ slider = function(chartOpts) {
     }).style("font-size", textsize).style("dominant-baseline", "hanging").style("text-anchor", "middle").style("pointer-events", "none").style("-webkit-user-select", "none").style("-moz-user-select", "none").style("-ms-user-select", "none");
     button = slider_svg.insert("g").attr("id", "button").attr("transform", "translate(" + xscale(value) + ",0)");
     button.insert("rect").attr("x", -buttonsize / 2).attr("y", height / 2 - buttonsize / 2).attr("height", buttonsize).attr("width", buttonsize).attr("rx", buttonround).attr("ry", buttonround).attr("stroke", buttonstroke).attr("stroke-width", 2).attr("fill", buttoncolor);
-    button.insert("circle").attr("cx", 0).attr("cy", height / 2).attr("r", buttondotsize).attr("fill", buttondotfill);
+    button.insert("circle").attr("cx", 0).attr("cy", height / 2).attr("r", buttondotsize).attr("fill", buttondotcolor);
     dragged = function(d) {
       var clamped_pixels, pixel_value;
       pixel_value = d3.event.x - margin;

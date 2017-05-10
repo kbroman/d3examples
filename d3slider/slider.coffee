@@ -13,7 +13,7 @@ slider = (chartOpts) ->
     buttoncolor = chartOpts?.buttoncolor ? "#eee"                           # color of button
     buttonstroke = chartOpts?.buttonstroke ? "black"                        # color of button border
     buttonround = chartOpts?.buttonround ? buttonsize*0.2                   # how much to round the button corners
-    buttondotfill = chartOpts?.buttondotfill ? "slateblue"                  # color of dot on button
+    buttondotcolor = chartOpts?.buttondotcolor ? "slateblue"                # color of dot on button
     buttondotsize = chartOpts?.buttondotsize ? buttonsize/4                 # radius of dot on button
     tickheight = chartOpts?.tickheight ? 10                                 # height of ticks
     tickgap = chartOpts?.tickgap ? tickheight/2                             # gap below ticks
@@ -119,7 +119,7 @@ slider = (chartOpts) ->
               .attr("cx", 0)
               .attr("cy", height/2)
               .attr("r", buttondotsize)
-              .attr("fill", buttondotfill)
+              .attr("fill", buttondotcolor)
 
 
         # function to deal with dragging
