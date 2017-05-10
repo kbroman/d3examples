@@ -57,9 +57,6 @@ circle = fig.insert("circle")
             .attr("r", 10)
             .attr("fill", "slateblue")
 
-# random starting position for the slider
-slider_start = marker_pos[Math.floor(Math.random()*marker_pos.length)]
-
 # g to contain the slider
 slider_g = svg.insert("g").attr("transform", "translate(0," + figh + ")")
 
@@ -69,5 +66,4 @@ slider_callback = (sl) ->
 
 # insert slider
 my_slider = slider()
-my_slider.value(slider_start)
 my_slider(slider_g, slider_callback, [d3.min(marker_pos), d3.max(marker_pos)], marker_pos)
