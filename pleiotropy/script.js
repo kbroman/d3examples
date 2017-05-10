@@ -23,11 +23,14 @@ slider_starts = [Math.random(), Math.random()].map((d) => marker_pos[Math.floor(
 var slider1= d3.slider().min(d3.min(marker_pos)).max(d3.max(marker_pos))
     .ticks(10).value(slider_starts[0])
     .stepValues(marker_pos)
-    .tickFormat((d) => d + " cM");
+    .tickFormat((d) => d + " cM")
+    .callback((sl) => console.log("slider1: " + sl.value()));
+
 div1.call(slider1);
 
 var slider2= d3.slider().min(d3.min(marker_pos)).max(d3.max(marker_pos))
     .ticks(10).value(slider_starts[1])
     .stepValues(marker_pos)
-    .tickFormat((d) => d + " cM");
+    .tickFormat((d) => d + " cM")
+    .callback((sl) => console.log("slider2: " + sl.value()));
 div2.call(slider2);
