@@ -151,8 +151,7 @@ slider = (chartOpts) ->
         callback(chart) if callback?
 
     # functions to grab stuff
-    chart.value = (arg) ->
-        value = arg if arg?
+    chart.value = () ->
         value
 
     chart.stopindex = () ->

@@ -110,10 +110,7 @@ slider = function(chartOpts) {
       return callback(chart);
     }
   };
-  chart.value = function(arg) {
-    if (arg != null) {
-      value = arg;
-    }
+  chart.value = function() {
     return value;
   };
   chart.stopindex = function() {
