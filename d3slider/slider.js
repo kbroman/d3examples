@@ -2,7 +2,7 @@
 var slider;
 
 slider = function(chartOpts) {
-  var buttoncolor, buttondotfill, buttondotsize, buttonround, buttonsize, buttonstroke, chart, height, margin, nticks, rectcolor, rectheight, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, slider_svg, textsize, tickgap, tickheight, ticks, value, width;
+  var buttoncolor, buttondotfill, buttondotsize, buttonround, buttonsize, buttonstroke, chart, height, margin, nticks, rectcolor, rectheight, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, slider_svg, stopindex, textsize, tickgap, tickheight, ticks, value, width;
   if (chartOpts == null) {
     chartOpts = {};
   }
@@ -23,15 +23,34 @@ slider = function(chartOpts) {
   nticks = (ref14 = chartOpts != null ? chartOpts.nticks : void 0) != null ? ref14 : 5;
   ticks = (ref15 = chartOpts != null ? chartOpts.ticks : void 0) != null ? ref15 : null;
   value = 0;
+  stopindex = 0;
   slider_svg = null;
   chart = function(selection, callback, range, stops) {
-    var button, clamp_pixels, dragged, xscale;
+    var button, clamp_pixels, dragged, end_drag, nearest_stop, xcscale, xscale;
     if (range == null) {
       range = [margin, width - margin * 2];
     }
-    value = (range[1] - range[0]) * Math.random() + range[0];
+    if (stops != null) {
+      stopindex = Math.floor(Math.random() * stops.length);
+      value = stops[stopindex];
+    } else {
+      value = (range[1] - range[0]) * Math.random() + range[0];
+    }
     slider_svg = selection.insert("svg").attr("height", height).attr("width", width);
-    xscale = d3.scaleLinear().range([margin, width - margin]).domain(range).clamp(true);
+    xcscale = d3.scaleLinear().range([margin, width - margin]).domain(range).clamp(true);
+    xscale = function(d) {
+      if (stops != null) {
+        return xcscale(marker_pos[nearest_stop(d)]);
+      }
+      return xcscale(d);
+    };
+    nearest_stop = function(d) {
+      var abs_diff;
+      abs_diff = stops.map(function(val) {
+        return Math.abs(val - d);
+      });
+      return abs_diff.indexOf(d3.min(abs_diff));
+    };
     clamp_pixels = function(pixels, interval) {
       if (pixels < interval[0]) {
         return interval[0];
@@ -43,18 +62,18 @@ slider = function(chartOpts) {
     };
     slider_svg.insert("rect").attr("x", margin).attr("y", height / 2 - rectheight / 2).attr("rx", rectheight * 0.3).attr("ry", rectheight * 0.3).attr("width", width - margin * 2).attr("height", rectheight).attr("fill", rectcolor);
     if (ticks == null) {
-      ticks = xscale.ticks(nticks);
+      ticks = xcscale.ticks(nticks);
     }
     slider_svg.selectAll("empty").data(ticks).enter().insert("line").attr("x1", function(d) {
-      return xscale(d);
+      return xcscale(d);
     }).attr("x2", function(d) {
-      return xscale(d);
+      return xcscale(d);
     }).attr("y1", height / 2 + rectheight / 2 + tickgap).attr("y2", height / 2 + rectheight / 2 + tickgap + tickheight).attr("stroke", "black").attr("shape-rendering", "crispEdges");
     slider_svg.selectAll("empty").data(ticks).enter().insert("text").attr("x", function(d) {
-      return xscale(d);
+      return xcscale(d);
     }).attr("y", height / 2 + rectheight / 2 + tickgap * 2 + tickheight).text(function(d) {
       return d;
-    }).style("font-size", textsize).style("dominant-baseline", "hanging").style("text-anchor", "middle").style("pointer-events", "none");
+    }).style("font-size", textsize).style("dominant-baseline", "hanging").style("text-anchor", "middle").style("pointer-events", "none").style("-webkit-user-select", "none").style("-moz-user-select", "none").style("-ms-user-select", "none");
     button = slider_svg.insert("g").attr("id", "button").attr("transform", "translate(" + xscale(value) + ",0)");
     button.insert("rect").attr("x", -buttonsize / 2).attr("y", height / 2 - buttonsize / 2).attr("height", buttonsize).attr("width", buttonsize).attr("rx", buttonround).attr("ry", buttonround).attr("stroke", buttonstroke).attr("stroke-width", 2).attr("fill", buttoncolor);
     button.insert("circle").attr("cx", 0).attr("cy", height / 2).attr("r", buttondotsize).attr("fill", buttondotfill);
@@ -62,13 +81,31 @@ slider = function(chartOpts) {
       var clamped_pixels, pixel_value;
       pixel_value = d3.event.x - margin;
       clamped_pixels = clamp_pixels(pixel_value, [0, width - margin * 2]);
-      value = xscale.invert(clamped_pixels + margin);
+      value = xcscale.invert(clamped_pixels + margin);
+      d3.select(this).attr("transform", "translate(" + xcscale(value) + ",0)");
+      if (stops != null) {
+        stopindex = nearest_stop(value);
+        value = stops[stopindex];
+      }
+      if (callback != null) {
+        return callback(chart);
+      }
+    };
+    end_drag = function(d) {
+      var clamped_pixels, pixel_value;
+      pixel_value = d3.event.x - margin;
+      clamped_pixels = clamp_pixels(pixel_value, [0, width - margin * 2]);
+      value = xcscale.invert(clamped_pixels + margin);
+      if (stops != null) {
+        stopindex = nearest_stop(value);
+        value = stops[stopindex];
+      }
       if (callback != null) {
         callback(chart);
       }
-      return d3.select(this).attr("transform", "translate(" + xscale(value) + ",0)");
+      return d3.select(this).attr("transform", "translate(" + xcscale(value) + ",0)");
     };
-    button.call(d3.drag().on("drag", dragged));
+    button.call(d3.drag().on("drag", dragged).on("end", end_drag));
     if (callback != null) {
       return callback(chart);
     }
@@ -78,6 +115,9 @@ slider = function(chartOpts) {
       value = arg;
     }
     return value;
+  };
+  chart.stopindex = function() {
+    return stopindex;
   };
   chart.remove = function() {
     return slider_svg.remove();
