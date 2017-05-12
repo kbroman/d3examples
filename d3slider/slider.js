@@ -40,7 +40,7 @@ slider = function(chartOpts) {
     xcscale = d3.scaleLinear().range([margin, width - margin]).domain(range).clamp(true);
     xscale = function(d) {
       if (stops != null) {
-        return xcscale(marker_pos[nearest_stop(d)]);
+        return xcscale(stops[nearest_stop(d)]);
       }
       return xcscale(d);
     };

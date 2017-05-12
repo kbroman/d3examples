@@ -31,7 +31,7 @@ slider = (chartOpts) ->
 
         range = [margin, width-margin*2] unless range?
 
-        if stops? # stops included; pick random marker index
+        if stops? # stops included; pick random stop index
             stopindex = Math.floor( Math.random() * stops.length )
             value = stops[stopindex]
         else
@@ -49,7 +49,7 @@ slider = (chartOpts) ->
 
         # xscale that handles stop positions
         xscale = (d) ->
-            return xcscale(marker_pos[nearest_stop(d)]) if stops?
+            return xcscale(stops[nearest_stop(d)]) if stops?
             xcscale(d)
 
         # find index of nearest "stop"
