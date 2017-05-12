@@ -13,6 +13,10 @@ w = slider_width
 figw = w - slider_margin*2
 figh = h-slider_height
 
+#####
+# simple application
+#####
+
 # insert svg
 svg = d3.select("div#chart").insert("svg").attr("id", "chart")
         .attr("height", h).attr("width", w)
@@ -81,3 +85,69 @@ slider_callback2 = (sl) ->
 # insert slider
 my_slider = double_slider()
 my_slider(slider_g, slider_callback1, slider_callback2, [d3.min(marker_pos), d3.max(marker_pos)], marker_pos)
+
+
+######
+# does it work if shifted to the right?
+######
+
+# insert svg
+svg2 = d3.select("div#chart2").insert("svg").attr("id", "chart")
+        .attr("height", h).attr("width", w)
+
+# insert figure
+fig2 = svg2.insert("g").attr("transform", "translate(" + slider_margin + ",0)")
+fig2.insert("rect").attr("x", 0).attr("y", 0).attr("height", figh).attr("width", figw).attr("fill", "#ddd")
+
+# add vertical lines to figure
+fig2.selectAll("empty")
+   .data(marker_pos)
+   .enter()
+   .insert("line")
+   .attr("stroke", "black")
+   .attr("stroke-width", 2)
+   .attr("x1", (d) => xscale(d))
+   .attr("x2", (d) => xscale(d))
+   .attr("y1", 0)
+   .attr("y2", figh)
+
+# central horizontal lines
+fig2.selectAll("empty")
+    .data(vpos)
+    .enter()
+    .insert("line")
+    .attr("x1", 0)
+    .attr("x2", figw)
+    .attr("y1", (d) -> d)
+    .attr("y2", (d) -> d)
+    .attr("stroke", (d,i) ->
+        return "slateblue" if i==0
+        "orchid")
+    .attr("stroke-width", 2)
+
+# a circle in the figure, whose position will be controlled by the slider
+
+circles2 = [0,1].map( (i) ->
+                    fig2.insert("circle")
+                       .attr("id", "circle")
+                       .attr("cx", Math.random()*figw)
+                       .attr("cy", vpos[i])
+                       .attr("r", 10)
+                       .attr("fill",
+                           if i==0
+                               "slateblue"
+                           else
+                               "orchid"))
+
+# g to contain the slider
+slider2_g = svg2.insert("g").attr("transform", "translate(0," + figh + ")")
+
+# slider callbacks
+slider2_callback1 = (sl) ->
+    circles2[0].attr("cx", xscale(sl.value()[0]))
+slider2_callback2 = (sl) ->
+    circles2[1].attr("cx", xscale(sl.value()[1]))
+
+# insert slider
+my_slider2 = double_slider()
+my_slider2(slider2_g, slider2_callback1, slider2_callback2, [d3.min(marker_pos), d3.max(marker_pos)], marker_pos)
