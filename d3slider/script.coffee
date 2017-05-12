@@ -13,6 +13,10 @@ w = slider_width
 figw = w - slider_margin*2
 figh = h-slider_height
 
+####
+# simple application
+####
+
 # insert svg
 svg = d3.select("div#chart").insert("svg").attr("id", "chart")
         .attr("height", h).attr("width", w)
@@ -67,3 +71,58 @@ slider_callback = (sl) ->
 # insert slider
 my_slider = slider()
 my_slider(slider_g, slider_callback, [d3.min(marker_pos), d3.max(marker_pos)], marker_pos)
+
+
+
+####
+# does it work if the parent div is shifted to the right?
+####
+
+# insert svg
+svg2 = d3.select("div#chart2").insert("svg").attr("id", "chart")
+         .attr("height", h).attr("width", w)
+
+# insert figure
+fig2 = svg2.insert("g").attr("transform", "translate(" + slider_margin + ",0)")
+fig2.insert("rect").attr("x", 0).attr("y", 0).attr("height", figh).attr("width", figw).attr("fill", "#ddd")
+
+
+# add vertical lines to figure
+fig2.selectAll("empty")
+   .data(marker_pos)
+   .enter()
+   .insert("line")
+   .attr("stroke", "black")
+   .attr("stroke-width", 2)
+   .attr("x1", (d) => xscale(d))
+   .attr("x2", (d) => xscale(d))
+   .attr("y1", 0)
+   .attr("y2", figh)
+
+# central horizontal line
+fig2.insert("line")
+   .attr("x1", 0)
+   .attr("x2", figw)
+   .attr("y1", figh/2)
+   .attr("y2", figh/2)
+   .attr("stroke", "slateblue")
+   .attr("stroke-width", 2)
+
+# a circle in the figure, whose position will be controlled by the slider
+circle2 = fig2.insert("circle")
+            .attr("id", "circle")
+            .attr("cx", Math.random()*figw)
+            .attr("cy", figh/2)
+            .attr("r", 10)
+            .attr("fill", "slateblue")
+
+# g to contain the slider
+slider2_g = svg2.insert("g").attr("transform", "translate(0," + figh + ")")
+
+# slider callback
+slider2_callback = (sl) ->
+    circle2.attr("cx", xscale(sl.value()))
+
+# insert slider
+my_slider2 = slider()
+my_slider2(slider2_g, slider2_callback, [d3.min(marker_pos), d3.max(marker_pos)], marker_pos)
