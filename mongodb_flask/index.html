@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel=stylesheet type="text/css" href="https://rawgit.com/kbroman/d3panels/master/d3panels.css">
+<link rel=stylesheet type="text/css" href="anscombe.css">
+
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/Caged/d3-tip/master/index.js"></script>
+<script type="text/javascript" src="https://rawgit.com/kbroman/d3panels/master/d3panels.js"></script>
+
+<title>Anscombe's quartet, with mongoDB</title>
+</head>
+
+<body>
+<h2>Anscombe's quartet, with mongoDB</h2>
+
+<p class="legend">This is an illustration of the use of <a
+href="https://www.mongodb.org/">MongoDB</a> on the back end, to store
+data for a <a href="http://d3js.org">D3</a>-based plot.
+Click on a square at the left to load a dataset from the mongoDB
+database and then plot it.</p>
+
+<div id="chart" class="qtlcharts"></div>
+
+<p>Code at <a href="https://github.com/kbroman/d3examples/tree/master/mongodb_flask">github</a>.</p>
+
+<script type="text/javascript" src="anscombe.js"></script>
+</body>
+</html>
