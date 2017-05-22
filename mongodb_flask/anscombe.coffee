@@ -65,6 +65,8 @@ myscatter = d3panels.scatterplot({
 #   - then make the scatterplot
 make_plot = (set) ->
     d3.json "http://localhost:8080/anscombe/#{set}", (data) ->
+
+        # reorganize the data in the form needed by scatterplot()
         data4plot = {x:(d.x for d in data.data),y:(d.y for d in data.data)}
 
         d3.select("svg#scatterplot").remove()
