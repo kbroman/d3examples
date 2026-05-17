@@ -1,0 +1,62 @@
+
+svg {
+  margin-top:  10px;
+  margin-left: 50px;
+}
+
+body {
+ font-family: sans-serif;
+ font-size: 11pt;
+}
+
+.line {
+  stroke-width: 1;
+  fill: none;
+}
+
+.thickline {
+  stroke-width: 2;
+  fill: none;
+}
+
+text {
+ font-family: sans-serif;
+ font-size: 11pt;
+ dominant-baseline: middle;
+ text-anchor: middle;
+}
+
+text.alignright {
+ text-anchor: end;
+}
+
+
+.outerBox {
+  stroke: black;
+  stroke-width: 2;
+  fill: none;
+  pointer-events: none;
+}
+
+.innerBox {
+  fill: rgb(230, 230, 230);
+  stroke: none;
+  pointer-events: none;
+}
+
+.axis {
+  pointer-events: none;
+}
+
+.d3-tip {
+  fill: darkslateblue;
+  stroke: none;
+  font-weight: bold;
+}
+
+.d3-tip text {
+  fill: white;
+  font-size: 12px;
+  stroke: none;
+  font-family: sans-serif;
+}

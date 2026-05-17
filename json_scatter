@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<title>Scatterplot of JSON data</title>
+    <script type="text/javascript" src="../d3/d3.min.js"></script>
+
+<script type="text/javascript">
+function draw(data) {
+  "use strict";
+
+  var w=800, h=400;
+  var pad = {left: 20, right: 20, top: 20, bottom: 20};
+
+  var svg = d3.select("body")
+                .append("svg")
+                  .attr("height", h)
+                  .attr("width", w);
+
+  svg.append("rect")
+       .attr("x", pad.left).attr("y",pad.top)
+       .attr("width", w-(pad.left+pad.right))
+       .attr("height",h-(pad.top+pad.bottom))
+       .attr("stroke", "black")
+       .attr("fill", "rgb(230,230,230)");
+
+  var xMin = d3.min(data, function(d) { return Number(d.x); });
+  var xMax = d3.max(data, function(d) { return Number(d.x); });
+  var yMin = d3.min(data, function(d) { return Number(d.y); });
+  var yMax = d3.max(data, function(d) { return Number(d.y); });
+
+  var xScale = d3.scale.linear().domain([xMin, xMax]).range([pad.left*2, w-pad.right*2]);
+  var yScale = d3.scale.linear().domain([yMin, yMax]).range([h-pad.bottom*2, pad.top*2]);
+
+  var circles = svg.selectAll("circle")
+                      .data(data)
+                      .enter()
+                        .append("circle")
+                          .attr("cx", function(d) { return xScale(d.x); })
+                          .attr("cy", function(d) { return yScale(d.y); })
+                          .attr("r", 5)
+                          .attr("opacity", 0.8)
+                          .attr("fill", function(d) { return ['blue', 'green', 'red'][d.z-1]; })
+                        .on("mouseover", function() { d3.select(this).attr("r", 10) })
+                        .on("mouseout", function() { d3.select(this).attr("r", 5) });
+}
+</script>
+</head>
+<body>
+<script type="text/javascript">
+  d3.json("dat.json", draw);
+</script>
+</body>
+</html>

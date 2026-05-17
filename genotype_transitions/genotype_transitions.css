@@ -1,0 +1,38 @@
+
+body {
+ font-family: sans-serif;
+}
+
+svg {
+  margin-top:  10px;
+  margin-left: 50px;
+}
+
+.line {
+  stroke-width: 1;
+  fill: none;
+}
+
+.thickline {
+  stroke-width: 2;
+  fill: none;
+}
+
+text {
+ font-family: sans-serif;
+ font-size: 11pt;
+ dominant-baseline: middle;
+ text-anchor: middle;
+}
+
+.outerBox {
+  stroke: black;
+  stroke-width: 2;
+  fill: none;
+}
+
+.innerBox {
+  fill: rgb(230, 230, 230);
+  stroke: none;
+}
+

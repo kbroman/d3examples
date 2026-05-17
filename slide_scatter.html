@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="d3/d3.min.js"></script>
+<title>Scatterplot with slider</title>
+</head>
+<body>
+
+<h3 style="font-family:sans-serif">Scatterplot with slider</h3>
+
+<div id="button"><button>Randomize</button></div>
+
+<div style="font-size:14px;font-family:sans-serif">Size of points:
+    <input style="position:relative;top:4px;" type="range" min="1" max="50" value="5"></div>
+
+
+<div id="chart" style="position:relative;top:10px;"></div>
+
+<script type="text/javascript">
+(function(){
+
+  var w=500, h=300;
+  var xPad = 3, yPad = 3;
+  var padMult=2;
+  var radius=5;
+  var radPad=2;
+
+  var dataset = [];
+  for(i=0; i<10; i++) {
+    dataset[i] = [Math.random()*(w-2*padMult*xPad)+padMult*xPad,
+                  Math.random()*(h-2*padMult*yPad)+padMult*yPad];
+  }
+
+  var svg = d3.select("#chart").append("svg:svg")
+                      .attr("width", w)
+                      .attr("height", h);
+
+  svg.append("svg:rect")
+     .attr("x", xPad).attr("y",yPad)
+     .attr("width", w-xPad*2).attr("height",h-yPad*2)
+     .attr("fill", "rgb(230,230,230)").attr("stroke", "black");
+
+  var circles = svg.selectAll("circle")
+     .data(dataset)
+     .enter()
+         .append("svg:circle")
+         .attr("cx", function(d) { return d[0]; })
+         .attr("cy", function(d) { return d[1]; })
+         .attr("r", radius)
+         .attr("fill", "steelblue")
+         .on("mouseover", function(){
+            d3.select(this).attr("fill", "violet");
+          })
+         .on("mouseout", function(){
+            d3.select(this).attr("fill", "steelblue");
+          })
+
+  var circletext = svg.selectAll("text")
+      .data(dataset)
+      .enter()
+        .append("text")
+        .text(function(d, i) { return i+1; })
+        .attr("x", function(d) { return d[0]+textPad(radius); })
+        .attr("y", function(d) { return d[1]-textPad(radius); })
+        .attr("fill", "mediumvioletred")
+        .style("font-family", "sans-serif");
+
+  d3.select("input[type=range]").on("change", function() {
+     radius = this.value;
+     circles.attr("r", radius);
+     circletext.attr("x", function(d) { return d[0]+textPad(radius);})
+               .attr("y", function(d) { return d[1]-textPad(radius);});
+     });
+
+  d3.select("#button button").on("click", function() {
+      var randomx = [];
+      var randomy = [];
+      for(i=0; i<dataset.length; i++) {
+        dataset[i][0] = Math.random()*(w-2*padMult*xPad)+padMult*xPad;
+        dataset[i][1] = Math.random()*(h-2*padMult*yPad)+padMult*yPad;
+      }
+
+      circles.transition()
+          .duration(1500)
+          .attr("cx", function(d) { return d[0];})
+          .attr("cy", function(d) { return d[1];});
+
+
+      circletext.transition()
+          .duration(1500)
+          .attr("x", function(d) { return d[0]+textPad(radius);})
+          .attr("y", function(d) { return d[1]-textPad(radius);});
+  });
+
+  circles.append("title")
+       .text(function(d) { return "Originally:\n(" + Math.round(d[0])
+       + "," + Math.round(h-padMult*yPad-d[1]) + ")"; });
+
+
+  function textPad(radius) {
+    return (Number(radius)+Number(radPad))/Math.sqrt(2);
+  }
+
+
+})();
+</script>
+</div>
+
+
+</body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="d3/d3.min.js"></script>
+</head>
+<body>
+
+<div id="divbutton"><button>Randomize</button>
+<script type="text/javascript">
+(function(){
+
+var w=500, h=300;
+var xPad = 10, yPad = 10;
+
+var dataset = [];
+for(i=0; i<10; i++) {
+  dataset[i] = [Math.random()*(w-4*xPad)+2*xPad,
+                Math.random()*(h-4*yPad)+2*yPad];
+}
+
+
+var svg = d3.select("body").append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+svg.append("rect")
+   .attr("x", xPad).attr("y",yPad)
+   .attr("width", w-xPad*2).attr("height",h-yPad*2)
+   .attr("fill", "rgb(230,230,230)").attr("stroke", "black");
+
+
+var circles = svg.selectAll("circle")
+   .data(dataset)
+   .enter()
+       .append("circle")
+       .attr("cx", function(d) { return d[0]; })
+       .attr("cy", function(d) { return d[1]; })
+       .attr("r", 5)
+       .attr("fill", "steelblue");
+
+var text = svg.selectAll("text")
+    .data(dataset)
+    .enter()
+      .append("text")
+      .attr("x", function(d) { return d[0]+6; })
+      .attr("y", function(d) { return d[1]; })
+      .attr("fill", "mediumvioletred").style("font-family", "sans-serif")
+      .style("text-anchor", "bottom-left")
+      .text(function(d, i) { return i+1; });
+
+d3.select("#divbutton button").on("click", function() {
+    var randomx = [];
+    var randomy = [];
+    for(i=0; i<dataset.length; i++) {
+      randomx[i] = Math.random()*(w-4*xPad)+2*xPad;
+      randomy[i] = Math.random()*(h-4*yPad)+2*yPad;
+    }
+
+    circles.transition()
+        .duration(1500)
+        .attr("cx", function(d,i) { return randomx[i];})
+        .attr("cy", function(d,i) { return randomy[i];});
+
+    text.transition()
+        .duration(1500)
+        .attr("x", function(d,i) { return randomx[i]+6;})
+        .attr("y", function(d,i) { return randomy[i];});
+});
+
+})();
+</script>
+</div>
+
+
+</body></html>

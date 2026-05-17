@@ -1,0 +1,118 @@
+/* figures will always be within a div with class="qtlcharts" */
+div.qtlcharts {
+    font-family: sans-serif;
+    font-size: 11pt;
+}
+
+div.qtlcharts .title text {
+    dominant-baseline: middle;
+    fill: #0074D9;
+    text-anchor: middle;
+}
+
+div.qtlcharts .y.axis text {
+    dominant-baseline: middle;
+    text-anchor: end;
+}
+
+div.qtlcharts .y.axis text.title {
+    text-anchor: middle;
+    fill: slateblue;
+}
+
+div.qtlcharts .x.axis text {
+    dominant-baseline: hanging;
+    text-anchor: middle;
+}
+
+div.qtlcharts .x.axis text.title {
+    fill: slateblue;
+}
+
+div.qtlcharts line.axis.grid {
+    fill: none;
+    stroke-width: 1;
+    pointer-events: none;
+}
+
+div.qtlcharts line.x.axis.grid {
+    stroke: rgb(200, 200, 200);
+    stroke-width: 3;
+}
+
+div.qtlcharts line.y.axis.grid {
+    stroke: white;
+}
+
+div.qtlcharts .extent {
+    fill: #cac;
+    opacity: 0.3;
+}
+
+div.qtlcharts circle.selected {
+    fill: hotpink;
+    opacity: 1;
+}
+
+div.qtlcharts a {
+    color: #08c;
+    text-decoration: none;
+}
+
+div.qtlcharts a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+
+/* figure captions */
+.caption {
+    font-family: Sans-serif;
+    font-size: 11pt;
+    margin-left: 60px;
+    width: 600px;
+}
+
+
+/* d3 tip for tool tips */
+.d3-tip {
+    background: darkslateblue;
+    color: #fff;
+    stroke: none;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 5px;
+}
+
+.d3-tip.e:after {
+    color: darkslateblue;
+}
+
+div.error p {
+    font-family: sans-serif;
+    font-size: 16pt;
+    font-weight: bold;
+    padding: 5px;
+}
+
+div.qtlcharts text.crosstab {
+    dominant-baseline: middle;
+    text-anchor: end;
+}
+
+div.qtlcharts text.crosstabtitle {
+    dominant-baseline: middle;
+    text-anchor: center;
+}
+
+div.searchbox {
+    font-family: Sans-serif;
+    font-size: 11pt;
+    margin-left: 60px;
+}
+
+/* default form input made gray */
+div.searchbox.inactive {
+  color: #888;
+}

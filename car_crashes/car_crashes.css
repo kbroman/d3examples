@@ -1,0 +1,28 @@
+body {
+    font-family: sans-serif;
+}
+
+.line {
+    stroke-width: 1;
+    fill: none;
+}
+
+.thickline {
+    stroke-width: 2;
+    fill: none;
+}
+
+text {
+    font-family: sans-serif;
+    font-size: 11pt;
+}
+
+a {
+    color: #08c;
+    text-decoration: none;
+}
+
+a:hover {
+    color: violetred;
+    text-decoration: none;
+}
