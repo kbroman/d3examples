@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Interactive cis-trans eQTL plot</title>
+    <link rel=stylesheet type="text/css" href="cistrans.css">
+    <script charset="utf-8" type="text/javascript" src="d3.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="d3.tip.old.js"></script>
+</head>
+
+<body>
+<h3>Interactive cis-trans eQTL plot</h3>
+
+<p id="loading">[Loading...]</p>
+
+
+<div id="geneinput" style="opacity:0;">
+<form name="geneinput">
+<input id="genesymbol" type="text" value="Gene symbol" name="genesymbol"/>
+<input type="submit" id="submit" value="Submit" />
+<a id="currentgenesymbol"></a>
+<p style="margin-bottom:-25px;">Type "random" to select a gene at random.<p>
+</form>
+
+</div>
+
+<div id="cistrans"></div>
+
+<div id="legend" style="width:700px;margin-left:35px;opacity:0;">
+<p>In the top-left panel, the x-axis corresponds to marker location
+and the y-axis corresponds to the genomic position of probes on a gene
+expression microarray. Each plotted point is an inferred eQTL with LOD
+> 10; opacity corresponds to LOD score, though all LOD > 25 are made
+fully opaque.
+
+<p>Hover over a point to see the probe ID and LOD score; also highlighted
+are any other eQTL for that probe.  Click on the point to see the LOD
+curves below.
+
+<p>If a clicked probe is in a known gene, the title in lower panel is a link
+to the Mouse Genome Informatics (MGI) site at the Jackson Lab.
+
+<p>Hover over markers in the LOD curve plot to view marker names; click on
+a marker to see the phenotype-vs-genotype plot to the right.  In
+the geno-vs-pheno plot, hover over the average to view corresponding value, and hover over
+points to view individual IDs.
+
+<p>The code is available at <a
+href="https://github.com/kbroman/d3examples/tree/master/cistrans">github</a>.
+</div>
+
+
+<script type="text/javascript" src="cistrans.js"></script>
+</body>
+</html>

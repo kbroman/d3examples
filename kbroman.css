@@ -1,0 +1,171 @@
+BODY
+{
+	font-size: 12pt;
+	font-weight: normal;
+	word-spacing: normal;
+	letter-spacing: normal;
+	text-transform: none;
+	font-family: Verdana, Myriad Web, Syntax, sans-serif;
+	font-size-adjust: .48;
+	background: #FFFFFD;
+	margin-top: 5%;
+	margin-right: 5%;
+	margin-bottom: 5%;
+	margin-left: 5%;
+	background-color: #FFFFFD;
+}
+
+P { text-align: left; }
+P.Right { text-align: right; }
+P.Center { text-align: center; }
+
+P.Indent
+{
+	text-align: left;
+	margin-left: 2.5em;
+}
+
+Blockquote.Indent
+{
+	text-align: left;
+	margin-left: 5em;
+	margin-right: 2.5em;
+}
+
+P.small {font-size: 1; margin-left: 0}
+
+UL
+{
+	text-align: justify;
+	text-indent: 0em;
+	list-style: disc;
+}
+
+UL.Indent
+{
+	text-align: justify;
+	text-indent: 0em;
+	margin-left: 2.5em;
+	list-style: disc;
+}
+
+ul.gap
+{
+	margin-bottom: -25px;
+}
+
+ul.gap li
+{
+	margin-bottom: 50px;
+}
+	
+ol.nogap li
+{
+	margin-bottom: 0px;
+}
+
+
+H1
+{
+	text-align: center;
+	font-size: large;
+	font-weight: bold;
+	color: #000066;
+	background-color: transparent;
+}
+
+H2
+{
+	text-align: left;
+	color: #000066;
+	font-size: large;
+	font-weight: bold;
+	background-color: transparent;
+}
+
+H3
+{
+	text-align: left;
+	color: #000066;
+	font-size: large;
+	font-weight: normal;
+	background-color: transparent;
+}
+
+H4
+{
+	text-align: left;
+	font-style: italic;
+	color: #000066;
+	font-size: medium;
+	font-weight: normal;
+	background-color: transparent;
+}
+
+IMG.right
+{
+	float: right;
+	vertical-align: top;
+}
+
+IMG.left
+{
+	float: left;
+	vertical-align: bottom;
+}
+
+A
+{
+	color: green;
+	text-decoration: none;
+	background-color: transparent;
+}
+
+A:hover
+{
+	color: green;
+	background: #CAFFFF;
+}
+
+CODE {color: #3300DD; font-family: courier; font-size: 14px}
+PCODE {font-family: courier}
+CODE.large {color: #3300DD; font-family: courier; font-size: 17px}
+PRE {color: #3300DD; font-family: courier; font-size: 14px}
+PRE.indent {color: #3300DD; font-family: courier; font-size: 14px;
+margin-left: 28px}
+
+table { 
+  border-collapse:separate;
+  border-spacing:0px;
+}
+
+tr
+{
+  vertical-align: text-top;
+}
+
+td
+{
+  padding:5px;
+}
+
+td.first
+{
+  padding-top: 30px;
+}
+
+td.last
+{
+  padding-bottom: 30px;
+}
+
+.smallgray
+{
+    font-size: 10pt;
+    color: gray;
+}
+
+.smallgray A
+{
+    color: gray;
+}
